@@ -66,64 +66,70 @@ app.put('/choice/:id', async (req, res) => {
   res.json(choice)
 })
 
-
 /* ====== CHOICE ====== */ 
 
+/* ====== QUESTION ====== */ 
+
+//create a question
 app.post('/question', async (req, res) => {
-    const { label, choiceTitle } = req.body
-    const question = await prisma.question.create({
-      data: {
-        label,
-        choices: {
-          connectOrCreate: {
-            email: choiceTitle
-          }
-        }
-      }
-    })
-    res.status(200).json(question)
+  const {label, questionForm} = req.body
+  const question = await prisma.question.create({
+    data: {
+      label: 'TESTEUH',
+      question : 'OU ALLONS NOUS?'
+      /*label: label,
+      question : questionForm*/
+    }
+  })
+  res.status(200).json(question)
 })
 
-app.get('/drafts', async (req, res) => {
-    const questions = await prisma.question.findMany({
-    })
-    res.json(questions)
+//get all the questions
+app.get('/questions', async (req, res) => {
+  const questions = await prisma.question.findMany({
+      include: {
+          choices: true, // Return all choices
+      },
   })
+  res.json(questions)
+})
 
+//get a question by its Id
 app.get('/question/:id', async (req, res) => {
-    const { id } = req.params
-    const question = await prisma.question.findUnique({
-      where: {
-        id: Number(id),
-      }
-    })
-    res.json(question)
+  const { id } = req.params
+  const question = await prisma.question.findUnique({
+    where: {
+      id: Number(id),
+    }
   })
+  res.json(question)
+})
 
-app.put('/publish/:id', async (req, res) => {
-    const { id } = req.params
-    const question = await prisma.question.update({
-      where: {
-        id: Number(id),
-      },
-      data: { question: true },
-    })
-    res.json(question)
+
+//update a question
+app.put('/question/:id', async (req, res) => {
+  const { id } = req.params
+  const question = await prisma.question.update({
+    where: {
+      id: Number(id),
+    },
+    data: { 
+      label: 'Changement',
+      question : 'weeeeeeee'
+    },
   })
+  res.json(question)
+})
 
-app.get('/feed', async (req, res) => {
-    const questions = await prisma.question.findMany({
-      include: { question: true },
-    })
-    res.json(questions)
-  })
-
+//delete a question
 app.delete(`/question/:id`, async (req, res) => {
-    const { id } = req.params
-    const question = await prisma.question.delete({
-      where: {
-        id: parseInt(id),
-      },
-    })
-    res.json(question)
+  const { id } = req.params
+  const question = await prisma.question.delete({
+    where: {
+      id: parseInt(id),
+    },
   })
+  res.json(question)
+})
+
+/* ====== QUESTION ====== */ 
