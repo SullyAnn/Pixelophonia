@@ -14,16 +14,60 @@ export default {
   handler: app
 }
 
+/* ====== CHOICE ====== */ 
 
+//add a choice
+// title et img requis dans le body (?)
 app.post(`/choice`, async (req, res) => {
-    const result = await prisma.choice.create({
-      data: {
-        title: req.body.title,
-        img: req.body.img,
-      },
-    })
-    res.json(result)
+  const result = await prisma.choice.create({
+    data: {
+      title: req.body.title,
+      img: req.body.img,
+    },
   })
+  res.json(result)
+})
+
+// get a choice
+app.get('/choice/:id', async (req, res) => {
+  const { id } = req.params
+  const choice = await prisma.choice.findUnique({
+    where: {
+      id: Number(id),
+    }
+  })
+  res.json(choice)
+})
+
+// delete a choice
+app.delete('/choice/:id', async (req, res) => {
+  const { id } = req.params
+  const choice = await prisma.choice.delete({
+    where: {
+      id: Number(id),
+    }
+  })
+  res.json(choice)
+})
+
+// update a choice
+// title et img requis dans le body (?)
+app.put('/choice/:id', async (req, res) => {
+  const { id } = req.params
+  const choice = await prisma.choice.update({
+    where: {
+      id: Number(id),
+    },
+    data: { 
+      title: req.body.title,
+      img: req.body.img,
+    },
+  })
+  res.json(choice)
+})
+
+
+/* ====== CHOICE ====== */ 
 
 app.post('/question', async (req, res) => {
     const { label, choiceTitle } = req.body
