@@ -15,97 +15,71 @@ export default {
 }
 
 
-app.post(`/user`, async (req, res) => {
-    const result = await prisma.user.create({
+app.post(`/choice`, async (req, res) => {
+    const result = await prisma.choice.create({
       data: {
-        email: req.body.email,
-        name: req.body.name,
+        title: req.body.title,
+        img: req.body.img,
       },
     })
     res.json(result)
   })
 
-app.post('/post', async (req, res) => {
-    const { title, content, authorEmail } = req.body
-    const post = await prisma.post.create({
+app.post('/question', async (req, res) => {
+    const { label, choiceTitle } = req.body
+    const question = await prisma.question.create({
       data: {
-        title,
-        content,
-        author: {
+        label,
+        choices: {
           connectOrCreate: {
-            email: authorEmail
+            email: choiceTitle
           }
         }
       }
     })
-    res.status(200).json(post)
+    res.status(200).json(question)
 })
 
 app.get('/drafts', async (req, res) => {
-    const posts = await prisma.post.findMany({
-      where: { published: false },
-      include: { author: true }
+    const questions = await prisma.question.findMany({
     })
-    res.json(posts)
+    res.json(questions)
   })
 
-app.get('/post/:id', async (req, res) => {
+app.get('/question/:id', async (req, res) => {
     const { id } = req.params
-    const post = await prisma.post.findUnique({
+    const question = await prisma.question.findUnique({
       where: {
         id: Number(id),
-      },
-      include: { author: true }
+      }
     })
-    res.json(post)
+    res.json(question)
   })
 
 app.put('/publish/:id', async (req, res) => {
     const { id } = req.params
-    const post = await prisma.post.update({
+    const question = await prisma.question.update({
       where: {
         id: Number(id),
       },
-      data: { published: true },
+      data: { question: true },
     })
-    res.json(post)
+    res.json(question)
   })
 
 app.get('/feed', async (req, res) => {
-    const posts = await prisma.post.findMany({
-      where: { published: true },
-      include: { author: true },
+    const questions = await prisma.question.findMany({
+      include: { question: true },
     })
-    res.json(posts)
+    res.json(questions)
   })
 
-app.delete(`/post/:id`, async (req, res) => {
+app.delete(`/question/:id`, async (req, res) => {
     const { id } = req.params
-    const post = await prisma.post.delete({
+    const question = await prisma.question.delete({
       where: {
         id: parseInt(id),
       },
     })
-    res.json(post)
-  })
-
-app.get('/filterPosts', async (req, res) => {
-    const { searchString } = req.query
-    const draftPosts = await prisma.post.findMany({
-      where: {
-        OR: [
-          {
-            title: {
-              contains: searchString,
-            },
-          },
-          {
-            content: {
-              contains: searchString,
-            },
-          },
-        ],
-      },
-    })
-    res.send(draftPosts)
+    res.json(question)
   })
