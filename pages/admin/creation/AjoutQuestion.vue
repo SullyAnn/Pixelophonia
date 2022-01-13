@@ -15,6 +15,8 @@
 
         <button type="submit">Ajouter</button>
     </form>
+
+    <NuxtLink to="./">Back to questions</NuxtLink>
   </div>
 </template>
 
@@ -32,6 +34,7 @@ export default {
     }
   },
   methods: {
+      //envoie le formulaire d'ajout de question : create une question et ses deux choix
     handleSubmit: async function (e) {
       e.preventDefault()
       const body = {
@@ -49,6 +52,7 @@ export default {
         .catch(error => { console.log(error) });
       this.$router.push('./')
     },
+    //met dans la variable img le fichier que l'utilisateur est allé chercher
     getImg1() {
         console.log(event.target.files[0].name);
         this.img1 = event.target.files[0];

@@ -97,19 +97,22 @@ app.get('/questions', async (req, res) => {
   res.json(questions)
 })
 
-//get a question by its Id
+//get a question by its Id and its choices
 app.get('/question/:id', async (req, res) => {
   const { id } = req.params
   const question = await prisma.question.findUnique({
     where: {
       id: Number(id),
-    }
+    },
+    include: {
+      choices: true, // include all the choices
+    },
   })
   res.json(question)
 })
 
 
-//update a question
+//update a question with the two choices
 app.put('/question/:id', async (req, res) => {
   const { id } = req.params
   const question = await prisma.question.update({
@@ -118,10 +121,31 @@ app.put('/question/:id', async (req, res) => {
     },
     data: { 
       label: req.body.label,
-      question : req.body.question
+      question : req.body.question,
     },
   })
-  res.json(question)
+
+  const choice1 = await prisma.choice.update({
+    where: {
+      id: Number(req.body.id1),
+    },
+    data: { 
+      title: req.body.title1,
+      img: req.body.img1,
+    },
+  })
+  
+  const choice2 = await prisma.choice.update({
+    where: {
+      id: Number(req.body.id2),
+    },
+    data: { 
+      title: req.body.title2,
+      img: req.body.img2,
+    },
+  })
+
+  res.json([question, choice1, choice2])
 })
 
 //delete a question with the choices linked to it
