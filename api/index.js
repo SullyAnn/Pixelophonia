@@ -70,15 +70,18 @@ app.put('/choice/:id', async (req, res) => {
 
 /* ====== QUESTION ====== */ 
 
-//create a question
+//create a question with 2 choices
 app.post('/question', async (req, res) => {
-  const {label, questionForm} = req.body
   const question = await prisma.question.create({
     data: {
-      label: 'TESTEUH',
-      question : 'OU ALLONS NOUS?'
-      /*label: label,
-      question : questionForm*/
+      label: req.body.label,
+      question : req.body.question,
+      choices : {
+        create: [
+          { title: req.body.title1, img: req.body.img1 },
+          { title: req.body.title2, img: req.body.img2 },
+        ],
+      },
     }
   })
   res.status(200).json(question)
@@ -114,22 +117,31 @@ app.put('/question/:id', async (req, res) => {
       id: Number(id),
     },
     data: { 
-      label: 'Changement',
-      question : 'weeeeeeee'
+      label: req.body.label,
+      question : req.body.question
     },
   })
   res.json(question)
 })
 
-//delete a question
+//delete a question with the choices linked to it
 app.delete(`/question/:id`, async (req, res) => {
   const { id } = req.params
-  const question = await prisma.question.delete({
+
+  const deleteChoices = prisma.choice.deleteMany({
+    where: {
+      questionId: parseInt(id),
+    },
+  })
+  
+  const deleteQuestion = prisma.question.delete({
     where: {
       id: parseInt(id),
     },
   })
-  res.json(question)
+  
+  const transaction = await prisma.$transaction([deleteChoices, deleteQuestion])
+  res.json(transaction)
 })
 
 /* ====== QUESTION ====== */ 
