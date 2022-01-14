@@ -61,9 +61,11 @@ io.on('connection', (socket) => {
     totalvotes++
     nbChoice1 += arrayChoices.at(0).nbvotes;
     nbChoice2 += arrayChoices.at(1).nbvotes;
-
-    console.log(nbChoice1)
-    console.log(nbChoice2)
+    console.log("_____________________")
+    console.log("total votes : " + totalvotes)
+    console.log("------")
+    console.log("nombre de votes choix 1 : " + nbChoice1)
+    console.log("nombre de votes choix 2 : " + nbChoice2)
     // limite temporaire : à remplacer par la fin du timer
     if(totalvotes >= 3){
       arrayChoices.at(0).nbvotes = nbChoice1

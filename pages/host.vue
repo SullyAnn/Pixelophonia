@@ -47,6 +47,7 @@ export default {
     }),
     // ici on récupère les images des choix de la question 
     socket.on('broadcast-question', (questiondata) => {
+      console.log(questiondata)
         for (const [key, value] of Object.entries(questiondata)) {
           this.displayQuestionData.push(value)
           //console.log(value)

@@ -1,7 +1,7 @@
 <template>
   <div>
       <div v-for="(data, index) in choices" :key="index" class="question">
-          <img :id="index+1" v-on:click="sendChoice(index+1)" :src="data.img" alt="image test">
+          <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
       </div>
       </div>
     </div>
@@ -39,8 +39,8 @@ export default {
         // on empêche le player de changer de vote (ça bloque les événements sur le click)
         this.IsChoice1Disabled = false;
         // effet grisé une fois une image sélectionnée
-        if(choice.yourchoice == 1)  document.getElementById("1").style.filter = "grayscale(1) blur(5px)"
-        else if(choice.yourchoice == 2)  document.getElementById("2").style.filter = "grayscale(1) blur(5px)"
+        if(choice.yourchoice == 0)  document.getElementById("0").style.filter = "grayscale(1) blur(5px)"
+        else if(choice.yourchoice == 1)  document.getElementById("1").style.filter = "grayscale(1) blur(5px)"
         //console.log("IsChoice1Disabled = " + this.IsChoice1Disabled)
         
     })
@@ -52,10 +52,12 @@ export default {
         
       if(!this.IsChoice1Disabled){return} // trouver une meilleure solution pour désactiver event click sur les images
       console.log("vous avez cliqué sur l'image " + idChoice)
-
+      const idPlayerChoice = Object.values(this.choices).at(idChoice).id
       //console.log(this.choices)
-      this.choices.find(element => element.id == idChoice).nbvotes++
-      
+
+      this.choices.find(element => element.id == idPlayerChoice).nbvotes++
+      //console.log(Object.values(this.choices).at(0).nbvotes)
+
       // transmission des choix possibles et de l'id du choix fait par le player
       socket.emit('submit-choice', {choices:this.choices, playerChoice:idChoice})
     }

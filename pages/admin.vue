@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     LaunchPartie: function(){
+      this.questions = []
         console.log("nous sommes dans lauchPArtiiie")
         // récupère les questions dans la base de données
         getQuestions()
@@ -55,11 +56,13 @@ export default {
                 this.newQuestion = new Question(question.id, question.label, question.question, this.newChoice),
                 //console.log(this.newQuestion),
                 this.questions.push(this.newQuestion)
+                this.newChoice=[]
                 //console.log(this.questions)
             })
         })
     },
     LaunchQuestion: function(questiondata){
+      console.log(questiondata)
         console.log("LaunchQuestion "+questiondata.id)
         socket.emit("display-question", questiondata)
     }
