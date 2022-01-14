@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Pixelophonia',
@@ -37,8 +37,10 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-  ],
+  modules: ['~/io'],
+  env:{
+    WS_URL: process.env.WS_URL || 'http://localhost:3000'
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

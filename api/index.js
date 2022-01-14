@@ -100,6 +100,9 @@ app.get('/question/:id', async (req, res) => {
   const question = await prisma.question.findUnique({
     where: {
       id: Number(id),
+    },
+    include:{
+      choices : true,
     }
   })
   res.json(question)

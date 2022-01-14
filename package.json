@@ -6,19 +6,23 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "testIO": "nodemon -w server.js -w nuxt.config.js server.js"
   },
   "dependencies": {
-    "@prisma/client": "^3.7.0",
+    "@prisma/client": "^3.8.0",
     "core-js": "^3.19.3",
     "express": "^4.17.2",
     "nuxt": "^2.15.8",
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^4.4.1",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
     "webpack": "^4.46.0"
   },
   "devDependencies": {
+    "nodemon": "^2.0.15",
     "prisma": "^3.7.0"
   }
 }
