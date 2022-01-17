@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body {
+    background-color: #CDC0C9;
+    font-family: 'Montserrat', sans-serif;
+    color: #3D4D7C;
+    /* overflow-y:hidden; */
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* === Identification === */
+
+
+/* ======== Menu ======== */
+
+/* 
+TO DO : 
+- Centrer correctement
+- rajouter la texture en background
+- mettre le titre joli 
+*/ 
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    width: 100%;
+    height: 80vh;
+}
+
+.btnMenu {
+    background:rgba(255, 255, 255, 0.5);
+    padding: 30px;
+    border-radius: 11px;
+    width: 40%;
+
+    text-align: center;
+    font-weight:normal;
+    color: #3D4D7C;
+    transition: 0.5s;
+    border: 1px solid #3D4D7C;
+}
+
+.btnMenu:hover {
+    background:rgba(255, 255, 255, 1);
+    font-weight: bold;
+    transform: scale(1.1);
+}
+
+/* ==== Launch Game ===== */
+
+.questionsList {
+    list-style: none;
+}
+
+li {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.questions p {
+    display: inline-block;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 13px;
+    width: 200px;
+    height: 100%;
+    margin:0 20px 0 0;
+
+}
+
+/* ====== Creation ====== */
+
+/* ------ Buttons ------- */
+.btn {
+    width: 40px;
+    height: 40px; 
+    border-radius: 50%;
+    margin:0 5px;
+    padding: 0;
+
+    border: none;
+
+    line-height: 1;
+    position: relative;
+    padding: 1em;
+    color: #fff;
+    background: transparent;
+    transition: .3s;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
+
+.btn:active {
+    transform: scale(1.5);
+}
+
+.svg-icon {
+    transform: scale(1.1);
+    vertical-align: middle;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.btn.update {
+    background: #4495B8;
+}
+
+.btn.update:hover,
+.btn.update:focus {
+    background: #186180;
+}
+
+.btn.delete {
+    background: #CA4B4B;
+}
+
+.btn.delete:hover,
+.btn.delete:focus {
+    background: #aa1b1b;
+}
+
+
+.btn.add {
+    background: #9BD088;
+}
+
+.btn.add:hover,
+.btn.add:focus {
+    background: #6cad56; }
+
+.btn.back {
+    background: #fff;
+    color: #3D4D7C;
+}
+
+.btn.back:hover,
+.btn.back:focus {
+    background: #9ca3b9;
+    color: #fff;
+}
+
+
+/* ---- See question ---- */
+
+.window {
+    width: 80%;
+    text-align: center;
+    margin:auto;
+    padding: 10% auto;
+}
+
+.window h2 {
+    background: #3D4D7C;
+    color: #fff; 
+
+    height: 50px;
+    padding: 15px 0 0;
+    border-radius: 13px;
+}
+
+.window .choices {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 90%;
+    border: 1px solid #fff;
+    padding: 5%;
+    margin:auto;
+}
+
+.labelChoice, .labelQuestion {
+    background:rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    border-radius: 11px;
+    border:0;
+}
+.labelQuestion {
+    width: 200px;
+    padding: 10px;
+}
+
+/* ---- Add question ---- */
+
+form {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+    border: 1px solid #fff;
+}
+
+form > * {
+    display: block;
+    width: 70%;
+    padding:0;
+    margin: 10px auto 0;
+}
+
+form .choices2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding:  10px 5%;
+}
+
+form > *  {
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    width: 70%;
+}
+
+fieldset .labelChoice {
+    height: 25px;
+}
+
+.choices2 fieldset {
+    height: 100%;
+    width: 50%;
+    margin:auto;
+}
+
+fieldset > * {
+    margin-bottom: 20px;
+}
+
+.importImg {
+    display: block;
+    background:#3D4D7C;
+    color: #fff;
+    height: 25px;
+    padding:5px;
+    border-radius: 11px;
+    border:0;
+    cursor: pointer;
+}
+
+.send {
+    width: 50px;
+    height:50px;
+    background: #9BD088;
+    position: relative;
+    color: #fff;
+    margin: 20px 15% 20px auto;
+    transition: 0.5s;
+}
+
+.send:hover {
+    background: #6cad56;
+    cursor: pointer;
+}
+
+/* ==== Launch Game ==== */
+
+.start      {background: #6cad56;}
+.stop       {background: #aa1b1b;}
+.cantSelect {background: #929292;}
