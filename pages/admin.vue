@@ -1,13 +1,19 @@
 <template>
     <div>
-        <button  v-on:click.once="LaunchPartie()" id="launchPartie" >Lancer la Partie !</button>
-        <div id="listQuestions">
-            <ul ref="questions" class="questions">
-                <li v-for="(question, index) in questions" :key="index" class="question">
-                     <button :id="index+1" v-on:click.once="LaunchQuestion(question)">{{ question.label }}</button>
-                </li>
-            </ul>
-        </div>
+      <div v-show="isMenu">
+          <button  v-on:click.once="LaunchPartie()" v-on:click="isMenu = !isMenu" id="launchPartie" >Lancer la Partie !</button>
+          <NuxtLink to="/admin/creation/"><button  v-on:click="isMenu = !isMenu" v-on:click.once="LaunchCreation()" id="launchCreation" >Créer votre jeu</button></NuxtLink>
+      </div>
+        
+      <div id="listQuestions" v-show="!isMenu">
+          <h2>Liste des questions : </h2>
+          <ul ref="questions" class="questions">
+              <li v-for="(question, index) in questions" :key="index" class="question">
+                    <button :id="index+1" v-on:click.once="LaunchQuestion(question)">{{ question.label }}</button>
+              </li>
+          </ul>
+      </div>
+      <NuxtChild />
     </div>
 </template>
 
@@ -24,7 +30,9 @@ export default {
   },
   data () {
       return {newQuestion:null,
-              newChoice:[] }
+              newChoice:[], 
+              isMenu : true ,
+              isReload: false}
   },
   created(){
     this.newQuestion = new Question(null,null,null,null)
@@ -37,8 +45,24 @@ export default {
   beforeMount () {
   },
   mounted () {
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      console.info( "This page is reloaded" );
+      this.isReload = true;
+      socket.emit("reload-all-pages", this.isReload)
+    } else {
+      console.info( "This page is not reloaded");
+    }
   },
   methods: {
+    LaunchCreation: function(){
+      this.questions = []
+        console.log("nous sommes dans création")
+        // récupère les questions dans la base de données
+        // getQuestions()
+        // .then(listQuestions => {
+        //     socket.emit("list-question-creation", listQuestions)
+        // })
+    },
     LaunchPartie: function(){
       this.questions = []
         console.log("nous sommes dans lauchPArtiiie")

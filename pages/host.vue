@@ -40,6 +40,10 @@ export default {
   watch: {
   },
   beforeMount () {
+    socket.on("reload-this-page", (isReload) =>{
+      //alert("on reload la page screen")
+      location.reload(true)
+    })
     // ici on récupère la question
     socket.on('display-question-on-screen', (questiondata)=> {
         console.log(questiondata)
