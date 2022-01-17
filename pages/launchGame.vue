@@ -9,23 +9,23 @@
     <div id="questionsList">
         <ul ref="questions" class="questions">
             <li v-for="(question, index) in questions" :key="index" class="question">
-                  <p>{{ question.label }}</p>
-                  <button :id="index+1" @click="switchClass(index+1)" v-on:click="LaunchQuestion(question)" class= "btn start">
-                    <svg style="display:block;"
-                        class="svg-icon" 
-                        viewBox="0 0 1025 1024" 
-                        version="1.1" 
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1024 512l-804.0448 512L219.9552 0 1024 512z"  />
-                    </svg>
-                    <svg style="display:none;"
-                        class="svg-icon" 
-                        viewBox="0 0 1024 1024" 
-                        version="1.1" 
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 0l1024 0 0 1024L0 1024 0 0z"  />
-                    </svg>
-                  </button>
+              <p>{{ question.label }}</p>
+              <button :id="index+1" @click="switchClass(index+1)" v-on:click="LaunchQuestion(question)" class= "btn start">
+                <svg style="display:block;"
+                    class="svg-icon" 
+                    viewBox="0 0 1025 1024" 
+                    version="1.1" 
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1024 512l-804.0448 512L219.9552 0 1024 512z"  />
+                </svg>
+                <svg style="display:none;"
+                    class="svg-icon" 
+                    viewBox="0 0 1024 1024" 
+                    version="1.1" 
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0l1024 0 0 1024L0 1024 0 0z"  />
+                </svg>
+              </button>
             </li>
         </ul>
     </div>
