@@ -11,6 +11,8 @@ h1{
     font-weight: 500;
     font-size: 20px;
     margin: 20px;
+    font-variant: small-caps;
+    font-weight: 300;
 }
 #choicePageContent{
     position: relative;
@@ -51,6 +53,11 @@ h1{
 img{
     height: 100%;
     z-index: 7;
+    width: 100%;
+    cursor:pointer;
+    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.4s;
+
 }
 
 .choice{
