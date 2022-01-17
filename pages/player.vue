@@ -1,14 +1,21 @@
 <template>
-  <div>
-      <div v-for="(data, index) in choices" :key="index" class="question">
+  <section id = "choicePageContent">
+
+        <div id ="orBlock">
+            <p >OU</p>
+        </div>
+       
+      <div v-for="(data, index) in choices" :key="index" class="choice">
+          <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
+          <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
           <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
       </div>
-      </div>
-    </div>
-  </div>
+
+  </section>
 </template>
 
 <script>
+import "../assets/css/playerChoice.css";
 import socket from '~/plugins/socket.io.js'
 export default {
   asyncData () {
@@ -44,8 +51,13 @@ export default {
         // on empêche le player de changer de vote (ça bloque les événements sur le click)
         this.IsChoice1Disabled = false;
         // effet grisé une fois une image sélectionnée
-        if(choice.yourchoice == 0)  document.getElementById("0").style.filter = "grayscale(1) blur(5px)"
-        else if(choice.yourchoice == 1)  document.getElementById("1").style.filter = "grayscale(1) blur(5px)"
+        if(choice.yourchoice == 0)  {
+          document.getElementById("1").style.filter = "grayscale(1)"
+          document.getElementById("0").style.filter="brightness(1.25)"}
+        else if(choice.yourchoice == 1){ 
+        document.getElementById("0").style.filter = "grayscale(1)"
+        document.getElementById("1").style.filter="brightness(1.25)"
+        } 
         //console.log("IsChoice1Disabled = " + this.IsChoice1Disabled)
         
     })
@@ -69,13 +81,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.chatArea{
-    display:flex;
-    justify-content:center;
-}
-.images{
-
-}
-</style>
