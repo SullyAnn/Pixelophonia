@@ -38,14 +38,9 @@ import {getQuestionData, getQuestions, deleteQuestion} from "@/assets/classes/Qu
     beforeMount(){
     },
     methods: {
-        deleteAQuestion: function (idQuestion){
-            deleteQuestion(idQuestion)
-            .then(listQuestions => {
-                this.listOfQuestions = []
-                listQuestions.forEach((question) => {
-                    this.listOfQuestions.push(question)
-                })
-            })
+        deleteAQuestion: async function (idQuestion){
+          await this.$axios.$delete(`api/question/${idQuestion}`).catch(error => { console.log(error) })
+          this.questions = await this.$axios.$get('/api/questions') //met à jour l'affichage de la liste de question
         }
     },
   }
