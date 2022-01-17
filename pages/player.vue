@@ -1,11 +1,10 @@
 <template>
   <div>
+    player
       <div v-for="(data, index) in choices" :key="index" class="question">
           <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
       </div>
       </div>
-    </div>
-  </div>
 </template>
 
 <script>

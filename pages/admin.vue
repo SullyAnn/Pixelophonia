@@ -1,5 +1,6 @@
 <template>
     <div>
+      mixé avec "launch Game"
         <button  v-on:click.once="LaunchPartie()" id="launchPartie" >Lancer la Partie !</button>
         <div id="listQuestions">
             <ul ref="questions" class="questions">

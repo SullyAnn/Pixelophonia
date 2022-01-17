@@ -1,5 +1,6 @@
 <template>
   <div>
+    index dans dossier pages
   </div>
 </template>
 

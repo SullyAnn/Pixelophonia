@@ -1,5 +1,6 @@
 <template>
 <div>
+  host
     <div id="result">
         <div v-for="(data, index) of Object.values(parameters)">
             <img v-if="data.winner != null" :src="data.winner" alt="image winner" class="images">
