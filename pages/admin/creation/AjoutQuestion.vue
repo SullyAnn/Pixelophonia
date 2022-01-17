@@ -45,22 +45,21 @@ export default {
         title2: this.title2,
         img2: this.img2.name,
       }
-      await fetch('http://localhost:3000/api/question', { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)})
-        .catch(error => { console.log(error) });
-      this.$router.push('./')
+      //crée la question avec ses choix avec post(urlApi, data, configHeader)
+      await this.$axios.$post(`api/question`, JSON.stringify(body), {headers: { 'Content-Type': 'application/json' }})
+      .catch(error => { console.log(error) }); 
+
+      this.$router.push('./') //on revient à la page de liste des questions
     },
     //met dans la variable img le fichier que l'utilisateur est allé chercher
     getImg1() {
-        console.log(event.target.files[0].name);
+        console.log(event.target.files[0]);
         this.img1 = event.target.files[0];
     },
     getImg2() {
         console.log(event.target.files[0].name);
         this.img2 = event.target.files[0];
-    },       
+    },      
   },
 }
 </script>
