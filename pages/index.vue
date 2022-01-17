@@ -1,9 +1,15 @@
 <template>
-  <h1>HELLO WORLD</h1>
+  <div>
+  </div>
 </template>
 
 <script>
+/*import Admin from "@/assets/classes/admin.js";
+const administrateur = new Admin('1234', 'test@mailtest.com')
+administrateur.getQuestions();*/
+//administrateur.addAndRefreshQuestion();
+
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
 }
 </script>
