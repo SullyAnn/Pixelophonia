@@ -1,0 +1,37 @@
+body{
+    margin: 0;
+    background-image: url("@/assets/images/PxP-Texture-vertical.png");
+    background-size: 400%;
+    background-position: center;
+}
+
+#__nuxt{
+    width: 100vw;
+    height: 100vh;
+}
+#__layout{
+    height: 100%;
+}
+p{
+    font-family: "Montserrat";
+    font-weight: 300;
+    font-size: 20px;
+    color: rgba(64, 70, 89, 1);
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 25px;
+    border-radius: 25px;
+    margin: 0;
+    text-align: center;
+
+}
+
+@media screen and (max-width: 768px) {
+    #homePageContent{
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-inline: 20px;
+        justify-content: center;        
+    }
+}
