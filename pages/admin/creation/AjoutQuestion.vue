@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import {addQuestion} from "@/assets/classes/Admin.js"
 export default {
   name: 'QuestionForm',
   data() {
@@ -46,8 +47,7 @@ export default {
         img2: this.img2.name,
       }
       //crée la question avec ses choix avec post(urlApi, data, configHeader)
-      await this.$axios.$post(`api/question`, JSON.stringify(body), {headers: { 'Content-Type': 'application/json' }})
-      .catch(error => { console.log(error) }); 
+      await addQuestion(this.$axios, body)
 
       this.$router.push('./') //on revient à la page de liste des questions
     },

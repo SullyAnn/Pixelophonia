@@ -17,16 +17,15 @@
 
 <script>
 import socket from '~/plugins/socket.io.js'
-import {getQuestionData, getQuestions, deleteQuestion} from "@/assets/classes/Question.js"
+import {getQuestions, deleteQuestion} from "@/assets/classes/Admin.js"
   export default {
     name: 'QuestionList',
     created(){
       console.log("heeeey")
-       console.log(this.$route.path); // path is /users
     },
     async asyncData({$axios}) {
       try{
-        const questions = await $axios.$get('/api/questions')
+        const questions = await getQuestions($axios)
         return {questions}
       }catch(error){console.log(error)}
     },
@@ -39,8 +38,8 @@ import {getQuestionData, getQuestions, deleteQuestion} from "@/assets/classes/Qu
     },
     methods: {
         deleteAQuestion: async function (idQuestion){
-          await this.$axios.$delete(`api/question/${idQuestion}`).catch(error => { console.log(error) })
-          this.questions = await this.$axios.$get('/api/questions') //met à jour l'affichage de la liste de question
+          await deleteQuestion(this.$axios, idQuestion)
+          this.questions = await getQuestions(this.$axios) //met à jour l'affichage de la liste de question
         }
     },
   }

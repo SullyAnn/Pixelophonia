@@ -23,7 +23,7 @@
 import socket from '~/plugins/socket.io.js'
 import Choice from '@/assets/classes/Choice.js'
 import Question from '@/assets/classes/Question.js'
-import {getQuestions, getQuestionData} from "@/assets/classes/Question.js"
+import {getQuestions} from "@/assets/classes/Admin.js"
 export default {
   asyncData () {
     return new Promise(resolve =>
@@ -69,7 +69,7 @@ export default {
       this.questions = []
         console.log("nous sommes dans lauchPArtiiie")
         // récupère les questions dans la base de données
-        getQuestions()
+        getQuestions(this.$axios)
         .then(listQuestions => {
             listQuestions.forEach((question) => {
               question.choices.forEach((choice) => {

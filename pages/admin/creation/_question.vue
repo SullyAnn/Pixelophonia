@@ -22,10 +22,11 @@
 </template>
 
 <script>
+import {getQuestion, updateQuestion} from "@/assets/classes/Admin.js"
   export default {
     async asyncData({ params, $axios }) { //va chercher les données de la question et les garde dans les datas (dans question[]) avant de render la page (du côté du serveur)
-      const question = await $axios.$get(`api/question/${params.question}`)
-      console.log(question)
+      //const question = await $axios.$get(`api/question/${params.question}`)
+      const question = await getQuestion($axios, params.question)
       return {question}
     },
     methods: {
@@ -42,7 +43,7 @@
           img2: this.question.choices[1].img,
           id2: this.question.choices[1].id,
         }
-        await this.$axios.$put(`api/question/${this.question.id}`, JSON.stringify(body), {headers: { 'Content-Type': 'application/json' }}).catch(error => { console.log(error) }); 
+        await updateQuestion(this.$axios, this.question.id, body)
         this.$router.push('./')
       },
     },
