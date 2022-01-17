@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.7.0",
+    "assets": "^3.0.1",
     "core-js": "^3.19.3",
     "express": "^4.17.2",
     "nuxt": "^2.15.8",
