@@ -1,0 +1,60 @@
+*{
+    font-family: 'Montserrat';
+}
+
+body{
+    margin: 0;
+}
+
+h1{
+    margin: 0;
+    font-weight: 500;
+    font-size: 20px;
+    margin: 20px;
+}
+#choicePageContent{
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+#orBlock{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+p{
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    padding: 20px;
+}
+
+#choicesDiv{
+    position: relative;
+    z-index: 9;
+    height: 100%;
+}
+h1{
+    position: absolute;
+    z-index: 8;
+}
+img{
+    height: 100%;
+    z-index: 7;
+}
+
+.choice{
+    height: 50%;
+    display: flex;
+    color: white;
+}

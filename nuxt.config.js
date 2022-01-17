@@ -37,7 +37,7 @@ module.exports = {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['~/io'],
+  modules: ['@nuxtjs/axios','~/io'],
   env:{
     WS_URL: process.env.WS_URL || 'http://localhost:3000'
   },

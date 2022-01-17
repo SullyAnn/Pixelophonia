@@ -81,4 +81,10 @@ io.on('connection', (socket) => {
     // transmission au player de son choix (comme une sorte de confirmation après son choix)
     io.to(socket.id).emit('display-player-choice', {yourchoice:choices.playerChoice})
   })
+
+  //peut-être temporaire : permet de reload toutes les pages quand admin reload (utile pour developpement)
+  socket.on("reload-all-pages", function(isReload){
+    console.log("on est repassé sur le serveur pour reload")
+    socket.broadcast.emit("reload-this-page", isReload)
+  })
 })

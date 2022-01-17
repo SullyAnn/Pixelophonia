@@ -24,8 +24,13 @@ export default {
     title: 'Nuxt.js with Socket.io'
   },
   watch: {
+    
   },
   beforeMount () {
+    socket.on("reload-this-page", (isReload) =>{
+      //alert("reload la page player")
+      location.reload(true)
+    })
     socket.on('broadcast-question', (questiondata) => {
         this.choices = []
         this.idQuestion = questiondata.id

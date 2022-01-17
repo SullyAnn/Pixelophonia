@@ -12,6 +12,14 @@ export async function getQuestions(){
     return questions
 }
 
+export async function deleteQuestion(id){
+    const response = await fetch('/api/question/'+id, {method: 'DELETE'})
+    const transaction = await response.json()
+    console.log(transaction)
+    getQuestions()
+    .then(listQuestions => {return listQuestions})
+}
+
 export function compareChoices(choice1, choice2){
     if(choice1.nbvotes != null && choice2.nbvotes != null){
         if(choice1.nbvotes > choice2.nbvotes){
