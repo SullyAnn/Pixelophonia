@@ -1,5 +1,7 @@
 <template>
     <div>
+
+      <!-- menu = équivalent index audrey -->
       <div v-show="isMenu">
           <button  v-on:click.once="LaunchPartie()" v-on:click="isMenu = !isMenu" id="launchPartie" >Lancer la Partie !</button>
           <NuxtLink to="/admin/creation/"><button  v-on:click="isMenu = !isMenu" v-on:click.once="LaunchCreation()" id="launchCreation" >Créer votre jeu</button></NuxtLink>
