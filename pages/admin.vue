@@ -127,7 +127,8 @@ export default {
     LaunchQuestion: function(questiondata){
       console.log(questiondata)
         console.log("LaunchQuestion "+questiondata.id)
-        socket.emit("display-question", questiondata)
+        const questionStartTime = Date.now(); //temps de départ de la question
+        socket.emit("display-question", questiondata, questionStartTime)
     },
 
     switchSVG: function (idToChange) {
