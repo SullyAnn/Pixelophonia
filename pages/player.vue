@@ -8,7 +8,7 @@
       <div v-for="(data, index) in choices" :key="index" class="choice">
           <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
           <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
-          <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
+          <img :id="index" v-on:click="sendChoice(index)"  <img :src="require('assets/images/'+data.img)"> alt="image test">
       </div>
 
   </section>

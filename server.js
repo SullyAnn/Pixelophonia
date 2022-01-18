@@ -38,6 +38,7 @@ let nbChoice2 = 0
 let percentage
 let choicesResult = {}
 
+
 io.on('connection', (socket) => {
   socket.on('last-questions', function(fn){
     fn(questions.slice(-5))

@@ -1,22 +1,36 @@
 <template>
-  <div>
+  <div id="addQuestion" class="window">
+    <h2>Ajouter une question</h2>
     <form @submit.prevent="handleSubmit">
-        <input v-model="label" type="text" name="label" placeholder="Label" required></input>
-        <textarea v-model="question" placeholder="Question" name="question" required></textarea>
+        <input v-model="label" type="text" name="label" placeholder="Libellé de la question" class="labelChoice" required>
+        <textarea v-model="question" placeholder="Question" name="question" class="labelChoice" required></textarea>
 
-        <h2>Choix 1</h2>
-        <input v-model="title1" type="text" name="title1" placeholder="Titre" required></input>
-        <input v-on:change="getImg1" type="file" accept="image/*" name="img1" required></input>
+        <div class="choices2">
+        <fieldset>
+            <legend>Choix n°1</legend>
+            <input v-model="title1" type="text" name="title1" placeholder="Titre" class="labelChoice" required>
+            <input v-on:change="getImg1(), previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;">
+            <label for="image1" class="importImg" >
+              <img src="https://sdr-lab.u-pem.fr/cherrier.jpg" width="200" id="display1" />
+            </label>
+        </fieldset>
 
-        <h2>Choix 2</h2>
-        <input v-model="title2" type="text" name="title2" placeholder="Titre" required></input>
-        <input v-on:change="getImg2" type="file" accept="image/*" name="img2" required></input>
+        <fieldset>
+            <legend>Choix n°2</legend>
+            <input v-model="title2" type="text" name="title2" placeholder="Titre" class="labelChoice" required>
+            <input v-on:change="getImg2(), previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2" style="display:none;">
+            <label for="image2" class="importImg" >
+              <img src="https://sdr-lab.u-pem.fr/cherrier.jpg" width="200" id="display2" />
+            </label>
+        </fieldset> 
+        </div>
 
 
-        <button type="submit">Ajouter</button>
+
+        <input type="submit" value="ok" class="btn send">
     </form>
 
-    <NuxtLink to="./">Back to questions</NuxtLink>
+    <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
   </div>
 </template>
 
@@ -50,7 +64,25 @@ export default {
 
       this.$router.push('./') //on revient à la page de liste des questions
     },
+
+    previewFile : function(id, idFile) {
+      var preview = document.getElementById(id);
+      var file    = document.getElementById(idFile).files[0];
+      var reader  = new FileReader();
+
+      reader.onloadend = function () {
+        preview.src = reader.result;
+      }
+
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "https://sdr-lab.u-pem.fr/cherrier.jpg"; // cliquez pour ajouter 
+      }
+    },
+
     //met dans la variable img le fichier que l'utilisateur est allé chercher
+    
     getImg1() {
         console.log(event.target.files[0]);
         this.img1 = event.target.files[0];

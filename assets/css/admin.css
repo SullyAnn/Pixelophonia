@@ -69,7 +69,7 @@ li {
     margin-bottom: 10px;
 }
 
-.questions p {
+.questionsList p {
     display: inline-block;
     padding: 10px;
     background: rgba(255, 255, 255, 0.5);
@@ -144,7 +144,7 @@ li {
 
 
 .goBack {
-    cursor: pointer;
+    cursor:pointer;
 }
 .btn.back {
     background: #fff;
@@ -228,6 +228,7 @@ form > *  {
 
 fieldset .labelChoice {
     height: 25px;
+    font-family: montserrat;
 }
 
 .choices2 fieldset {
@@ -240,14 +241,7 @@ fieldset > * {
     margin-bottom: 20px;
 }
 
-.importImg {
-    display: block;
-    background:#3D4D7C;
-    color: #fff;
-    height: 25px;
-    padding:5px;
-    border-radius: 11px;
-    border:0;
+.importImg:hover {
     cursor: pointer;
 }
 
