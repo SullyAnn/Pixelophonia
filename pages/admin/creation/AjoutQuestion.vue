@@ -54,7 +54,6 @@ export default {
         title2: this.title2,
         img2: this.img2.name,
       }
-      //crée la question avec ses choix avec post(urlApi, data, configHeader)
       await addQuestion(this.$axios, body)
       const questions = await getQuestions(this.$axios)
       console.log(questions)

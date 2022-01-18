@@ -37,6 +37,7 @@ let nbChoice1 = 0
 let nbChoice2 = 0
 let percentage
 
+
 io.on('connection', (socket) => {
   socket.on('last-questions', function(fn){
     fn(questions.slice(-5))
@@ -48,16 +49,16 @@ io.on('connection', (socket) => {
     fn(displayQuestionData)
   })
   
-  socket.on('display-question', function (question) {
+  socket.on('display-question', function (question, questionStartTime) {
     // transmission des choix pour le player
     socket.broadcast.emit('broadcast-question', question.choices)
     // transmission de la question pour le screen
-    socket.broadcast.emit('display-question-on-screen', {question:question.question})
+    socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime)
   })
 
-  socket.on('submit-choice', function (choices) {
+  socket.on('submit-choice', function (choicesPlayer) {
     //conversion de l'objet en tableau : c'est plus simple pour récupérer les éléments par leur index respectif
-    const arrayChoices = Object.values(choices.choices)
+    const arrayChoices = Object.values(choicesPlayer.choices)
     totalvotes++
     nbChoice1 += arrayChoices.at(0).nbvotes;
     nbChoice2 += arrayChoices.at(1).nbvotes;
@@ -66,25 +67,36 @@ io.on('connection', (socket) => {
     console.log("------")
     console.log("nombre de votes choix 1 : " + nbChoice1)
     console.log("nombre de votes choix 2 : " + nbChoice2)
+
+    choices.push(choicesPlayer)
+
     // limite temporaire : à remplacer par la fin du timer
-    if(totalvotes >= 3){
+    /*if(totalvotes >= 3){
       arrayChoices.at(0).nbvotes = nbChoice1
       arrayChoices.at(1).nbvotes = nbChoice2
       //console.log(arrayChoices)
-      choices.choices = Object.assign(arrayChoices) // reconversion en objet
-      //console.log(choices.choices)
+      choicesPlayer.choices = Object.assign(arrayChoices) // reconversion en objet
+      console.log(choicesPlayer.choices)
 
       // transmission des choix pour l'affichage du screen
-      socket.broadcast.emit('display-final-choice', {totalVotes: totalvotes, choices : choices.choices})
-    }
+      socket.broadcast.emit('display-final-choice', {totalVotes: totalvotes, choices : choicesPlayer.choices})
+    }*/
     
     // transmission au player de son choix (comme une sorte de confirmation après son choix)
-    io.to(socket.id).emit('display-player-choice', {yourchoice:choices.playerChoice})
+    io.to(socket.id).emit('display-player-choice', {yourchoice:choicesPlayer.playerChoice})
   })
 
   //peut-être temporaire : permet de reload toutes les pages quand admin reload (utile pour developpement)
   socket.on("reload-all-pages", function(isReload){
     console.log("on est repassé sur le serveur pour reload")
     socket.broadcast.emit("reload-this-page", isReload)
+  })
+
+  //on affiche les résultats quand le timer est fini
+  socket.on("show-results-timer-done", function(){
+    console.log('ENVOYER LES RESULTATS')
+    console.log(totalvotes)
+    console.log(choices)
+    //socket.broadcast.emit('display-final-choice', {totalVotes: totalvotes, choices : choices})
   })
 })
