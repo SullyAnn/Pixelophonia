@@ -4,9 +4,8 @@ body {
     background-color: #CDC0C9;
     font-family: 'Montserrat', sans-serif;
     color: #3D4D7C;
-    /* overflow-y:hidden; */
     margin: 0;
-    padding: 0;
+    padding: 10px 20px;
 }
 button {
     font-family: 'Montserrat', sans-serif;
@@ -56,6 +55,12 @@ TO DO :
     font-weight: bold;
     transform: scale(1.1);
     cursor: pointer;
+}
+
+.linkBtnMenu {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 /* ==== Launch Game ===== */
@@ -218,6 +223,7 @@ form .choices2 {
     flex-direction: row;
     justify-content: space-evenly;
     padding:  10px 5%;
+    height:300px;
 }
 
 form > *  {
@@ -232,13 +238,27 @@ fieldset .labelChoice {
 }
 
 .choices2 fieldset {
+    display: flex;
+    flex-flow: column;
     height: 100%;
-    width: 50%;
+    width: 45%;
     margin:auto;
 }
 
 fieldset > * {
     margin-bottom: 20px;
+}
+.importImg {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    width:100%;
+    height: 100%;
+    overflow: hidden;
+}
+.importImg img {
+    width: 100%;
+    height: auto;
 }
 
 .importImg:hover {
