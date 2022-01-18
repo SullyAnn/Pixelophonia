@@ -17,6 +17,11 @@ export async function addQuestion(axios, body){
     .catch(error => { console.log(error) }); 
 }
 
+export async function addImageFile(axios, formdata){
+    await axios.$post(`api/upload.php`, JSON.stringify(formdata), {headers:{'Content-Type':'multipart/form-data'}})
+    .catch(error => { console.log(error) });
+}
+
 export async function deleteQuestion(axios, id){
     await axios.$delete(`api/question/${id}`).catch(error => { console.log(error) })
 }

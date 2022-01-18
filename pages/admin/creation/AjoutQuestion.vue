@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import {addQuestion} from "@/assets/classes/Admin.js"
+import {addQuestion, getQuestions, addImageFile} from "@/assets/classes/Admin.js"
 export default {
   name: 'QuestionForm',
   data() {
@@ -32,11 +32,19 @@ export default {
         img1: [],
         title2: '',
         img2: [],
+        file:'',
+        form: [],
     }
   },
   methods: {
       //envoie le formulaire d'ajout de question : create une question et ses deux choix
     handleSubmit: async function (e) {
+      // var form = new formData()
+      // form.append('img1', this.img1)
+      // form.append('img2', this.img2)
+      console.log(this.img1)
+      this.form.push({img1 : this.img1.name, img2: this.img2.name})
+      
       e.preventDefault()
       const body = {
         label: this.label,
@@ -48,7 +56,9 @@ export default {
       }
       //crée la question avec ses choix avec post(urlApi, data, configHeader)
       await addQuestion(this.$axios, body)
-
+      const questions = await getQuestions(this.$axios)
+      console.log(questions)
+      await addImageFile(this.$axios, this.form)
       this.$router.push('./') //on revient à la page de liste des questions
     },
     //met dans la variable img le fichier que l'utilisateur est allé chercher
