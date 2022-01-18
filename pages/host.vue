@@ -14,7 +14,7 @@
   </div>
     <div id="result">
         <div v-for="(data, index) of Object.values(parameters)">
-            <img v-if="data.winner != null" :src="data.winner" alt="image winner" class="images">
+            <img v-if="data.winner != null" :src="require('assets/images/'+data.winner)" alt="image winner" class="images">
             <h2> <i>{{data.percentage}}</i></h2>
         </div>
     </div>
@@ -23,7 +23,6 @@
               <img v-if="data.img != null" :id="index+1" :src="require('assets/images/'+data.img)" alt="image test" class="images">
               <h2 v-else>{{data.question}}</h2>
           </div>
-
     </div>
   </div>
 </template>
@@ -111,9 +110,6 @@ export default {
         this.percentage=calculatePercentage(this.winner, this.allVotes) // on calcule le pourcentage du choix gagnant
         // on récupère toutes ces infos dans un tableau pour l'affichage en html
         this.parameters.push({totalvote:this.allVotes,winner:this.winner.img, percentage:Math.floor(this.percentage)+"%" })
-    })
-    socket.on('display-result', (el) => {
-        console.log("DISPLAY-RESULT GRAND ECRAN"+el )
     })
   },
   mounted () {
