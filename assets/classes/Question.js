@@ -6,11 +6,12 @@ export function compareChoices(choice1, choice2){
         else if(choice1.nbvotes < choice2.nbvotes){
             return choice2
         }else{
+            //console.log('BONJOUR')
             let min = Math.ceil(1);
             let max = Math.floor(3);
             let random = Math.floor(Math.random() * (max - min)) + min;
-            if(random == 1) choice1
-            else if(random == 2) choice2
+            if(random == 1) return choice1
+            else if(random == 2) return choice2
         }
     }
 }
