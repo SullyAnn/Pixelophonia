@@ -60,7 +60,6 @@ export default {
         title2: this.title2,
         img2: "assets/images/"+this.img2.name,
       }
-      //crée la question avec ses choix avec post(urlApi, data, configHeader)
       await addQuestion(this.$axios, body)
 
       this.$router.push('./') //on revient à la page de liste des questions
