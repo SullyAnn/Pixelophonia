@@ -20,7 +20,7 @@
     </div>
     <div id="parent" class="displayed">
           <div v-for="(data, index) in displayQuestionData" :key="index+1" class="chatArea">
-              <img v-if="data.img != null" :id="index+1" :src="data.img" alt="image test" class="images">
+              <img v-if="data.img != null" :id="index+1" :src="require('assets/images/'+data.img)" alt="image test" class="images">
               <h2 v-else>{{data.question}}</h2>
           </div>
 

@@ -56,9 +56,9 @@ export default {
         label: this.label,
         question: this.question,
         title1: this.title1,
-        img1: "assets/images/"+this.img1.name,
+        img1: this.img1.name,
         title2: this.title2,
-        img2: "assets/images/"+this.img2.name,
+        img2: this.img2.name,
       }
       await addQuestion(this.$axios, body)
 
