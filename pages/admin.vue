@@ -3,12 +3,16 @@
   <h1>Bienvenue sur l'interface administrateur</h1>
 
   <div id="menu" v-show="isMenu">
+      <NuxtLink to="/admin" class="linkBtnMenu">
       <button v-on:click.once="LaunchPartie()" v-on:click="isMenu = !isMenu; isLaunched = !isLaunched" id="launchPartie" class ="btnMenu">
-        <NuxtLink to="/admin" class="linkBtnMenu">Lancer la partie</NuxtLink>
+        Lancer la partie
       </button>
+      </NuxtLink>
+      <NuxtLink to="/admin/creation/" class="linkBtnMenu">
       <button class ="btnMenu" v-on:click="isMenu = !isMenu" v-on:click.once="LaunchCreation()" id="launchCreation" >
-        <NuxtLink to="/admin/creation/" class="linkBtnMenu">Créer votre jeu</NuxtLink>
+        Créer votre jeu
       </button>
+      </NuxtLink>
   </div>
 
   <div id="listQuestions" v-show="isLaunched" class="questionsList">
@@ -70,7 +74,7 @@ export default {
     )
   },
   data () {
-      return {newQuestion:null,
+    return {newQuestion:null,
               newChoice:[], 
               isMenu : true ,
               isLaunched:false,
@@ -89,6 +93,7 @@ export default {
   mounted () {
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
       console.info( "This page is reloaded" );
+      this.isMenu = true;
       this.isReload = true;
       socket.emit("reload-all-pages", this.isReload)
     } else {
