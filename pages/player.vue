@@ -1,20 +1,22 @@
 <template>
-  <section id = "choicePageContent">
-
-        <div id ="orBlock">
-            <p >OU</p>
+  <section>
+    <div v-show="isQuestionDisplayed==true" id = "choicePageContent">
+        <div v-if="!displayResult">
+          <div id ="orBlock">
+              <p >OU</p>
+          </div> 
+          
+          <div v-for="(data, index) in choices" :key="index" class="choice">
+              <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
+              <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
+              <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
+          </div>
         </div>
+
         <div v-else>
           <img :src="require('assets/images/'+this.parameters[0].winner)" alt="image test">
         </div>
-  </div>
- 
-        
-        <div v-for="(data, index) in choices" :key="index" class="choice">
-            <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
-            <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
-            <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
-        </div>
+
     </div>
 
     <div v-show="isQuestionDisplayed==false" id="HomePageContent">
