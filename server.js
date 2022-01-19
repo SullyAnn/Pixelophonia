@@ -54,6 +54,12 @@ io.on('connection', (socket) => {
     // transmission de la question pour le screen
     socket.broadcast.emit('display-question-on-screen', {question:question.question})
   })
+    //TEST DISPLAY MENU ON LAUNCH PARTY 
+    socket.on('display-menu', function (displayStatus) {
+
+    socket.broadcast.emit('broadcast-menu',displayStatus)
+    socket.broadcast.emit('display-menu-on-screen',displayStatus)
+  })
 
   socket.on('submit-choice', function (choices) {
     //conversion de l'objet en tableau : c'est plus simple pour récupérer les éléments par leur index respectif

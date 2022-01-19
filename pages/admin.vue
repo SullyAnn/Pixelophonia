@@ -105,6 +105,9 @@ export default {
     LaunchPartie: function(){
       this.questions = []
         console.log("nous sommes dans lauchPArtiiie")
+        //TEST DISPLAY MENU ON LAUNCH PARTY 
+        socket.emit("display-menu", 1)
+
         // récupère les questions dans la base de données
         getQuestions(this.$axios)
         .then(listQuestions => {

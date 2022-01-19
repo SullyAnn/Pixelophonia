@@ -1,22 +1,42 @@
 <template>
-  <section id = "choicePageContent">
-
+  <section>
+    <div v-show="isQuestionDisplayed==true" id = "choicePageContent" >
         <div id ="orBlock">
-            <p >OU</p>
+          <p >OU</p>
         </div>
-       
-      <div v-for="(data, index) in choices" :key="index" class="choice">
-          <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
-          <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
-          <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
-      </div>
+        
+        <div v-for="(data, index) in choices" :key="index" class="choice">
+            <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
+            <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
+            <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
+        </div>
+    </div>
+
+    <div v-show="isQuestionDisplayed==false" id="HomePageContent">
+      <div id="logoLong">
+            <img id="imageLogoLong" src="@/assets/images/logoLong.png">
+        </div>
+
+        <div id="homePageContent">
+            <p v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia, 
+                <br>L'ochestre ne propose aucun jeu pour le moment.
+            </p>
+            <p v-else-if ="affichage==1"> Bienvenue sur l'application Pixélophonia, 
+            <br> Attendez les instructions du chef d'ochestre pour pouvoir voter </p>
+            <p v-else-if ="affichage==2"> Merci pour votre participation! </p>   
+        </div>
+    </div>
 
   </section>
 </template>
 
 <script>
+import socket from '~/plugins/socket.io.js';
 import "../assets/css/playerChoice.css";
-import socket from '~/plugins/socket.io.js'
+import "../assets/css/playerHomePages.css";
+
+
+
 export default {
   asyncData () {
     return new Promise(resolve =>{
@@ -25,7 +45,9 @@ export default {
   },
   data () {
      return { idQuestion : null,
-       IsChoice1Disabled: true
+       IsChoice1Disabled: true,
+       isQuestionDisplayed : false,
+       affichage : 0
     }
   },
   head: {
@@ -35,9 +57,18 @@ export default {
     
   },
   beforeMount () {
+
     socket.on("reload-this-page", (isReload) =>{
       //alert("reload la page player")
       location.reload(true)
+    })
+    socket.on("broadcast-menu", (displayStatus)=> {
+      const choix = document.getElementById("choicePageContent")
+      const homePage = document.getElementById("homePageContent")
+      //choix.style.display="none" 
+      console.log("test")
+      this.affichage = displayStatus
+      this.isQuestionDisplayed = false
     })
     socket.on('broadcast-question', (questiondata) => {
         this.choices = []
@@ -45,6 +76,7 @@ export default {
         for (const [key, value] of Object.entries(questiondata)) {
           this.choices.push(value)
         }
+        this.isQuestionDisplayed = true
     })
     socket.on('display-player-choice', (choice) => {
         console.log("maintenant on est dans le display-player-choice du client " + choice.yourchoice )
@@ -61,6 +93,7 @@ export default {
         //console.log("IsChoice1Disabled = " + this.IsChoice1Disabled)
         
     })
+  
   },
   mounted () {
   },
@@ -77,7 +110,7 @@ export default {
 
       // transmission des choix possibles et de l'id du choix fait par le player
       socket.emit('submit-choice', {choices:this.choices, playerChoice:idChoice})
-    }
+    },
   }
 }
 </script>

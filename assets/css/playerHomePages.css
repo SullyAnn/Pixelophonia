@@ -24,6 +24,9 @@ p{
     text-align: center;
 
 }
+#layoutContainer{
+    height: 100vh;
+}
 
 @media screen and (max-width: 768px) {
     #homePageContent{
@@ -32,6 +35,15 @@ p{
         flex-direction: column;
         align-items: center;
         margin-inline: 20px;
-        justify-content: center;        
+        justify-content: center;  
+        height: 100vh;      
     }
+    #logoLong{
+            height: auto;
+            display: flex;
+            justify-content: center;
+        }
+        #imageLogoLong{
+            width: 100px;
+        }
 }
