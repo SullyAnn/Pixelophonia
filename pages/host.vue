@@ -95,11 +95,12 @@ export default {
           this.displayQuestionData.push(value)
           //console.log(value)
         }
-    })
+    }),
     socket.on('display-final-choice', (choice) => {
+      console.log("maintenant on est dans le 'display-final-choice du grand écran" )
        this.parameters = []
       // la variable choice est un objet contenant un objet "totalVotes" et un autres "choices" (celui ci contient toutes les instances de choices existantes pour cette question)
-        console.log("maintenant on est dans le 'display-final-choice du grand écran" )
+        
         //console.log(JSON.stringify(choice.totalVotes))
         document.getElementById("parent").classList.remove('displayed') // temporaire
         this.finalChoice = choice.choices

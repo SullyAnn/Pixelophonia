@@ -24,8 +24,6 @@
 
 <script>
 import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.js"
-import XHRUpload from '@uppy/xhr-upload'
-import Uppy from '@uppy/core'
   export default {
     async asyncData({ params, $axios }) { //va chercher les données de la question et les garde dans les datas (dans question[]) avant de render la page (du côté du serveur)
       //const question = await $axios.$get(`api/question/${params.question}`)
@@ -42,7 +40,13 @@ import Uppy from '@uppy/core'
       handleSubmit: async function (e) {
         e.preventDefault()
         const form = new FormData()
-        form.append('img1', this.question.choices[0].img)
+        console.log(this.img1)
+        console.log(this.img1.name)
+        form.append('img1', this.img1)
+        form.append('img2', this.img2)
+        form.append('idQuestion', this.question.id)
+        form.append('idChoice1',this.question.choices[0].id)
+        form.append('idChoice2',this.question.choices[1].id)
         const body = {
           label: this.question.label,
           question: this.question.question,
@@ -55,33 +59,23 @@ import Uppy from '@uppy/core'
         }
         //this.form.push({img1 : this.img1.name}, {img2: this.img2.name})
         console.log(form)
-        await updateQuestion(this.$axios, this.question.id, body)
-        
-        const uppy = new Uppy({ debug: true, autoProceed: true })
-        uppy.use(XHRUpload, {
-          endpoint: 'localhost:3000/api/upload.php',
-          fieldName: 'img1',
+        await updateQuestion(this.$axios, this.question.id, body)        
+        await this.$axios({
+          method:'post',
+          url:'http://127.0.0.1:3333/upload',
+          data: form,
+          config: {headers : {'content-type':'multipart/form-data'}}
         })
-        
-        // And display uploaded files
-        uppy.on('upload-success', (file, response) => {
-          console.log(file)
-          const url = response.uploadURL
-          const fileName = file.name
-          console.log("successful upload of the filename" + fileName)
-        })
-        
-        //await addImageFile(this.$axios, this.form)
         this.$router.push('./')
       },
       getImg1() {
         console.log(event.target.files[0]);
         this.img1 = event.target.files[0];
-    },
-    getImg2() {
-        console.log(event.target.files[0].name);
-        this.img2 = event.target.files[0];
-    },  
+      },
+      getImg2() {
+          console.log(event.target.files[0].name);
+          this.img2 = event.target.files[0];
+      },  
     },
 }
 </script>

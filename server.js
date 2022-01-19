@@ -5,7 +5,9 @@ const http = require('http')
 const app = require('express')()
 const server = http.createServer(app)
 const io = require('socket.io')(server)
+const cors = require('cors')
 
+app.use(cors())
 const { Nuxt, Builder } = require('nuxt')
 // We instantiate Nuxt with the options
 const config = require('./nuxt.config.js')
@@ -97,6 +99,6 @@ io.on('connection', (socket) => {
     console.log('ENVOYER LES RESULTATS')
     console.log(totalvotes)
     console.log(choices)
-    //socket.broadcast.emit('display-final-choice', {totalVotes: totalvotes, choices : choices})
+    socket.emit('display-final-choice', {totalVotes: totalvotes, choices : choices})
   })
 })
