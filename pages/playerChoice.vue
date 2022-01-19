@@ -10,8 +10,8 @@
                 <h1 v-if="index == 0" style="right:0; top:0;" >{{choice.label}}</h1>
                 <h1 v-else style="left:0; bottom:0;" >{{choice.label}}</h1>
                 <!--doit correspondre au lien de l'image du choix n°1 de la question-->
-                <a :id="index" v-if="index==0" @click="blur(choice,index)" v-on:click="sendChoice(index)" alt="image test"> <img :src="require('~~/assets/images/'+data.img)"></a>
-                <a :id="index" v-else @click="blur(choice,index)"  v-on:click="sendChoice(index)" alt="image test" > <img :src="require('~~/assets/images/'+data.img)"></a>-->
+                <a :id="index" v-if="index==0" @click="blur(choice,index)" v-on:click="sendChoice(index)" alt="image test"> <img :src="require('assets/images/'+data.img)"></a>
+                <a :id="index" v-else @click="blur(choice,index)"  v-on:click="sendChoice(index)" alt="image test" > <img :src="require('assets/images/'+data.img)"></a>-->
             </div>   
         </div>
         </client-only>

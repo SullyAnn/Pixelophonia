@@ -3,18 +3,24 @@
   <h1>Bienvenue sur l'interface administrateur</h1>
 
   <div id="menu" v-show="isMenu">
-      <button v-on:click.once="LaunchPartie()" v-on:click="isMenu = !isMenu" id="launchPartie" class ="btnMenu">
+      <NuxtLink to="/admin" class="linkBtnMenu">
+      <button v-on:click.once="LaunchPartie()" v-on:click="isMenu = !isMenu; isLaunched = !isLaunched" id="launchPartie" class ="btnMenu">
         Lancer la partie
       </button>
-      <button class ="btnMenu" v-on:click="isMenu = !isMenu" v-on:click.once="LaunchCreation()" id="launchCreation" ><NuxtLink to="/admin/creation/">Créer votre jeu</NuxtLink></button>
+      </NuxtLink>
+      <NuxtLink to="/admin/creation/" class="linkBtnMenu">
+      <button class ="btnMenu" v-on:click="isMenu = !isMenu" v-on:click.once="LaunchCreation()" id="launchCreation" >
+        Créer votre jeu
+      </button>
+      </NuxtLink>
   </div>
 
-  <div id="listQuestions" v-show="!isMenu" class="questionsList">
+  <div id="listQuestions" v-show="isLaunched" class="questionsList">
       <h2>Liste des questions</h2>
       <ul ref="questions" class="questions">
           <li v-for="(question, index) in questions" :key="index" class="question">
               <p>{{ question.label }}</p>
-              <button :id="index+1" @click="switchClass(index+1)" v-on:click="LaunchQuestion(question)" class= "btn start">
+              <button :id="index+1" @click="switchClass(index+1)" v-on:click="toggleQuestion(question)" class= "btn start">
                 <svg style="display:block;"
                     class="svg-icon" 
                     viewBox="0 0 1025 1024" 
@@ -33,7 +39,7 @@
           </li>
       </ul>
 
-    <div class="goBack" v-on:click="isMenu = !isMenu">
+    <div class="goBack" v-on:click="isMenu = !isMenu; isLaunched = !isLaunched">
         <button class="btn back">
         <svg class="svg-icon" 
             viewBox="0 0 1024 1024" 
@@ -68,25 +74,29 @@ export default {
     )
   },
   data () {
-      return {newQuestion:null,
+    return {newQuestion:null,
               newChoice:[], 
               isMenu : true ,
-              isReload: false}
+              isLaunched:false,
+              isReload: false,
+              questionIsPlaying: false,
+              }
   },
   created(){
     this.newQuestion = new Question(null,null,null,null)
   },
   head: {
-    title: 'Nuxt.js with Socket.io'
+    title: 'Admin'
   },
   watch: {
-  },
+    },
   beforeMount () {
-  },
+    },
   mounted () {
+    
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+			this.reload = true;
       console.info( "This page is reloaded" );
-      this.isReload = true;
       socket.emit("reload-all-pages", this.isReload)
     } else {
       console.info( "This page is not reloaded");
@@ -126,11 +136,21 @@ export default {
                 //console.log(this.questions)
             })
         })
+
+        //socket.emit('start-partie')
     },
-    LaunchQuestion: function(questiondata){
-      console.log(questiondata)
+    toggleQuestion: function(questiondata){
+      this.questionIsPlaying = !this.questionIsPlaying
+
+      if(this.questionIsPlaying){//on lance une question
+        console.log(questiondata)
         console.log("LaunchQuestion "+questiondata.id)
-        socket.emit("display-question", questiondata)
+        const questionStartTime = Date.now(); //temps de départ de la question
+        socket.emit("display-question", questiondata, questionStartTime)
+      }
+      else{//sinon c'est qu'on est en train de l'arrêter
+        socket.emit("stop-question")
+      }
     },
 
     switchSVG: function (idToChange) {
@@ -176,6 +196,10 @@ export default {
       this.switchSVG(idToChange)
       this.switchColor(idToChange)
     },
+    stopPartie: function(){
+        this.isMenu = !this.isMenu
+        socket.emit('stop-partie')
+    }
   }
 }
 </script>

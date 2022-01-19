@@ -5,4 +5,3 @@
     <Footer />    <!-- A définir -->
   </div>
 </template>
-
