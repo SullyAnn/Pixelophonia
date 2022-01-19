@@ -1,24 +1,39 @@
 <template>
-  <div>
-    <h1>{{ question.label }}</h1>
+  <div class="window">
+    <h2>Modifier : {{ question.label }}</h2>
 
-    <form action="localhost:3000/api/upload.php" class="form" @submit.prevent="handleSubmit" method="post">
-        <input v-model="question.label" type="text" name="label" required></input>
-        <textarea v-model="question.question" placeholder="Question" required></textarea>
+    <form @submit.prevent="handleSubmit">
+        <input v-model="question.label" type="text" name="label"  class="labelChoice" required>
+        <textarea v-model="question.question" placeholder="Question" class="labelChoice" required></textarea>
 
-        <h2>Choix 1</h2>
-        <input v-model="question.choices[0].title" type="text" name="title1" placeholder="Titre" required></input>
-        <input v-on:change="getImg1" type="file" accept="image/*" name="img1"  required></input>
+        <div class="choices2">
+        <fieldset>
+            <legend>Choix n°1</legend>
+            <input v-model="question.choices[0].title" type="text" name="title1" placeholder="Titre" class="labelChoice" required> 
 
-        <h2>Choix 2</h2>
-        <input v-model="question.choices[1].title" type="text" name="title2" placeholder="Titre" required></input>
-       <input v-on:change="getImg2" type="file" accept="image/*" name="img2" required></input>
+            <input v-on:change="previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;">
+            <label for="image1" class="importImg" >
+              <img :src="require(`assets/images/${question.choices[0].img}`)" id="display1" />
+            </label>
+        </fieldset>
 
-        <button type="submit">Modifier</button>
+        <fieldset>
+            <legend>Choix n°2</legend>
+            <input v-model="question.choices[1].title" type="text" name="title2" placeholder="Titre" class="labelChoice" required> 
+
+            <input v-on:change="previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2" style="display:none;">
+            <label for="image2" class="importImg" >
+              <img :src="require(`assets/images/${question.choices[1].img}`)"  id="display2" />
+            </label>
+        </fieldset>
+        </div>
+
+
+        <input type="submit" value="ok" class="btn send">
+
     </form>
 
-
-    <NuxtLink to="./">Back to questions</NuxtLink>
+    <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
   </div>
 </template>
 
@@ -68,14 +83,29 @@ import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.
         })
         this.$router.push('./')
       },
+      previewFile : function(id, idFile) {
+        var preview = document.getElementById(id);
+        var file    = document.getElementById(idFile).files[0];
+        var reader  = new FileReader();
+
+        reader.onloadend = function () {
+          preview.src = reader.result;
+        }
+
+        if (file) {
+          reader.readAsDataURL(file);
+        } else {
+          preview.src = "https://sdr-lab.u-pem.fr/cherrier.jpg"; // cliquez pour ajouter 
+        }
+      },
+      // Factoriser ces fonctions pour qu'il n'y en ait plus qu'une 
       getImg1() {
-        console.log(event.target.files[0]);
-        this.img1 = event.target.files[0];
+          this.img1 = event.target.files[0];
       },
       getImg2() {
-          console.log(event.target.files[0].name);
           this.img2 = event.target.files[0];
-      },  
+      },      
+
     },
 }
 </script>

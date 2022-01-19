@@ -1,14 +1,13 @@
 <template>
   <div>
-    index dans dossier pages
+    <ul><li><NuxtLink to="./admin"> Page admin </NuxtLink></li>
+    <li><NuxtLink to="./host"> Page host </NuxtLink></li>
+    <li><NuxtLink to="./player"> Page player </NuxtLink></li></ul>
   </div>
 </template>
 
 <script>
-/*import Admin from "@/assets/classes/admin.js";
-const administrateur = new Admin('1234', 'test@mailtest.com')
-administrateur.getQuestions();*/
-//administrateur.addAndRefreshQuestion();
+import "@/assets/css/admin.css";
 
 export default {
   name: 'IndexPage',

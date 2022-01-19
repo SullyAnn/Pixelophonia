@@ -14,16 +14,15 @@
   </div>
     <div id="result">
         <div v-for="(data, index) of Object.values(parameters)">
-            <img v-if="data.winner != null" :src="data.winner" alt="image winner" class="images">
+            <img v-if="data.winner != null" :src="require('assets/images/'+data.winner)" alt="image winner" class="images">
             <h2> <i>{{data.percentage}}</i></h2>
         </div>
     </div>
     <div id="parent" class="displayed">
           <div v-for="(data, index) in displayQuestionData" :key="index+1" class="chatArea">
-              <img v-if="data.img != null" :id="index+1" :src="data.img" alt="image test" class="images">
+              <img v-if="data.img != null" :id="index+1" :src="require('assets/images/'+data.img)" alt="image test" class="images">
               <h2 v-else>{{data.question}}</h2>
           </div>
-
     </div>
   </div>
 </template>
@@ -108,6 +107,7 @@ export default {
         const arrayChoices = Object.values(this.finalChoice) //conversion de l'objet en tableau
         this.allVotes = choice.totalVotes // on récupère le nombre total de votes
         this.winner = compareChoices(arrayChoices.at(0), arrayChoices.at(1)) // on cherche le choix qui a eu le plus de votes
+        console.log('WINNER : '+this.winner)
         this.percentage=calculatePercentage(this.winner, this.allVotes) // on calcule le pourcentage du choix gagnant
         // on récupère toutes ces infos dans un tableau pour l'affichage en html
         this.parameters.push({totalvote:this.allVotes,winner:this.winner.img, percentage:Math.floor(this.percentage)+"%" })

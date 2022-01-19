@@ -3,13 +3,19 @@
   <h1>Bienvenue sur l'interface administrateur</h1>
 
   <div id="menu" v-show="isMenu">
-      <button v-on:click.once="LaunchPartie()" v-on:click="isMenu = !isMenu" id="launchPartie" class ="btnMenu">
+      <NuxtLink to="/admin" class="linkBtnMenu">
+      <button v-on:click.once="LaunchPartie()" v-on:click="isMenu = !isMenu; isLaunched = !isLaunched" id="launchPartie" class ="btnMenu">
         Lancer la partie
       </button>
-      <button class ="btnMenu" v-on:click="isMenu = !isMenu" v-on:click.once="LaunchCreation()" id="launchCreation" ><NuxtLink to="/admin/creation/">Créer votre jeu</NuxtLink></button>
+      </NuxtLink>
+      <NuxtLink to="/admin/creation/" class="linkBtnMenu">
+      <button class ="btnMenu" v-on:click="isMenu = !isMenu" v-on:click.once="LaunchCreation()" id="launchCreation" >
+        Créer votre jeu
+      </button>
+      </NuxtLink>
   </div>
 
-  <div id="listQuestions" v-show="!isMenu" class="questionsList">
+  <div id="listQuestions" v-show="isLaunched" class="questionsList">
       <h2>Liste des questions</h2>
       <ul ref="questions" class="questions">
           <li v-for="(question, index) in questions" :key="index" class="question">
@@ -33,7 +39,7 @@
           </li>
       </ul>
 
-    <div class="goBack" v-on:click="isMenu = !isMenu">
+    <div class="goBack" v-on:click="isMenu = !isMenu; isLaunched = !isLaunched">
         <button class="btn back">
         <svg class="svg-icon" 
             viewBox="0 0 1024 1024" 
@@ -68,24 +74,26 @@ export default {
     )
   },
   data () {
-      return {newQuestion:null,
+    return {newQuestion:null,
               newChoice:[], 
               isMenu : true ,
+              isLaunched:false,
               isReload: false}
   },
   created(){
     this.newQuestion = new Question(null,null,null,null)
   },
   head: {
-    title: 'Nuxt.js with Socket.io'
+    title: 'Admin'
   },
   watch: {
-  },
+    },
   beforeMount () {
-  },
+    },
   mounted () {
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
       console.info( "This page is reloaded" );
+      this.isMenu = true;
       this.isReload = true;
       socket.emit("reload-all-pages", this.isReload)
     } else {

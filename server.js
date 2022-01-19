@@ -38,6 +38,7 @@ let totalvotes=0
 let nbChoice1 = 0
 let nbChoice2 = 0
 let percentage
+let choicesResult = {}
 
 
 io.on('connection', (socket) => {
@@ -70,19 +71,14 @@ io.on('connection', (socket) => {
     console.log("nombre de votes choix 1 : " + nbChoice1)
     console.log("nombre de votes choix 2 : " + nbChoice2)
 
-    choices.push(choicesPlayer)
-
-    // limite temporaire : à remplacer par la fin du timer
-    /*if(totalvotes >= 3){
       arrayChoices.at(0).nbvotes = nbChoice1
       arrayChoices.at(1).nbvotes = nbChoice2
-      //console.log(arrayChoices)
-      choicesPlayer.choices = Object.assign(arrayChoices) // reconversion en objet
-      console.log(choicesPlayer.choices)
 
-      // transmission des choix pour l'affichage du screen
-      socket.broadcast.emit('display-final-choice', {totalVotes: totalvotes, choices : choicesPlayer.choices})
-    }*/
+      choicesPlayer.choices = Object.assign(arrayChoices) // reconversion en objet
+      //console.log(choicesPlayer.choices)
+
+
+    choicesResult = Object.assign(arrayChoices)
     
     // transmission au player de son choix (comme une sorte de confirmation après son choix)
     io.to(socket.id).emit('display-player-choice', {yourchoice:choicesPlayer.playerChoice})
@@ -98,7 +94,10 @@ io.on('connection', (socket) => {
   socket.on("show-results-timer-done", function(){
     console.log('ENVOYER LES RESULTATS')
     console.log(totalvotes)
-    console.log(choices)
-    socket.emit('display-final-choice', {totalVotes: totalvotes, choices : choices})
+    console.log(choicesResult)
+    socket.emit('display-final-choice', {totalVotes: totalvotes, choices : choicesResult})
+    totalvotes=0 //remise à zero des votes
+    nbChoice1=0
+    nbChoice2=0
   })
 })
