@@ -19,12 +19,12 @@
 
     </div>
 
-    <div v-show="isQuestionDisplayed==false" id="HomePageContent">
+    <div v-show="isQuestionDisplayed==false" id="homePageContent">
       <div id="logoLong">
             <img id="imageLogoLong" src="@/assets/images/logoLong.png">
         </div>
 
-        <div id="homePageContent">
+        <div class="">
             <p v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia, 
                 <br>L'ochestre ne propose aucun jeu pour le moment.
             </p>
@@ -75,7 +75,6 @@ export default {
     })
     socket.on("broadcast-menu", (displayStatus)=> {
       const choix = document.getElementById("choicePageContent")
-      const homePage = document.getElementById("homePageContent")
       //choix.style.display="none" 
       console.log("test")
       this.affichage = displayStatus
@@ -117,9 +116,14 @@ export default {
     }),
     socket.on('stop-partie', () => {
       this.resetAllData()
+      this.isQuestionDisplayed = false
+      this.affichage = 0
     }),
-    socket.on('stop-question', () => {
+    socket.on('stop-question', (displayStatus) => {
       this.resetAllData()
+      this.isQuestionDisplayed = false
+      this.affichage = displayStatus
+
     })
   
   },
