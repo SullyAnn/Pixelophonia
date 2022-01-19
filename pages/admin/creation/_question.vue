@@ -13,7 +13,7 @@
 
             <input v-on:change="previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;">
             <label for="image1" class="importImg" >
-              <img :src="require(`assets/images/${question.choices[0].img}`)" id="display1" />
+              <img :src="require(`assets/images/Question_${question.id}/${question.choices[0].img}`)" id="display1" />
             </label>
         </fieldset>
 
@@ -23,7 +23,7 @@
 
             <input v-on:change="previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2" style="display:none;">
             <label for="image2" class="importImg" >
-              <img :src="require(`assets/images/${question.choices[1].img}`)"  id="display2" />
+              <img :src="require(`assets/images/Question_${question.id}/${question.choices[1].img}`)"  id="display2" />
             </label>
         </fieldset>
         </div>
@@ -51,11 +51,21 @@ import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.
       }
     },
     methods: {
+      getImg1: function() {
+          this.img1 = event.target.files[0];
+      },
+      getImg2: function() {
+          this.img2 = event.target.files[0];
+      },
       //envoie le formulaire : update les données de la question et de ses choix
       handleSubmit: async function (e) {
         e.preventDefault()
+        this.img1 = document.getElementById("image1").files[0];
+        this.img2 = document.getElementById("image2").files[0];
+        if(this.img2 == null)this.img2 = {name:this.question.choices[1].img}
+        if(this.img1 == null)this.img1 = {name:this.question.choices[0].img}
         const form = new FormData()
-        console.log(this.img1)
+        console.log(this.img2)
         console.log(this.img1.name)
         form.append('img1', this.img1)
         form.append('img2', this.img2)
@@ -66,21 +76,23 @@ import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.
           label: this.question.label,
           question: this.question.question,
           title1: this.question.choices[0].title,
-          img1: this.question.choices[0].img,
+          img1: this.img1.name,
           id1: this.question.choices[0].id,
           title2: this.question.choices[1].title,
-          img2: this.question.choices[1].img,
+          img2: this.img2.name,
           id2: this.question.choices[1].id,
         }
         //this.form.push({img1 : this.img1.name}, {img2: this.img2.name})
-        console.log(form)
-        await updateQuestion(this.$axios, this.question.id, body)        
-        await this.$axios({
-          method:'post',
-          url:'http://127.0.0.1:3333/upload',
-          data: form,
-          config: {headers : {'content-type':'multipart/form-data'}}
-        })
+        
+        console.log(body)
+        await updateQuestion(this.$axios, this.question.id, body) 
+        await updateUploadImage(this.$axios, form)       
+        // await this.$axios({
+        //   method:'post',
+        //   url:'http://127.0.0.1:3333/upload',
+        //   data: form,
+        //   config: {headers : {'content-type':'multipart/form-data'}}
+        // })
         this.$router.push('./')
       },
       previewFile : function(id, idFile) {
@@ -97,14 +109,9 @@ import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.
         } else {
           preview.src = "https://sdr-lab.u-pem.fr/cherrier.jpg"; // cliquez pour ajouter 
         }
+        
       },
-      // Factoriser ces fonctions pour qu'il n'y en ait plus qu'une 
-      getImg1() {
-          this.img1 = event.target.files[0];
-      },
-      getImg2() {
-          this.img2 = event.target.files[0];
-      },      
+      // Factoriser ces fonctions pour qu'il n'y en ait plus qu'une   
 
     },
 }

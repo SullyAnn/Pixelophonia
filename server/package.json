@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "adonis": "nodemon -w server.js",
+    "adonis": "nodemon -w node server.js",
     "test": "node ace test"
   },
   "keywords": [

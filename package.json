@@ -8,7 +8,7 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "testIO":"nodemon -w server.js -w nuxt.config.js server.js",
-    "adonis": "node server.js",
+    "adonis": "nodemon -w node server.js",
     "testUpload": "(cd server &&  npm run adonis) & npm run testIO"
   },
   "dependencies": {
