@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Création concert</h1>
+    <h1>Création des questions</h1>
     
       <ul class="questionsList">
         <li v-for="(question, index) in questions" :key="index">
@@ -43,7 +43,7 @@
           </button>
       </NuxtLink>
 
-      <NuxtLink to="../../admin">
+      <div @click="back()">
     <div class="goBack">
         <button class="btn back">
         <svg class="svg-icon" 
@@ -56,7 +56,7 @@
         </button>
         Retour
     </div>
-    </NuxtLink>
+    </div>
 
 
   </div>
@@ -68,6 +68,7 @@ import {getQuestions, deleteQuestion} from "@/assets/classes/Admin.js"
   export default {
     name: 'QuestionList',
     created(){
+      
       console.log("heeeey")
     },
     async asyncData({$axios}) {
@@ -87,6 +88,9 @@ import {getQuestions, deleteQuestion} from "@/assets/classes/Admin.js"
         deleteAQuestion: async function (idQuestion){
           await deleteQuestion(this.$axios, idQuestion)
           this.questions = await getQuestions(this.$axios) //met à jour l'affichage de la liste de question
+        },
+        back: function() {
+          this.$router.go("@/admin")
         }
     },
   }

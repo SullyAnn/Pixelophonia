@@ -1,30 +1,39 @@
 <template>
 <div>
-  host
-  <!--<h2>{{currentTime}}</h2>-->
-  <div v-if="timeDepart!=''">
-    <div class="timerWrapper">
-      <div id="timeProgress"></div>
-    </div>
+  <div v-if="waitingMode">
+    En attente de l'admin
   </div>
   <div v-else>
-    <div class="spinnerWrapper">
-      <div class="spinner"></div>
+    <div v-if="!displayResult">
+      <div v-if="timeDepart!=''">
+      <div class="timerWrapper">
+        <div id="timeProgress"></div>
+      </div>
     </div>
-  </div>
-    <div id="result">
-        <div v-for="(data, index) of Object.values(parameters)">
-            <img v-if="data.winner != null" :src="require('assets/images/'+data.winner)" alt="image winner" class="images">
-            <h2> <i>{{data.percentage}}</i></h2>
-        </div>
+    <div v-else>
+      <div class="spinnerWrapper">
+        <div class="spinner"></div>
+      </div>
     </div>
-    <div id="parent" class="displayed">
-          <div v-for="(data, index) in displayQuestionData" :key="index+1" class="chatArea">
-              <img v-if="data.img != null" :id="index+1" :src="require('assets/images/'+data.img)" alt="image test" class="images">
-              <h2 v-else>{{data.question}}</h2>
+      <div id="parent" class="displayed">
+            <div v-for="(data, index) in displayQuestionData" :key="index+1" class="chatArea">
+                <img v-if="data.img != null" :id="index+1" :src="require('assets/images/'+data.img)" alt="image test" class="images">
+                <h2 v-else>{{data.question}}</h2>
+            </div>
+      </div>
+    </div>
+    <div v-else>
+      <div id="result">
+          <div v-for="(data, index) of Object.values(parameters)">
+              <img v-if="data.winner != null" :src="require('assets/images/'+data.winner)" alt="image winner" class="images">
+              <h2> <i>{{data.percentage}}</i></h2>
           </div>
+      </div>
     </div>
   </div>
+  
+
+</div>
 </template>
 
 <script>
@@ -47,12 +56,14 @@ export default {
       currentTime: '',
       totalTime: 10000, //temps donné pour répondre, en millisecondes (pour l'instant par défaut)
       timeDepart: '',
-      tempsEcoule: 0,
       timeIsDone: false,
+
+      waitingMode: true,
+      displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
     }
   },
   head: {
-    title: 'Nuxt.js with Socket.io'
+    title: 'Ecran de la salle'
   },
   watch: {
   },
@@ -63,13 +74,17 @@ export default {
     })
     // ici on récupère la question
     socket.on('display-question-on-screen', (questiondata, questionStartTime)=> {
-        console.log(questiondata)
+        if (this.waitingMode){this.waitingMode = false}
+
+        console.log('QUESTION DATA'+questiondata)
         this.displayQuestionData.push(questiondata)
 
         //======== TIMER ========//
         //console.log('START TIME' + questionStartTime)
         this.timeDepart = questionStartTime
+        //this.timeDepart = Date.now() //le temps démarre qua quand ça arrive sur host
         let myTimer = setInterval(() => {
+          if (!this.waitingMode){ //on vérifie qu'on est toujours en train de jour la question, au cas où l'admin arrete la question avant la fin
                 this.currentTime = Date.now()
                 var element = document.getElementById("timeProgress")
 
@@ -78,44 +93,58 @@ export default {
                 if(tempsEcoule<=this.totalTime){
                   element.style.width = (tempsEcoule/this.totalTime)*100 + "%";
                   if((tempsEcoule/this.totalTime)*100 >75){
-                    element.style.backgroundColor = '#CA4B4B';
+                    element.style.backgroundColor = '#CA4B4B'; //on passe en rouge
                   }
                 }
                 else {
-                  socket.emit('show-results-timer-done')
+                  if(!this.waitingMode)
+                    socket.emit('calcul-resultat')
                   clearInterval(myTimer);
+                  element.style.backgroundColor = '#98A8CC';//on remet en bleu
+                  this.timeIsDone = false
                 }
+        }
       }, 10);
     }),
     // ici on récupère les images des choix de la question 
     socket.on('broadcast-question', (questiondata) => {
+      this.resetAllData()//on reset les datas que quand on lance une nouvelle question pour pouvoir garder les résultats précédents à l'écran
       console.log(questiondata)
         for (const [key, value] of Object.entries(questiondata)) {
           this.displayQuestionData.push(value)
           //console.log(value)
         }
-    }),
-    socket.on('display-final-choice', (choice) => {
-      console.log("maintenant on est dans le 'display-final-choice du grand écran" )
+    })
+    socket.on('display-final-choice', (totalvotes, winner, percentage) => {
        this.parameters = []
-      // la variable choice est un objet contenant un objet "totalVotes" et un autres "choices" (celui ci contient toutes les instances de choices existantes pour cette question)
-        
-        //console.log(JSON.stringify(choice.totalVotes))
-        document.getElementById("parent").classList.remove('displayed') // temporaire
-        this.finalChoice = choice.choices
+       //document.getElementById("parent").classList.remove('displayed') // temporaire
+       this.displayResult = true
 
-        const arrayChoices = Object.values(this.finalChoice) //conversion de l'objet en tableau
-        this.allVotes = choice.totalVotes // on récupère le nombre total de votes
-        this.winner = compareChoices(arrayChoices.at(0), arrayChoices.at(1)) // on cherche le choix qui a eu le plus de votes
-        console.log('WINNER : '+this.winner)
-        this.percentage=calculatePercentage(this.winner, this.allVotes) // on calcule le pourcentage du choix gagnant
-        // on récupère toutes ces infos dans un tableau pour l'affichage en html
-        this.parameters.push({totalvote:this.allVotes,winner:this.winner.img, percentage:Math.floor(this.percentage)+"%" })
+        this.parameters.push({totalvote:totalvotes,winner:winner.img, percentage:Math.floor(percentage)+"%" })
+    }),
+    // quand on arrête la partie
+    socket.on('stop-partie', () => {
+      this.resetAllData()
+    }),
+    socket.on('stop-question', () => {
+      this.resetAllData()
     })
   },
   mounted () {
   },
   methods: {
+    resetAllData: function(){
+      this.waitingMode = true
+      this.displayResult= false
+
+      this.displayQuestionData = []
+      this.finalChoice = 
+      this.allVotes = 0
+      this.winner = {}
+      this.percentage = 0
+      this.parameters=[]
+      //console.log('resetdata')
+    }
   }
 }
 </script>
@@ -162,7 +191,7 @@ position : absolute;
   height: 100%;
   background-color: #98A8CC;
   border-radius: 50px;
-  transition: 0.2s ease;
+  /*transition: 0.2s ease;*/
 }
 
 .spinnerWrapper{

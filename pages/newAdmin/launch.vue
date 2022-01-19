@@ -1,26 +1,10 @@
 <template>
-<main>
-  <h1>Bienvenue sur l'interface administrateur</h1>
-
-  <div id="menu" v-show="isMenu">
-      <NuxtLink to="/admin" class="linkBtnMenu">
-      <button v-on:click.once="LaunchPartie()" v-on:click="isMenu = !isMenu; isLaunched = !isLaunched" id="launchPartie" class ="btnMenu">
-        Lancer la partie
-      </button>
-      </NuxtLink>
-      <NuxtLink to="/admin/creation/" class="linkBtnMenu">
-      <button class ="btnMenu" v-on:click="isMenu = !isMenu" v-on:click.once="LaunchCreation()" id="launchCreation" >
-        Créer votre jeu
-      </button>
-      </NuxtLink>
-  </div>
-
-  <div id="listQuestions" v-show="isLaunched" class="questionsList">
+  <div id="listQuestions" class="questionsList">
       <h2>Liste des questions</h2>
       <ul ref="questions" class="questions">
           <li v-for="(question, index) in questions" :key="index" class="question">
               <p>{{ question.label }}</p>
-              <button :id="index+1" @click="switchClass(index+1)" v-on:click="toggleQuestion(question)" class= "btn start">
+              <button :id="index+1" @click="switchClass(index+1), toggleQuestion(question)" class="btn start">
                 <svg style="display:block;"
                     class="svg-icon" 
                     viewBox="0 0 1025 1024" 
@@ -39,7 +23,7 @@
           </li>
       </ul>
 
-    <div class="goBack" v-on:click="isMenu = !isMenu; isLaunched = !isLaunched">
+    <div class="goBack" @click="stopPartie()">
         <button class="btn back">
         <svg class="svg-icon" 
             viewBox="0 0 1024 1024" 
@@ -53,12 +37,7 @@
     </div>
 
   </div>
-  <NuxtChild />
-</main>
 </template>
-
-
-
 
 
 <script>
@@ -67,89 +46,85 @@ import socket from '~/plugins/socket.io.js'
 import Choice from '@/assets/classes/Choice.js'
 import Question from '@/assets/classes/Question.js'
 import {getQuestions} from "@/assets/classes/Admin.js"
-export default {
-  asyncData () {
-    return new Promise(resolve =>
-      socket.emit('last-questions', questions => resolve({ questions }))
-    )
-  },
-  data () {
-    return {newQuestion:null,
-              newChoice:[], 
-              isMenu : true ,
-              isLaunched:false,
-              isReload: false,
-              questionIsPlaying: false,
-              }
-  },
-  created(){
-    this.newQuestion = new Question(null,null,null,null)
-  },
-  head: {
-    title: 'Admin'
-  },
-  watch: {
-    },
-  beforeMount () {
-    },
-  mounted () {
-    
-    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-			this.reload = true;
-      console.info( "This page is reloaded" );
-      socket.emit("reload-all-pages", this.isReload)
-    } else {
-      console.info( "This page is not reloaded");
-    }
-  },
-  methods: {
-    LaunchCreation: function(){
-      this.questions = []
-        console.log("nous sommes dans création")
-        // récupère les questions dans la base de données
-        // getQuestions()
-        // .then(listQuestions => {
-        //     socket.emit("list-question-creation", listQuestions)
-        // })
-    },
-    LaunchPartie: function(){
-      this.questions = []
-        console.log("nous sommes dans lauchPArtiiie")
-        // récupère les questions dans la base de données
-        getQuestions(this.$axios)
-        .then(listQuestions => {
-            listQuestions.forEach((question) => {
-              question.choices.forEach((choice) => {
-                // instanciation des objets Choice de la question
-                this.newChoice.push(new Choice(choice.id, choice.title, choice.img))
-              })
-                //console.log(question)
 
-                // instanciation de l'objet Question
+export default {
+head: {
+    title: 'Lancer le jeu'
+},
+
+asyncData () {
+    return new Promise(resolve =>
+    socket.emit('last-questions', questions => resolve({ questions }))
+    )
+},
+data () {
+    return {
+        newQuestion:null,
+        newChoice:[],
+        isReload: false,
+        questionIsPlaying: false,
+    }
+},
+created(){
+    this.newQuestion = new Question(null,null,null,null)
+},
+
+mounted () {
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) 
+    {
+        console.info( "This page is reloaded" );
+        this.reload = true,
+        socket.emit("reload-all-pages", this.isReload)
+    } 
+    else {
+        console.info( "This page is not reloaded");
+    }
+
+    this.launchPartie()
+},
+
+methods: {
+
+    // ========= BACK ========== //
+
+    // start game 
+    launchPartie: function(){
+        this.questions = []
+        // get all questions in database
+        getQuestions(this.$axios).then(listQuestions => {
+            listQuestions.forEach((question) => {
+                // instanciate Choice objects in question
+                question.choices.forEach((choice) => {
+                    this.newChoice.push(new Choice(choice.id, choice.title, choice.img))
+                })
+
+                // instanciate Question object
                 this.newQuestion = new Question(question.id, question.label, question.question, this.newChoice),
-                //console.log(this.newQuestion),
                 this.questions.push(this.newQuestion)
                 this.newChoice=[]
-                //console.log(this.questions)
             })
         })
-
-        //socket.emit('start-partie')
     },
+
+    // launch one question : à voir pour grouper avec switch class ?
     toggleQuestion: function(questiondata){
-      this.questionIsPlaying = !this.questionIsPlaying
+        this.questionIsPlaying = !this.questionIsPlaying
 
-      if(this.questionIsPlaying){//on lance une question
-        console.log(questiondata)
-        console.log("LaunchQuestion "+questiondata.id)
-        const questionStartTime = Date.now(); //temps de départ de la question
-        socket.emit("display-question", questiondata, questionStartTime)
-      }
-      else{//sinon c'est qu'on est en train de l'arrêter
-        socket.emit("stop-question")
-      }
+        if (this.questionIsPlaying) { //on lance une question
+            console.log(questiondata)
+            console.log("LaunchQuestion "+questiondata.id)
+            const questionStartTime = Date.now(); //temps de départ de la question
+            socket.emit("display-question", questiondata, questionStartTime)
+        }
+        else { //sinon c'est qu'on est en train de l'arrêter
+            socket.emit("stop-question")
+            console.log("question arrêtée")
+        }
     },
 
+    // ========= FRONT ========= //
+    
+    // switch square & triangle (start/stop buttons) 
     switchSVG: function (idToChange) {
       let toChange = document.getElementById(idToChange)
         Array.from(toChange.getElementsByTagName("svg")).forEach(
@@ -159,6 +134,8 @@ export default {
             }
         );
     },
+
+    // switch green & red (start/stop buttons)  
     switchColor: function (idToChange){
       let buttonsList = document.getElementById("listQuestions").getElementsByClassName("btn")
       let btnToChange = document.getElementById(idToChange)
@@ -189,13 +166,17 @@ export default {
         );
       }
     },
+
+    // switch start & stop buttons
     switchClass: function(idToChange) {
       this.switchSVG(idToChange)
       this.switchColor(idToChange)
     },
+    
     stopPartie: function(){
-        this.isMenu = !this.isMenu
         socket.emit('stop-partie')
+        console.log("Partie arrêtée.")
+        this.$router.push("./")
     }
   }
 }
