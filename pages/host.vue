@@ -1,13 +1,9 @@
 <template>
 <div>
-  host
-
   <div v-if="waitingMode">
-    Afficher le truc d'attente de question
+    En attente de l'admin
   </div>
   <div v-else>
-    afficher le reste
-
     <div v-if="!displayResult">
       <div v-if="timeDepart!=''">
       <div class="timerWrapper">
@@ -67,7 +63,7 @@ export default {
     }
   },
   head: {
-    title: 'Nuxt.js with Socket.io'
+    title: 'Ecran de la salle'
   },
   watch: {
   },
@@ -131,7 +127,7 @@ export default {
       this.resetAllData()
     }),
     socket.on('stop-question', () => {
-      // this.resetAllData()
+      this.resetAllData()
     })
   },
   mounted () {

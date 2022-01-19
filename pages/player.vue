@@ -1,7 +1,7 @@
 <template>
 
    <div v-if="waitingMode">
-    Afficher le truc d'attente 
+    En attente de l'admin 
   </div>
   <div v-else>
     
@@ -49,7 +49,7 @@ export default {
     }
   },
   head: {
-    title: 'Nuxt.js with Socket.io'
+    title: 'Joueur'
   },
   watch: {
     
@@ -122,7 +122,6 @@ export default {
         this.choices = []
         this.idQuestion = null
         this.IsChoice1Disabled= true
-        this.waitingMode= true
         this.displayResult= false
 
         this.finalChoice=[]
