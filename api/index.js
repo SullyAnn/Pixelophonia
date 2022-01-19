@@ -87,6 +87,12 @@ app.post('/question', async (req, res) => {
   res.status(200).json(question)
 })
 
+app.post('/upload.php/', async(req, res) =>{
+  console.log("nous sommes dans api/index.js")
+  const images = await fetch('upload.php', req.form, {method:'POST'})
+  console.log(images)
+})
+
 //get all the questions
 app.get('/questions', async (req, res) => {
   const questions = await prisma.question.findMany({

@@ -5,7 +5,9 @@ const http = require('http')
 const app = require('express')()
 const server = http.createServer(app)
 const io = require('socket.io')(server)
+const cors = require('cors')
 
+app.use(cors())
 const { Nuxt, Builder } = require('nuxt')
 // We instantiate Nuxt with the options
 const config = require('./nuxt.config.js')
