@@ -10,19 +10,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Partie {
-  id    Int     @id @default(autoincrement())
-  title String
-  question Question[] 
-}
-
 model Question {
   id        Int      @id @default(autoincrement())
   label     String
   question  String 
   choices Choice[] 
-  partie    Partie?    @relation(fields: [partieId], references: [id])
-  partieId  Int?
 }
 
 model Choice {
