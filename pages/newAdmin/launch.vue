@@ -4,7 +4,7 @@
       <ul ref="questions" class="questions">
           <li v-for="(question, index) in questions" :key="index" class="question">
               <p>{{ question.label }}</p>
-              <button :id="index+1" @click="switchClass(index+1), launchQuestion(question)" class="btn start">
+              <button :id="index+1" @click="switchClass(index+1), toggleQuestion(question)" class="btn start">
                 <svg style="display:block;"
                     class="svg-icon" 
                     viewBox="0 0 1025 1024" 
@@ -23,7 +23,7 @@
           </li>
       </ul>
 
-    <NuxtLink to="./" class="goBack">
+    <div class="goBack" @click="stopPartie()">
         <button class="btn back">
         <svg class="svg-icon" 
             viewBox="0 0 1024 1024" 
@@ -34,7 +34,7 @@
         </svg>    
         </button>
         Mettre fin au jeu
-    </NuxtLink>
+    </div>
 
   </div>
 </template>
@@ -58,8 +58,11 @@ asyncData () {
     )
 },
 data () {
-    return {newQuestion:null,
-    newChoice:[]
+    return {
+        newQuestion:null,
+        newChoice:[],
+        isReload: false,
+        questionIsPlaying: false,
     }
 },
 created(){
@@ -70,6 +73,7 @@ mounted () {
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) 
     {
         console.info( "This page is reloaded" );
+        this.reload = true,
         socket.emit("reload-all-pages", this.isReload)
     } 
     else {
@@ -103,11 +107,20 @@ methods: {
     },
 
     // launch one question : à voir pour grouper avec switch class ?
-    launchQuestion: function(questiondata){
-        const questionStartTime = Date.now(); // start time
-        socket.emit("display-question", questiondata, questionStartTime)
-    },
+    toggleQuestion: function(questiondata){
+        this.questionIsPlaying = !this.questionIsPlaying
 
+        if (this.questionIsPlaying) { //on lance une question
+            console.log(questiondata)
+            console.log("LaunchQuestion "+questiondata.id)
+            const questionStartTime = Date.now(); //temps de départ de la question
+            socket.emit("display-question", questiondata, questionStartTime)
+        }
+        else { //sinon c'est qu'on est en train de l'arrêter
+            socket.emit("stop-question")
+            console.log("question arrêtée")
+        }
+    },
 
     // ========= FRONT ========= //
     
@@ -159,9 +172,11 @@ methods: {
       this.switchSVG(idToChange)
       this.switchColor(idToChange)
     },
-    test()
-    {
-        console.log("salut salut")
+    
+    stopPartie: function(){
+        socket.emit('stop-partie')
+        console.log("Partie arrêtée.")
+        this.$router.push("./")
     }
   }
 }
