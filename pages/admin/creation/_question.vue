@@ -11,9 +11,9 @@
             <legend>Choix n°1</legend>
             <input v-model="question.choices[0].title" type="text" name="title1" placeholder="Titre" class="labelChoice" required> 
 
-            <input v-on:change="getImg1(), previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;">
+            <input v-on:change="previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;">
             <label for="image1" class="importImg" >
-              <img :src="require(`assets/images/${question.choices[0].img}`)" width="200" id="display1" />
+              <img :src="require(`assets/images/${question.choices[0].img}`)" id="display1" />
             </label>
         </fieldset>
 
@@ -21,9 +21,9 @@
             <legend>Choix n°2</legend>
             <input v-model="question.choices[1].title" type="text" name="title2" placeholder="Titre" class="labelChoice" required> 
 
-            <input v-on:change="getImg2(), previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2" style="display:none;">
+            <input v-on:change="previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2" style="display:none;">
             <label for="image2" class="importImg" >
-              <img :src="require(`assets/images/${question.choices[1].img}`)" width="200" id="display2" />
+              <img :src="require(`assets/images/${question.choices[1].img}`)"  id="display2" />
             </label>
         </fieldset>
         </div>
