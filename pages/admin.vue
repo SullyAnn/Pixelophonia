@@ -14,7 +14,7 @@
       <ul ref="questions" class="questions">
           <li v-for="(question, index) in questions" :key="index" class="question">
               <p>{{ question.label }}</p>
-              <button :id="index+1" @click="switchClass(index+1)" v-on:click="LaunchQuestion(question)" class= "btn start">
+              <button :id="index+1" @click="switchClass(index+1)" v-on:click="toggleQuestion(question)" class= "btn start">
                 <svg style="display:block;"
                     class="svg-icon" 
                     viewBox="0 0 1025 1024" 
@@ -33,7 +33,7 @@
           </li>
       </ul>
 
-    <div class="goBack" v-on:click="isMenu = !isMenu">
+    <div class="goBack" v-on:click="stopPartie()">
         <button class="btn back">
         <svg class="svg-icon" 
             viewBox="0 0 1024 1024" 
@@ -71,7 +71,9 @@ export default {
       return {newQuestion:null,
               newChoice:[], 
               isMenu : true ,
-              isReload: false}
+              isReload: false,
+              questionIsPlaying: false,
+              }
   },
   created(){
     this.newQuestion = new Question(null,null,null,null)
@@ -123,12 +125,21 @@ export default {
                 //console.log(this.questions)
             })
         })
+
+        //socket.emit('start-partie')
     },
-    LaunchQuestion: function(questiondata){
-      console.log(questiondata)
+    toggleQuestion: function(questiondata){
+      this.questionIsPlaying = !this.questionIsPlaying
+
+      if(this.questionIsPlaying){//on lance une question
+        console.log(questiondata)
         console.log("LaunchQuestion "+questiondata.id)
         const questionStartTime = Date.now(); //temps de départ de la question
         socket.emit("display-question", questiondata, questionStartTime)
+      }
+      else{//sinon c'est qu'on est en train de l'arrêter
+        socket.emit("stop-question")
+      }
     },
 
     switchSVG: function (idToChange) {
@@ -174,6 +185,10 @@ export default {
       this.switchSVG(idToChange)
       this.switchColor(idToChange)
     },
+    stopPartie: function(){
+        this.isMenu = !this.isMenu
+        socket.emit('stop-partie')
+    }
   }
 }
 </script>

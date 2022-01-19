@@ -89,13 +89,57 @@ io.on('connection', (socket) => {
   })
 
   //on affiche les résultats quand le timer est fini
-  socket.on("show-results-timer-done", function(){
+  socket.on("calcul-resultat", function(){
     console.log('ENVOYER LES RESULTATS')
     console.log(totalvotes)
     console.log(choicesResult)
-    socket.emit('display-final-choice', {totalVotes: totalvotes, choices : choicesResult})
+
+    let winner = {}
+
+    //================== TROUVE LE WINNER ==================//
+      if(choicesResult[0] != null && choicesResult[1] != null){
+          if(choicesResult[0].nbvotes > choicesResult[1].nbvotes){
+              winner = choicesResult[0]
+          }
+          else if(choicesResult[0].nbvotes < choicesResult[1].nbvotes){
+              winner = choicesResult[1]
+          }else{
+              let min = Math.ceil(1);
+              let max = Math.floor(3);
+              let random = Math.floor(Math.random() * (max - min)) + min;
+              if(random == 1) winner = choicesResult[0]
+              else if(random == 2) winner = choicesResult[1]
+          }
+      }
+      //calcul pourcentage
+      let percentage = (winner.nbvotes/(choicesResult[0].nbvotes + choicesResult[1].nbvotes))*100;
+
+    io.emit('display-final-choice', totalvotes, winner, percentage)
     totalvotes=0 //remise à zero des votes
     nbChoice1=0
     nbChoice2=0
   })
+
+  //quand on appuie sur le bouton pour arrêter la partie depuis l'admin
+  socket.on("stop-partie", function(){
+    console.log('TOUT ARRETER')
+    socket.broadcast.emit('stop-partie')
+    //on reset toutes les données
+    /*messages = []
+    choices = []
+    questions = []
+    displayQuestionData = []
+    totalvotes=0
+    nbChoice1 = 0
+    nbChoice2 = 0
+    percentage
+    choicesResult = {}*/
+  })
+  socket.on("stop-question", function(){
+    //on doit arrêter les question et tout remettre a zeros
+    socket.broadcast.emit('stop-question')
+  })
+  /*socket.on("start-partie", function(){
+    //socket.broadcast.emit('start-partie')
+  })*/
 })
