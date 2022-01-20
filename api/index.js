@@ -172,12 +172,14 @@ app.delete(`/question/:id`, async (req, res) => {
   })
     console.log(__dirname)
     const path = `./assets/images/Question_${id}`;
-    fs.rmdir(path, {recursive: true,},(err) => {
-    if(err){
-        throw err;
-    }
-    console.log(`${path} is deleted!`);
-    });
+    if(fs.existsSync(path)){
+        fs.rmdir(path, {recursive: true,},(err) => {
+        if(err){
+            throw err;
+        }
+        console.log(`${path} is deleted!`);
+        })
+    }else console.log(`this ${path} directory does not exist`)
   const transaction = await prisma.$transaction([deleteChoices, deleteQuestion])
   res.json(transaction)
 })

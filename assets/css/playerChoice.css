@@ -23,6 +23,10 @@ h1{
     flex-direction: column;
 }
 
+.container{
+    display:flex;
+}
+
 #orBlock{
     position: absolute;
     height: 100%;

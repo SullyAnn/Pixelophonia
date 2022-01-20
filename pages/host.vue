@@ -55,7 +55,7 @@ export default {
       parameters:[],
 
       currentTime: '',
-      totalTime: 10000, //temps donné pour répondre, en millisecondes (pour l'instant par défaut)
+      totalTime: 60000, //temps donné pour répondre, en millisecondes (pour l'instant par défaut)
       timeDepart: '',
       timeIsDone: false,
 

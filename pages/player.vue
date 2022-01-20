@@ -1,7 +1,7 @@
 <template>
   <section>
     <div v-show="isQuestionDisplayed==true" id = "choicePageContent">
-        <div v-if="!displayResult">
+        <div v-if="!displayResult" class="container">
           <div id ="orBlock">
               <p >OU</p>
           </div> 

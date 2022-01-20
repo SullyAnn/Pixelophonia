@@ -118,14 +118,15 @@ io.on('connection', (socket) => {
               if(random == 1) winner = choicesResult[0]
               else if(random == 2) winner = choicesResult[1]
           }
-      }
-      //calcul pourcentage
-      let percentage = (winner.nbvotes/(choicesResult[0].nbvotes + choicesResult[1].nbvotes))*100;
+      
+          //calcul pourcentage
+          let percentage = (winner.nbvotes/(choicesResult[0].nbvotes + choicesResult[1].nbvotes))*100;
 
-    io.emit('display-final-choice', totalvotes, winner, percentage)
-    totalvotes=0 //remise à zero des votes
-    nbChoice1=0
-    nbChoice2=0
+          io.emit('display-final-choice', totalvotes, winner, percentage)
+          totalvotes=0 //remise à zero des votes
+          nbChoice1=0
+          nbChoice2=0
+      }
   })
 
   //quand on appuie sur le bouton pour arrêter la partie depuis l'admin

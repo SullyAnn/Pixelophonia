@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {addQuestion, getQuestions, updateUploadImage} from "@/assets/classes/Admin.js"
+import {addQuestion, getQuestions, updateUploadImage, updateQuestion} from "@/assets/classes/Admin.js"
 
 export default {
   name: 'QuestionForm',
@@ -45,12 +45,15 @@ export default {
         img1: [],
         title2: '',
         img2: [],
+        file:'',
+        form: [],
     }
   },
   methods: {
       //envoie le formulaire d'ajout de question : create une question et ses deux choix
     handleSubmit: async function (e) {
       e.preventDefault()
+      this.form.push({img1 : this.img1.name, img2: this.img2.name})
       this.img1 = document.getElementById("image1").files[0];
       this.img2 = document.getElementById("image2").files[0];
 
@@ -70,7 +73,22 @@ export default {
       //on récupère la dernière question ajoutée pour en récupérer l'id
       console.log(questions)
       console.log(questions[Object.keys(questions)[Object.keys(questions).length-1]])
-      const lastAddedQuestion = questions[Object.keys(questions)[Object.keys(questions).length-1]]
+      let lastAddedQuestion = questions[Object.keys(questions)[Object.keys(questions).length-1]]
+
+      const extension1 = (lastAddedQuestion.choices[0].img).split('.')
+      const extension2 = (lastAddedQuestion.choices[1].img).split('.')
+      lastAddedQuestion.choices[0].img = `q${lastAddedQuestion.id}_c${lastAddedQuestion.choices[0].id}.${extension1[1]}`
+      lastAddedQuestion.choices[1].img = `q${lastAddedQuestion.id}_c${lastAddedQuestion.choices[1].id}.${extension2[1]}`
+
+      const bodyChanged = {
+          img1: lastAddedQuestion.choices[0].img,
+          id1: lastAddedQuestion.choices[0].id,
+          img2: lastAddedQuestion.choices[1].img,
+          id2: lastAddedQuestion.choices[1].id,
+        }
+
+       const question = await updateQuestion(this.$axios, lastAddedQuestion.id, bodyChanged)
+      console.log(question)
       
       // enregistrement des images dans le dossier image du projet 
       const form = new FormData()

@@ -2,7 +2,6 @@
 
 const Helpers = use('Helpers')
 const Drive = use('Drive')
-import * as fs from 'fs'
 
 class PhotoController {
     async upload( {request,response} ) {
@@ -13,8 +12,7 @@ class PhotoController {
             const photo1 = request.file('img1')
         
             console.log(photo1.clientName)
-            //const fileName1 = `${data.idChoice1}_${photo1.clientName}`;
-            if(photo1.extname == "jpeg")photo1.extname = "jpg"
+            //if(photo1.extname == "jpeg")photo1.extname = "jpg"
             const fileName1 = `q${data.idQuestion}_c${data.idChoice1}.${photo1.extname}`;
             console.log(fileName1)              
             //await photo1.move(`../assets/uploads/${folderName}`, 
@@ -26,7 +24,7 @@ class PhotoController {
         }
         if(request.file('img2') != null){
             const photo2 = request.file('img2')
-            if(photo2.extname == "jpeg")photo2.extname = "jpg"
+            //if(photo2.extname == "jpeg")photo2.extname = "jpg"
             const fileName2 = `q${data.idQuestion}_c${data.idChoice2}.${photo2.extname}`;
             console.log(fileName2)
             await photo2.move(`../assets/images/${folderName}`, 
@@ -35,29 +33,6 @@ class PhotoController {
                 overwrite:true
             })
         }
-        // await photo.moveToDisk('../../../../../assets/uploads', {
-        //     name: `${photo.extname}`
-        // }, 'local')
-
-        // Get the name of the saved file; to store it in your database, for example.
-        
-
-        // const driver = request.drive.use()
-         //console.log(request)
-        // const coverImage = request.file('img1', {
-        // size: '2mb',
-        // extnames: ['jpg', 'png', 'gif', 'jpeg'],
-        // })
-        // const fileName = coverImage.fileName;
-        // await coverImage.move(driver.makePath('./../../../../assets/uploads'), {
-        //     name: `${coverImage.fileName}`,
-        //     overwrite:true,
-        // })
-          
-
-        // // Get the name of the saved file; to store it in your database, for example.
-        
-        // console.log(fileName)
 
     }
 }
