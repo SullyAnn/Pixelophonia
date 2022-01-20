@@ -1,3 +1,5 @@
+<!-- TO DO : merge avec Solem -->
+
 <template>
   <div class="window">
     <h2>Modifier : {{ question.label }}</h2>
@@ -13,7 +15,7 @@
 
             <input v-on:change="previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;">
             <label for="image1" class="importImg" >
-              <img :src="require(`assets/images/${question.choices[0].img}`)" id="display1" />
+              <img :src="require(`assets/images/Question_${question.id}/${question.choices[0].img}`)" id="display1" />
             </label>
         </fieldset>
 
@@ -23,7 +25,7 @@
 
             <input v-on:change="previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2" style="display:none;">
             <label for="image2" class="importImg" >
-              <img :src="require(`assets/images/${question.choices[1].img}`)"  id="display2" />
+              <img :src="require(`assets/images/Question_${question.id}/${question.choices[1].img}`)"  id="display2" />
             </label>
         </fieldset>
         </div>
