@@ -117,7 +117,7 @@ methods: {
             socket.emit("display-question", questiondata, questionStartTime)
         }
         else { //sinon c'est qu'on est en train de l'arrêter
-            socket.emit("stop-question")
+            socket.emit("stop-question", 2)
             console.log("question arrêtée")
         }
     },
