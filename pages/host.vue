@@ -1,8 +1,24 @@
 <template>
-  <div>
+  <section id="hostSection">
 
-    <div v-if="waitingMode">
-      En attente de l'admin
+    <div id="waitingSection" v-if="waitingMode">
+      <div id="qrCodeContent">
+        <div id="waitingMessage">
+          Bienvenue au concert de l'orchestre Pixélophonia ! <br> <br>
+          Scannez ce QR CODE et attendez les instructions du chef d'orchestre
+          pour continuer votre périple 
+        </div>
+
+        <div id="qrCode">
+          <img src="../assets/images/qrCode.png"> 
+        </div>
+      </div>
+
+      <div id="logoLong">
+          <img src="../assets/images/logoLong.png"> 
+      </div>
+    </div>
+
     </div>
 
     <div v-else>
@@ -28,12 +44,19 @@
           </div>
         </div>
       </div>
-
-      <div v-else>
-        <div id="result">
+      <div id="parent" class="displayed">
+            <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
+                <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
+                
+            </div>
+            <h2 class="question">{{questionLabel}}</h2>
+      </div>
+    </div>
+    <div v-else>
+      <div id="result">
           <div v-for="(data, index) of Object.values(parameters)">
-            <!--<img v-if="data.winner != null" :src="require('assets/images/'+data.winner)" alt="image winner" class="images">-->
-            <h2> <i>{{data.percentage}}</i></h2>
+              <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)" alt="image winner" class="images">
+              <h2> <i>{{data.percentage}}</i></h2>
           </div>
         </div>
       </div>
@@ -41,11 +64,17 @@
 
 
   </div>
+  
+
+</section>
 </template>
 
 <script>
 import socket from '~/plugins/socket.io.js'
 import {compareChoices, calculatePercentage} from "@/assets/classes/Question.js"
+import "../assets/css/host.css";
+
+
 export default {
   asyncData () {
     return new Promise(resolve =>
@@ -63,6 +92,10 @@ export default {
       waitingMode: true,
       displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
       displayTimer: false,
+
+      idQuestion:0,
+      questionLabel:'',
+      tab:[],
     }
   },
   head: {
@@ -89,10 +122,11 @@ export default {
     socket.on('broadcast-question', (questiondata) => {
       this.resetAllData()//on reset les datas que quand on lance une nouvelle question pour pouvoir garder les résultats précédents à l'écran
       console.log(questiondata)
-        for (const [key, value] of Object.entries(questiondata)) {
-          this.displayQuestionData.push(value)
-          //console.log(value)
-        }
+      this.tab = Object.values(questiondata.choices)
+      this.displayQuestionData.push(questiondata)
+      this.id = questiondata.id
+      this.questionLabel = questiondata.question
+      console.log(this.tab)
     })
     socket.on('display-final-choice', (totalvotes, winner, percentage) => {
        this.parameters = []
@@ -176,15 +210,20 @@ export default {
 height:100%;
 }
 .question{
-  
-}
-#parent div:last-child{
-position : absolute;
+  position : absolute;
    top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   height:auto;
   width:auto;
+}
+#parent div:last-child{
+/* position : absolute;
+   top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height:auto;
+  width:auto;*/
 }
 
 .timerWrapper{

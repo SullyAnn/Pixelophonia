@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
 
 
     // transmission des choix pour le player
-    socket.broadcast.emit('broadcast-question', question.choices)
+    socket.broadcast.emit('broadcast-question', {id:question.id, choices:question.choices, question:question.question})
     // transmission de la question pour le screen
     socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime, question.temps, showTimerOnScreen)
   })
@@ -121,14 +121,15 @@ io.on('connection', (socket) => {
               if(random == 1) winner = choicesResult[0]
               else if(random == 2) winner = choicesResult[1]
           }
-      }
-      //calcul pourcentage
-      let percentage = (winner.nbvotes/(choicesResult[0].nbvotes + choicesResult[1].nbvotes))*100;
+      
+          //calcul pourcentage
+          let percentage = (winner.nbvotes/(choicesResult[0].nbvotes + choicesResult[1].nbvotes))*100;
 
-    io.emit('display-final-choice', totalvotes, winner, percentage)
-    totalvotes=0 //remise à zero des votes
-    nbChoice1=0
-    nbChoice2=0
+          io.emit('display-final-choice', totalvotes, winner, percentage)
+          totalvotes=0 //remise à zero des votes
+          nbChoice1=0
+          nbChoice2=0
+      }
   })
 
   //quand on appuie sur le bouton pour arrêter la partie depuis l'admin

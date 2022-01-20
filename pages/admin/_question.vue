@@ -33,12 +33,14 @@
 
     </form>
 
-    <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
+    <NuxtLink to="./creation">Revenir à la liste (sans sauvegarder)</NuxtLink>
   </div>
 </template>
 
 <script>
-import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.js"
+import {getQuestion, updateQuestion, updateUploadImage} from "@/assets/classes/Admin.js"
+import "@/assets/css/admin.css";
+
   export default {
     async asyncData({ params, $axios }) { //va chercher les données de la question et les garde dans les datas (dans question[]) avant de render la page (du côté du serveur)
       //const question = await $axios.$get(`api/question/${params.question}`)
@@ -72,14 +74,19 @@ import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.
         form.append('idQuestion', this.question.id)
         form.append('idChoice1',this.question.choices[0].id)
         form.append('idChoice2',this.question.choices[1].id)
+
+        const extension1 = (this.img1.name).split('.')
+        const extension2 = (this.img2.name).split('.')
+        console.log(extension2[1])
+
         const body = {
           label: this.question.label,
           question: this.question.question,
           title1: this.question.choices[0].title,
-          img1: this.img1.name,
+          img1: `q${this.question.id}_c${this.question.choices[0].id}.${extension1[1]}`,
           id1: this.question.choices[0].id,
           title2: this.question.choices[1].title,
-          img2: this.img2.name,
+          img2: `q${this.question.id}_c${this.question.choices[1].id}.${extension2[1]}`,
           id2: this.question.choices[1].id,
         }
         //this.form.push({img1 : this.img1.name}, {img2: this.img2.name})

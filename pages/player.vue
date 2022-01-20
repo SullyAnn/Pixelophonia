@@ -1,7 +1,7 @@
 <template>
   <section>
     <div v-show="isQuestionDisplayed==true" id = "choicePageContent">
-        <div v-if="!displayResult">
+        <div v-if="!displayResult" class="container">
           <div id ="orBlock">
               <p >OU</p>
           </div> 
@@ -9,12 +9,12 @@
           <div v-for="(data, index) in choices" :key="index" class="choice">
               <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
               <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
-              <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
+              <img :id="index" v-on:click="sendChoice(index)" :src="require(`assets/images/Question_${idQuestion}/`+data.img)" alt="image test">
           </div>
         </div>
 
         <div v-else>
-          <!--<img :src="require('assets/images/'+this.parameters[0].winner)" alt="image test">-->
+          <img :src="require(`assets/images/Question_${idQuestion}/`+this.parameters[0].winner)" alt="image test">
         </div>
 
     </div>
@@ -69,24 +69,27 @@ export default {
   },
   beforeMount () {
 
+    
+
     socket.on("reload-this-page", (isReload) =>{
       //alert("reload la page player")
       location.reload(true)
     })
-    socket.on("broadcast-menu", (displayStatus)=> {
-      const choix = document.getElementById("choicePageContent")
-      //choix.style.display="none" 
+     socket.on('broadcast-menu', (displayStatus) => {
       console.log("test")
-      this.affichage = displayStatus
       this.isQuestionDisplayed = false
+      this.affichage = displayStatus
     })
+  
     socket.on('broadcast-question', (questiondata) => {
         if (this.waitingMode){this.waitingMode = false} //comme on a lancé une question on est plus en waitingMode
         this.choices = []
         this.idQuestion = questiondata.id
-        for (const [key, value] of Object.entries(questiondata)) {
-          this.choices.push(value)
-        }
+        // for (const [key, value] of Object.entries(questiondata)) {
+        //   this.choices.push(value)
+        // }
+        this.choices = Object.values(questiondata.choices)
+        console.log(this.choices)
         this.isQuestionDisplayed = true
     })
     socket.on('display-player-choice', (choice) => {
@@ -128,6 +131,7 @@ export default {
   
   },
   mounted () {
+    
   },
   methods: {
     sendChoice: function(idChoice){
