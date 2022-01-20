@@ -39,6 +39,8 @@
 
 <script>
 import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.js"
+import "@/assets/css/admin.css";
+
   export default {
     async asyncData({ params, $axios }) { //va chercher les données de la question et les garde dans les datas (dans question[]) avant de render la page (du côté du serveur)
       //const question = await $axios.$get(`api/question/${params.question}`)
