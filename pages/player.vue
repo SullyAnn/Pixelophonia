@@ -14,12 +14,12 @@
             <div v-for="(data, index) in choices" :key="index" class="choice">
               <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
               <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
-              <img :id="index" v-on:click="sendChoice(index)" :src="require('assets/images/'+data.img)" alt="image test">
+              <img :id="index" v-on:click="sendChoice(index)" :src="require(`assets/images/Question_${idQuestion}/`+data.img)" alt="image test">
           </div>
           </section>
         </div>
         <div v-else>
-          <img :src="require('assets/images/'+this.parameters[0].winner)" alt="image test">
+          <img :src="require(`assets/images/Question_${idQuestion}/`+this.parameters[0].winner)" alt="image test">
         </div>
   </div>
  
@@ -63,9 +63,11 @@ export default {
         if (this.waitingMode){this.waitingMode = false} //comme on a lancé une question on est plus en waitingMode
         this.choices = []
         this.idQuestion = questiondata.id
-        for (const [key, value] of Object.entries(questiondata)) {
-          this.choices.push(value)
-        }
+        // for (const [key, value] of Object.entries(questiondata)) {
+        //   this.choices.push(value)
+        // }
+        this.choices = Object.values(questiondata.choices)
+        console.log(this.choices)
     })
     socket.on('display-player-choice', (choice) => {
         console.log("maintenant on est dans le display-player-choice du client " + choice.yourchoice )

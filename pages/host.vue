@@ -16,16 +16,17 @@
       </div>
     </div>
       <div id="parent" class="displayed">
-            <div v-for="(data, index) in displayQuestionData" :key="index+1" class="chatArea">
-                <img v-if="data.img != null" :id="index+1" :src="require('assets/images/'+data.img)" alt="image test" class="images">
-                <h2 v-else>{{data.question}}</h2>
+            <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
+                <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
+                
             </div>
+            <h2 class="question">{{questionLabel}}</h2>
       </div>
     </div>
     <div v-else>
       <div id="result">
           <div v-for="(data, index) of Object.values(parameters)">
-              <img v-if="data.winner != null" :src="require('assets/images/'+data.winner)" alt="image winner" class="images">
+              <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)" alt="image winner" class="images">
               <h2> <i>{{data.percentage}}</i></h2>
           </div>
       </div>
@@ -60,6 +61,10 @@ export default {
 
       waitingMode: true,
       displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
+
+      idQuestion:0,
+      questionLabel:'',
+      tab:[],
     }
   },
   head: {
@@ -76,9 +81,9 @@ export default {
     socket.on('display-question-on-screen', (questiondata, questionStartTime)=> {
         if (this.waitingMode){this.waitingMode = false}
 
-        console.log('QUESTION DATA'+questiondata)
-        this.displayQuestionData.push(questiondata)
-
+        
+        //this.displayQuestionData.push(questiondata)
+        //console.log(this.displayQuestionData)
         //======== TIMER ========//
         //console.log('START TIME' + questionStartTime)
         this.timeDepart = questionStartTime
@@ -110,10 +115,11 @@ export default {
     socket.on('broadcast-question', (questiondata) => {
       this.resetAllData()//on reset les datas que quand on lance une nouvelle question pour pouvoir garder les résultats précédents à l'écran
       console.log(questiondata)
-        for (const [key, value] of Object.entries(questiondata)) {
-          this.displayQuestionData.push(value)
-          //console.log(value)
-        }
+      this.tab = Object.values(questiondata.choices)
+      this.displayQuestionData.push(questiondata)
+      this.id = questiondata.id
+      this.questionLabel = questiondata.question
+      console.log(this.tab)
     })
     socket.on('display-final-choice', (totalvotes, winner, percentage) => {
        this.parameters = []
@@ -168,15 +174,20 @@ export default {
 height:100%;
 }
 .question{
-  
-}
-#parent div:last-child{
-position : absolute;
+  position : absolute;
    top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   height:auto;
   width:auto;
+}
+#parent div:last-child{
+/* position : absolute;
+   top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height:auto;
+  width:auto;*/
 }
 
 .timerWrapper{

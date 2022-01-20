@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {addQuestion, getQuestions, updateUploadImage} from "@/assets/classes/Admin.js"
+import {addQuestion, getQuestions, updateUploadImage, updateQuestion} from "@/assets/classes/Admin.js"
 export default {
   name: 'QuestionForm',
   data() {
@@ -68,7 +68,7 @@ export default {
         label: this.label,
         question: this.question,
         title1: this.title1,
-        img1: this.img1.name,
+        img1: this.img1.name, 
         title2: this.title2,
         img2: this.img2.name,
       }
@@ -80,12 +80,26 @@ export default {
       //on récupère la dernière question ajoutée pour en récupérer l'id
       console.log(questions)
       console.log(questions[Object.keys(questions)[Object.keys(questions).length-1]])
-      const lastAddedQuestion = questions[Object.keys(questions)[Object.keys(questions).length-1]]
-      
+      let lastAddedQuestion = questions[Object.keys(questions)[Object.keys(questions).length-1]]
+      const extension1 = (lastAddedQuestion.choices[0].img).split('.')
+      const extension2 = (lastAddedQuestion.choices[1].img).split('.')
+      lastAddedQuestion.choices[0].img = `q${lastAddedQuestion.id}_c${lastAddedQuestion.choices[0].id}.${extension1[1]}`
+      lastAddedQuestion.choices[1].img = `q${lastAddedQuestion.id}_c${lastAddedQuestion.choices[1].id}.${extension2[1]}`
+
+
+      const bodyChanged = {
+          img1: lastAddedQuestion.choices[0].img,
+          id1: lastAddedQuestion.choices[0].id,
+          img2: lastAddedQuestion.choices[1].img,
+          id2: lastAddedQuestion.choices[1].id,
+        }
+
+       const question = await updateQuestion(this.$axios, lastAddedQuestion.id, bodyChanged)
+      console.log(question)
       // enregistrement des images dans le dossier image du projet 
       const form = new FormData()
-      console.log(this.img2)
-      console.log(this.img1.name)
+      //console.log(this.img2)
+      //console.log(this.img1.name)
       form.append('img1', this.img1)
       form.append('img2', this.img2)
       form.append('idQuestion', lastAddedQuestion.id)

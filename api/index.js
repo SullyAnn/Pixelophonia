@@ -1,5 +1,6 @@
 import express from 'express'
 import { PrismaClient } from '@prisma/client'
+import * as fs from 'fs'
 
 const prisma = new PrismaClient()
 const app = express()
@@ -169,7 +170,14 @@ app.delete(`/question/:id`, async (req, res) => {
       id: parseInt(id),
     },
   })
-  
+    console.log(__dirname)
+    const path = `./assets/images/Question_${id}`;
+    fs.rmdir(path, {recursive: true,},(err) => {
+    if(err){
+        throw err;
+    }
+    console.log(`${path} is deleted!`);
+    });
   const transaction = await prisma.$transaction([deleteChoices, deleteQuestion])
   res.json(transaction)
 })

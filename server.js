@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
   
   socket.on('display-question', function (question, questionStartTime) {
     // transmission des choix pour le player
-    socket.broadcast.emit('broadcast-question', question.choices)
+    socket.broadcast.emit('broadcast-question', {id:question.id, choices:question.choices, question:question.question})
     // transmission de la question pour le screen
     socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime)
   })
