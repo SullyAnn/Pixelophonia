@@ -1,8 +1,24 @@
 <template>
-<div>
-  <div v-if="waitingMode">
-    En attente de l'admin
-  </div>
+  <section id="hostSection">
+
+    <div id="waitingSection" v-if="waitingMode">
+      <div id="qrCodeContent">
+        <div id="waitingMessage">
+          Bienvenue au concert de l'orchestre Pixélophonia ! <br> <br>
+          Scannez ce QR CODE et attendez les instructions du chef d'orchestre
+          pour continuer votre périple 
+        </div>
+
+        <div id="qrCode">
+          <img src="../assets/images/qrCode.png"> 
+        </div>
+      </div>
+
+      <div id="logoLong">
+          <img src="../assets/images/logoLong.png"> 
+      </div>
+    </div>
+
   <div v-else>
     <div v-if="!displayResult">
       <div v-if="timeDepart!=''">
@@ -33,12 +49,15 @@
   </div>
   
 
-</div>
+</section>
 </template>
 
 <script>
 import socket from '~/plugins/socket.io.js'
 import {compareChoices, calculatePercentage} from "@/assets/classes/Question.js"
+import "../assets/css/host.css";
+
+
 export default {
   asyncData () {
     return new Promise(resolve =>
