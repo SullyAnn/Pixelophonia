@@ -33,7 +33,8 @@
 </template>
 
 <script>
-import {addQuestion} from "@/assets/classes/Admin.js"
+import {addQuestion, getQuestions, updateUploadImage} from "@/assets/classes/Admin.js"
+
 export default {
   name: 'QuestionForm',
   data() {
@@ -50,6 +51,9 @@ export default {
       //envoie le formulaire d'ajout de question : create une question et ses deux choix
     handleSubmit: async function (e) {
       e.preventDefault()
+      this.img1 = document.getElementById("image1").files[0];
+      this.img2 = document.getElementById("image2").files[0];
+
       const body = {
         label: this.label,
         question: this.question,
@@ -58,7 +62,26 @@ export default {
         title2: this.title2,
         img2: this.img2.name,
       }
-      await addQuestion(this.$axios, body)
+      console.log("avant addQuestions")
+      const questions = await addQuestion(this.$axios, body)
+      console.log("après addQuestion")
+      //const questions = await getQuestions(this.$axios)
+
+      //on récupère la dernière question ajoutée pour en récupérer l'id
+      console.log(questions)
+      console.log(questions[Object.keys(questions)[Object.keys(questions).length-1]])
+      const lastAddedQuestion = questions[Object.keys(questions)[Object.keys(questions).length-1]]
+      
+      // enregistrement des images dans le dossier image du projet 
+      const form = new FormData()
+      console.log(this.img2)
+      console.log(this.img1.name)
+      form.append('img1', this.img1)
+      form.append('img2', this.img2)
+      form.append('idQuestion', lastAddedQuestion.id)
+      form.append('idChoice1',lastAddedQuestion.choices[0].id)
+      form.append('idChoice2',lastAddedQuestion.choices[1].id)
+      await updateUploadImage(this.$axios, form) 
 
       this.$router.push('./creation') //on revient à la page de liste des questions
     },

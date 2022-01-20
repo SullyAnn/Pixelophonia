@@ -75,12 +75,14 @@ mounted () {
         console.info( "This page is reloaded" );
         this.reload = true,
         socket.emit("reload-all-pages", this.isReload)
+
     } 
     else {
         console.info( "This page is not reloaded");
     }
 
     this.launchPartie()
+    
 },
 
 methods: {
@@ -117,7 +119,7 @@ methods: {
             socket.emit("display-question", questiondata, questionStartTime)
         }
         else { //sinon c'est qu'on est en train de l'arrêter
-            socket.emit("stop-question")
+            socket.emit("stop-question", 2)
             console.log("question arrêtée")
         }
     },

@@ -58,6 +58,12 @@ io.on('connection', (socket) => {
     // transmission de la question pour le screen
     socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime)
   })
+    //TEST DISPLAY MENU ON LAUNCH PARTY 
+    socket.on('display-menu', function (displayStatus) {
+
+    socket.broadcast.emit('broadcast-menu',displayStatus)
+    socket.broadcast.emit('display-menu-on-screen',displayStatus)
+  })
 
   socket.on('submit-choice', function (choicesPlayer) {
     //conversion de l'objet en tableau : c'est plus simple pour récupérer les éléments par leur index respectif
@@ -137,9 +143,9 @@ io.on('connection', (socket) => {
     percentage
     choicesResult = {}*/
   })
-  socket.on("stop-question", function(){
+  socket.on("stop-question", function(displayStatus){
     //on doit arrêter les question et tout remettre a zeros
-    socket.broadcast.emit('stop-question')
+    socket.broadcast.emit('stop-question',displayStatus)
   })
   /*socket.on("start-partie", function(){
     //socket.broadcast.emit('start-partie')
