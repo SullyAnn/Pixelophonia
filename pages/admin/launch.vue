@@ -2,9 +2,9 @@
   <div id="listQuestions" class="questionsList">
       <h2>Liste des questions</h2>
       <ul ref="questions" class="questions">
-          <li v-for="(question, index) in questions" :key="index" class="question">
+          <li v-for="(question, index) in questions" :key="index" class="question" ref="questionInList">
               <p>{{ question.label }}</p>
-              <button :id="index+1" @click="switchClass(index+1), toggleQuestion(question)" class="btn start">
+              <button :id="index+1" @click="switchClass(index+1), toggleQuestion(question, index)" class="btn start">
                 <svg style="display:block;"
                     class="svg-icon" 
                     viewBox="0 0 1025 1024" 
@@ -20,6 +20,16 @@
                     <path d="M0 0l1024 0 0 1024L0 1024 0 0z"  />
                 </svg>
               </button>
+
+              <div v-if="question.temps"><!-- option de visibilité du temps -->
+                <input type="checkbox" name="checkTime" class="checkTime" checked>
+                <label for="checkTime">Temps visible sur l'écran</label>
+
+                <div class="timerWrapper" >
+                  <div id="timeProgress" class="timeProgress"></div>
+                </div>
+              </div>
+
           </li>
       </ul>
 
@@ -101,23 +111,39 @@ methods: {
                 })
 
                 // instanciate Question object
-                this.newQuestion = new Question(question.id, question.label, question.question, this.newChoice),
+                this.newQuestion = new Question(question.id, question.label, question.question, question.temps, this.newChoice),
                 this.questions.push(this.newQuestion)
                 this.newChoice=[]
+                //console.log(this.questions)
             })
         })
     },
 
     // launch one question : à voir pour grouper avec switch class ?
-    toggleQuestion: function(questiondata){
-        this.questionIsPlaying = !this.questionIsPlaying
+    toggleQuestion: function(questiondata, idQuestionList){
+      this.questionIsPlaying = !this.questionIsPlaying
 
-        if (this.questionIsPlaying) { //on lance une question
-            console.log(questiondata)
-            console.log("LaunchQuestion "+questiondata.id)
-            const questionStartTime = Date.now(); //temps de départ de la question
-            socket.emit("display-question", questiondata, questionStartTime)
+      if(this.questionIsPlaying){//on lance une question
+        console.log(questiondata)
+        console.log("LaunchQuestion "+questiondata.id)
+        const questionStartTime = Date.now(); //temps de départ de la question
+        let showTimerOnScreen = false
+        if(questiondata.temps){//si la question est timée, on regarde si l'admin a coché la case visibilité ou pas
+          showTimerOnScreen = this.$refs['questionInList'][idQuestionList].querySelector('.checkTime').checked
+          console.log('CHECK'+showTimerOnScreen)
         }
+        else{ //sinon c'est que la question a un temps indéterminé
+          showTimerOnScreen = false
+        }
+        
+        socket.emit("display-question", questiondata, questionStartTime, showTimerOnScreen)
+        if(questiondata.temps){ //si il y a un temps défini pour la question
+          this.launchTimer(questionStartTime, questiondata.temps, idQuestionList) //lancer le timer chez l'admin
+        }
+        else{
+          //Faire ce qui est nécéssaire pour les questions sans temps
+        }
+      }
         else { //sinon c'est qu'on est en train de l'arrêter
             socket.emit("stop-question", 2)
             console.log("question arrêtée")
@@ -179,7 +205,64 @@ methods: {
         socket.emit('stop-partie')
         console.log("Partie arrêtée.")
         this.$router.push("./")
+    }, 
+    launchTimer: async function(questionStartTime, totalTime, idQuestionList){
+          const timerWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.timerWrapper')
+          timerWrapper.style.cssText ="display:block;"
+          
+          //======== TIMER ========//
+          console.log('START TIME' + questionStartTime)
+          const timeDepart = questionStartTime
+          const totalTimeMs = totalTime*1000 //on passe le temps en secondes en millisecondes
+
+          var element = this.$refs['questionInList'][idQuestionList].querySelector('.timeProgress')
+
+          let myTimer = setInterval(() => {
+                  let currentTime = Date.now()
+                  //console.log('SETINTERVAL')
+
+                  let tempsEcoule = currentTime-timeDepart //en millisecondes
+
+                  if(tempsEcoule<=totalTimeMs){
+                    element.style.width = (tempsEcoule/totalTimeMs)*100 + "%";
+                    if((tempsEcoule/totalTimeMs)*100 >75){
+                      element.style.backgroundColor = '#CA4B4B'; //on passe en rouge
+                    }
+                  }
+                  else {
+                    socket.emit('calcul-resultat')
+                    clearInterval(myTimer);
+                    element.style.backgroundColor = '#98A8CC';//on remet en bleu
+                    element.style.width = 0 + "%";
+                    timerWrapper.style.cssText ="display:none;"
+                  }
+
+                  if(!this.questionIsPlaying){ //si on arrete la question avant la fin
+                    element.style.backgroundColor = '#98A8CC';//on remet en bleu
+                    element.style.width = 0 + "%";
+                    clearInterval(myTimer)
+                    timerWrapper.style.cssText ="display:none;"
+                  }
+        }, 10)
     }
   }
 }
 </script>
+
+<style>
+.timerWrapper{
+  width: 100%;
+  height: 16px;
+  background-color: #D5DDE5;
+  border-radius: 50px;
+  position: relative;
+  display:none;
+}
+#timeProgress{
+  width: 0;
+  height: 100%;
+  background-color: #98A8CC;
+  border-radius: 50px;
+  /*transition: 0.2s ease;*/
+}
+</style>

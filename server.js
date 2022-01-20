@@ -53,8 +53,9 @@ io.on('connection', (socket) => {
   })
   
   socket.on('display-question', function (question, questionStartTime, showTimerOnScreen) {
+    console.log('CA VA ICI')
     //Initialisation du tableaux de result
-    choicesResult = Object.values(question.choices)
+    //choicesResult = Object.values(question.choices)
 
 
     // transmission des choix pour le player

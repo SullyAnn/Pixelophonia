@@ -1,37 +1,38 @@
 <template>
   <section>
-    <div v-show="isQuestionDisplayed==true" id = "choicePageContent">
-        <div v-if="!displayResult" class="container">
-          <div id ="orBlock">
-              <p >OU</p>
-          </div> 
-          
-          <div v-for="(data, index) in choices" :key="index" class="choice">
-              <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
-              <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
-              <img :id="index" v-on:click="sendChoice(index)" :src="require(`assets/images/Question_${idQuestion}/`+data.img)" alt="image test">
-          </div>
+    <div v-show="isQuestionDisplayed==true" id="choicePageContent">
+      <div v-if="!displayResult" class="container">
+        <div id="orBlock">
+          <p>OU</p>
         </div>
 
-        <div v-else>
-          <img :src="require(`assets/images/Question_${idQuestion}/`+this.parameters[0].winner)" alt="image test">
+        <div v-for="(data, index) in choices" :key="index" class="choice">
+          <h1 v-if="index == 0" style="right:0; top:0;">{{data.title}}</h1>
+          <h1 v-else style="left:0; bottom:0;">{{data.title}}</h1>
+          <img :id="index" v-on:click="sendChoice(index)"
+            :src="require(`assets/images/Question_${idQuestion}/`+data.img)" alt="image test">
         </div>
+      </div>
+
+      <div v-else>
+        <img :src="require(`assets/images/Question_${idQuestion}/`+this.parameters[0].winner)" alt="image test">
+      </div>
 
     </div>
 
     <div v-show="isQuestionDisplayed==false" id="homePageContent">
       <div id="logoLong">
-            <img id="imageLogoLong" src="@/assets/images/logoLong.png">
-        </div>
+        <img id="imageLogoLong" src="@/assets/images/logoLong.png">
+      </div>
 
-        <div class="">
-            <p v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia, 
-                <br>L'ochestre ne propose aucun jeu pour le moment.
-            </p>
-            <p v-else-if ="affichage==1"> Bienvenue sur l'application Pixélophonia, 
-            <br> Attendez les instructions du chef d'ochestre pour pouvoir voter </p>
-            <p v-else-if ="affichage==2"> Merci pour votre participation! </p>   
-        </div>
+      <div class="">
+        <p v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia,
+          <br>L'ochestre ne propose aucun jeu pour le moment.
+        </p>
+        <p v-else-if="affichage==1"> Bienvenue sur l'application Pixélophonia,
+          <br> Attendez les instructions du chef d'ochestre pour pouvoir voter </p>
+        <p v-else-if="affichage==2"> Merci pour votre participation! </p>
+      </div>
     </div>
 
   </section>

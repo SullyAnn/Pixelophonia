@@ -4,18 +4,18 @@
     <div id="waitingSection" v-if="waitingMode">
       <div id="qrCodeContent">
         <div id="waitingMessage">
-          Bienvenue au concert de l'orchestre Pixélophonia ! <br> <br>
+          Bienvenue au concert de l'orchestre Pixelophonia ! <br> <br>
           Scannez ce QR CODE et attendez les instructions du chef d'orchestre
-          pour continuer votre périple 
+          pour continuer votre périple
         </div>
 
         <div id="qrCode">
-          <img src="../assets/images/qrCode.png"> 
+          <img src="../assets/images/qrCode.png">
         </div>
       </div>
 
       <div id="logoLong">
-          <img src="../assets/images/logoLong.png"> 
+        <img src="../assets/images/logoLong.png">
       </div>
     </div>
 
@@ -33,47 +33,37 @@
         <div v-else>
           <div class="spinnerWrapper">
             <div class="spinner"></div>
-          </div>
-        </div>
-
-        <div id="parent" class="displayed">
-          <div v-for="(data, index) in displayQuestionData" :key="index+1" class="chatArea">
-            <!--<img v-if="data.img != null" :id="index+1" :src="require(`assets/images/Question_${data.id}/${data.img}`)" alt="image test" class="images">
-                <h2 v-else>{{data.question}}</h2>-->
-            <h2>{{data.question}}</h2>
-          </div>
-        </div>
-      </div>
-      <div id="parent" class="displayed">
-            <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
-                <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
-                
             </div>
-            <h2 class="question">{{questionLabel}}</h2>
-      </div>
-    </div>
-    <div v-else>
-      <div id="result">
-          <div v-for="(data, index) of Object.values(parameters)">
-              <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)" alt="image winner" class="images">
-              <h2> <i>{{data.percentage}}</i></h2>
-          </div>
-        </div>
-      </div>
-    </div>
+            </div>
+
+            <div id="parent" class="displayed">
+              <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
+                <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test"
+                  class="images">
+
+              </div>
+              <h2 class="question">{{questionLabel}}</h2>
+            </div>
+            </div>
+            <div v-else>
+              <div id="result">
+                <div v-for="(data, index) of Object.values(parameters)">
+                  <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)"
+                    alt="image winner" class="images">
+                  <h2> <i>{{data.percentage}}</i></h2>
+                </div>
+              </div>
+            </div>
 
 
-  </div>
-  
+            </div>
 
-</section>
+  </section>
 </template>
 
 <script>
 import socket from '~/plugins/socket.io.js'
-import {compareChoices, calculatePercentage} from "@/assets/classes/Question.js"
 import "../assets/css/host.css";
-
 
 export default {
   asyncData () {
@@ -178,8 +168,6 @@ export default {
                   }
                   else {
                     clearInterval(myTimer);
-                    element.style.backgroundColor = '#98A8CC';//on remet en bleu
-                    element.style.width = 0 + "%";
                   }
              }
              else { //si on arrête la question avant la fin, ça permet d'arrêter le timer
