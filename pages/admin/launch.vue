@@ -75,12 +75,14 @@ mounted () {
         console.info( "This page is reloaded" );
         this.reload = true,
         socket.emit("reload-all-pages", this.isReload)
+
     } 
     else {
         console.info( "This page is not reloaded");
     }
 
     this.launchPartie()
+    
 },
 
 methods: {

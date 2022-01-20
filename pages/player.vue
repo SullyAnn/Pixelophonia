@@ -69,17 +69,18 @@ export default {
   },
   beforeMount () {
 
+    
+
     socket.on("reload-this-page", (isReload) =>{
       //alert("reload la page player")
       location.reload(true)
     })
-    socket.on("broadcast-menu", (displayStatus)=> {
-      const choix = document.getElementById("choicePageContent")
-      //choix.style.display="none" 
+     socket.on('broadcast-menu', (displayStatus) => {
       console.log("test")
-      this.affichage = displayStatus
       this.isQuestionDisplayed = false
+      this.affichage = displayStatus
     })
+  
     socket.on('broadcast-question', (questiondata) => {
         if (this.waitingMode){this.waitingMode = false} //comme on a lancé une question on est plus en waitingMode
         this.choices = []
@@ -128,6 +129,7 @@ export default {
   
   },
   mounted () {
+    
   },
   methods: {
     sendChoice: function(idChoice){
