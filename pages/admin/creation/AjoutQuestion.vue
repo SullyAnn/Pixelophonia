@@ -4,13 +4,14 @@
     <form @submit.prevent="handleSubmit">
         <input v-model="label" type="text" name="label" placeholder="Libellé de la question" class="labelChoice" required>
         <textarea v-model="question" placeholder="Question" name="question" class="labelChoice" required></textarea>
+        <!-- <input v-model="temps" type="number" name="label" placeholder="Durée (laisser vide sinon)" class="labelChoice">-->
 
         <div class="choices2">
         <fieldset>
             <legend>Choix n°1</legend>
             <input v-model="title1" type="text" name="title1" placeholder="Titre" class="labelChoice" required>
             <input v-on:change="getImg1(), previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;">
-            <label for="image1" class="importImg" >
+            <label for="image1" class="importImg">
               <img src="https://sdr-lab.u-pem.fr/cherrier.jpg" width="200" id="display1" />
             </label>
         </fieldset>

@@ -1,39 +1,46 @@
 <template>
-<div>
-  <div v-if="waitingMode">
-    En attente de l'admin
-  </div>
-  <div v-else>
-    <div v-if="!displayResult">
-      <div v-if="timeDepart!=''">
-      <div class="timerWrapper">
-        <div id="timeProgress"></div>
-      </div>
-    </div>
-    <div v-else>
-      <div class="spinnerWrapper">
-        <div class="spinner"></div>
-      </div>
-    </div>
-      <div id="parent" class="displayed">
-            <div v-for="(data, index) in displayQuestionData" :key="index+1" class="chatArea">
-                <img v-if="data.img != null" :id="index+1" :src="require('assets/images/'+data.img)" alt="image test" class="images">
-                <h2 v-else>{{data.question}}</h2>
-            </div>
-      </div>
-    </div>
-    <div v-else>
-      <div id="result">
-          <div v-for="(data, index) of Object.values(parameters)">
-              <img v-if="data.winner != null" :src="require('assets/images/'+data.winner)" alt="image winner" class="images">
-              <h2> <i>{{data.percentage}}</i></h2>
-          </div>
-      </div>
-    </div>
-  </div>
-  
+  <div>
 
-</div>
+    <div v-if="waitingMode">
+      En attente de l'admin
+    </div>
+
+    <div v-else>
+
+      <div v-if="!displayResult">
+
+        <div v-if="displayTimer">
+          <div class="timerWrapper">
+            <div id="timeProgress" ref="timeProgress"></div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="spinnerWrapper">
+            <div class="spinner"></div>
+          </div>
+        </div>
+
+        <div id="parent" class="displayed">
+          <div v-for="(data, index) in displayQuestionData" :key="index+1" class="chatArea">
+            <!--<img v-if="data.img != null" :id="index+1" :src="require(`assets/images/Question_${data.id}/${data.img}`)" alt="image test" class="images">
+                <h2 v-else>{{data.question}}</h2>-->
+            <h2>{{data.question}}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div v-else>
+        <div id="result">
+          <div v-for="(data, index) of Object.values(parameters)">
+            <!--<img v-if="data.winner != null" :src="require('assets/images/'+data.winner)" alt="image winner" class="images">-->
+            <h2> <i>{{data.percentage}}</i></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
 </template>
 
 <script>
@@ -53,13 +60,9 @@ export default {
       percentage:0,
       parameters:[],
 
-      currentTime: '',
-      totalTime: 10000, //temps donné pour répondre, en millisecondes (pour l'instant par défaut)
-      timeDepart: '',
-      timeIsDone: false,
-
       waitingMode: true,
       displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
+      displayTimer: false,
     }
   },
   head: {
@@ -73,38 +76,14 @@ export default {
       location.reload(true)
     })
     // ici on récupère la question
-    socket.on('display-question-on-screen', (questiondata, questionStartTime)=> {
+    socket.on('display-question-on-screen', (questiondata, questionStartTime, totalTime, showTimerOnScreen)=> {
         if (this.waitingMode){this.waitingMode = false}
-
-        console.log('QUESTION DATA'+questiondata)
+        //console.log('QUESTION DATA'+questiondata)
         this.displayQuestionData.push(questiondata)
-
-        //======== TIMER ========//
-        //console.log('START TIME' + questionStartTime)
-        this.timeDepart = questionStartTime
-        //this.timeDepart = Date.now() //le temps démarre qua quand ça arrive sur host
-        let myTimer = setInterval(() => {
-          if (!this.waitingMode){ //on vérifie qu'on est toujours en train de jour la question, au cas où l'admin arrete la question avant la fin
-                this.currentTime = Date.now()
-                var element = document.getElementById("timeProgress")
-
-                let tempsEcoule = this.currentTime-this.timeDepart //en millisecondes
-
-                if(tempsEcoule<=this.totalTime){
-                  element.style.width = (tempsEcoule/this.totalTime)*100 + "%";
-                  if((tempsEcoule/this.totalTime)*100 >75){
-                    element.style.backgroundColor = '#CA4B4B'; //on passe en rouge
-                  }
-                }
-                else {
-                  if(!this.waitingMode)
-                    socket.emit('calcul-resultat')
-                  clearInterval(myTimer);
-                  element.style.backgroundColor = '#98A8CC';//on remet en bleu
-                  this.timeIsDone = false
-                }
+        if(showTimerOnScreen){//si on a bien un temps à afficher, c'est à dire qu'il n'est pas falsy
+          this.displayTimer = true
+          this.afficheTimer(questionStartTime, totalTime)
         }
-      }, 10);
     }),
     // ici on récupère les images des choix de la question 
     socket.on('broadcast-question', (questiondata) => {
@@ -117,7 +96,6 @@ export default {
     })
     socket.on('display-final-choice', (totalvotes, winner, percentage) => {
        this.parameters = []
-       //document.getElementById("parent").classList.remove('displayed') // temporaire
        this.displayResult = true
 
         this.parameters.push({totalvote:totalvotes,winner:winner.img, percentage:Math.floor(percentage)+"%" })
@@ -136,6 +114,7 @@ export default {
     resetAllData: function(){
       this.waitingMode = true
       this.displayResult= false
+      this.displayTimer= false
 
       this.displayQuestionData = []
       this.finalChoice = 
@@ -144,6 +123,35 @@ export default {
       this.percentage = 0
       this.parameters=[]
       //console.log('resetdata')
+    },
+    afficheTimer: async function(questionStartTime, totalTime){
+          //======== TIMER ========//
+          const timeDepart = questionStartTime
+          const totalTimeMs = totalTime*1000 //on passe le temps en secondes en millisecondes
+
+          let myTimer = setInterval(() => {
+             if (!this.waitingMode){
+               //console.log('SETINTERVAL')
+                  let currentTime = Date.now()
+                  const element = document.getElementById("timeProgress")
+                  let tempsEcoule = currentTime-timeDepart //en millisecondes
+
+                  if(tempsEcoule<=totalTimeMs){
+                    element.style.width = (tempsEcoule/totalTimeMs)*100 + "%";
+                    if((tempsEcoule/totalTimeMs)*100 >75){
+                      element.style.backgroundColor = '#CA4B4B'; //on passe en rouge
+                    }
+                  }
+                  else {
+                    clearInterval(myTimer);
+                    element.style.backgroundColor = '#98A8CC';//on remet en bleu
+                    element.style.width = 0 + "%";
+                  }
+             }
+             else { //si on arrête la question avant la fin, ça permet d'arrêter le timer
+                    clearInterval(myTimer);
+             }
+        }, 10)
     }
   }
 }

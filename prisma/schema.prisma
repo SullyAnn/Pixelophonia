@@ -20,6 +20,7 @@ model Question {
   id        Int      @id @default(autoincrement())
   label     String
   question  String 
+  temps     Int? 
   choices Choice[] 
   partie    Partie?    @relation(fields: [partieId], references: [id])
   partieId  Int?

@@ -52,11 +52,15 @@ io.on('connection', (socket) => {
     fn(displayQuestionData)
   })
   
-  socket.on('display-question', function (question, questionStartTime) {
+  socket.on('display-question', function (question, questionStartTime, showTimerOnScreen) {
+    //Initialisation du tableaux de result
+    choicesResult = Object.values(question.choices)
+
+
     // transmission des choix pour le player
     socket.broadcast.emit('broadcast-question', question.choices)
     // transmission de la question pour le screen
-    socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime)
+    socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime, question.temps, showTimerOnScreen)
   })
     //TEST DISPLAY MENU ON LAUNCH PARTY 
     socket.on('display-menu', function (displayStatus) {
@@ -81,7 +85,6 @@ io.on('connection', (socket) => {
       arrayChoices.at(1).nbvotes = nbChoice2
 
       choicesPlayer.choices = Object.assign(arrayChoices) // reconversion en objet
-      //console.log(choicesPlayer.choices)
 
 
     choicesResult = Object.assign(arrayChoices)

@@ -14,7 +14,7 @@
         </div>
 
         <div v-else>
-          <img :src="require('assets/images/'+this.parameters[0].winner)" alt="image test">
+          <!--<img :src="require('assets/images/'+this.parameters[0].winner)" alt="image test">-->
         </div>
 
     </div>
