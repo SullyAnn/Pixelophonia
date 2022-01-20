@@ -143,9 +143,9 @@ io.on('connection', (socket) => {
     percentage
     choicesResult = {}*/
   })
-  socket.on("stop-question", function(){
+  socket.on("stop-question", function(displayStatus){
     //on doit arrêter les question et tout remettre a zeros
-    socket.broadcast.emit('stop-question')
+    socket.broadcast.emit('stop-question',displayStatus)
   })
   /*socket.on("start-partie", function(){
     //socket.broadcast.emit('start-partie')

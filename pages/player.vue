@@ -1,28 +1,30 @@
 <template>
-  <section id = "choicePageContent">
-
-        <div id ="orBlock">
-            <p >OU</p>
+  <section>
+    <div v-show="isQuestionDisplayed==true" id = "choicePageContent">
+        <div v-if="!displayResult">
+          <div id ="orBlock">
+              <p >OU</p>
+          </div> 
+          
+          <div v-for="(data, index) in choices" :key="index" class="choice">
+              <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
+              <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
+              <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
+          </div>
         </div>
+
         <div v-else>
           <img :src="require('assets/images/'+this.parameters[0].winner)" alt="image test">
         </div>
-  </div>
- 
-        
-        <div v-for="(data, index) in choices" :key="index" class="choice">
-            <h1 v-if="index == 0" style="right:0; top:0;" >{{data.title}}</h1>
-            <h1 v-else style="left:0; bottom:0;" >{{data.title}}</h1>
-            <img :id="index" v-on:click="sendChoice(index)" :src="data.img" alt="image test">
-        </div>
+
     </div>
 
-    <div v-show="isQuestionDisplayed==false" id="HomePageContent">
+    <div v-show="isQuestionDisplayed==false" id="homePageContent">
       <div id="logoLong">
             <img id="imageLogoLong" src="@/assets/images/logoLong.png">
         </div>
 
-        <div id="homePageContent">
+        <div class="">
             <p v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia, 
                 <br>L'ochestre ne propose aucun jeu pour le moment.
             </p>
@@ -73,7 +75,6 @@ export default {
     })
     socket.on("broadcast-menu", (displayStatus)=> {
       const choix = document.getElementById("choicePageContent")
-      const homePage = document.getElementById("homePageContent")
       //choix.style.display="none" 
       console.log("test")
       this.affichage = displayStatus
@@ -115,9 +116,14 @@ export default {
     }),
     socket.on('stop-partie', () => {
       this.resetAllData()
+      this.isQuestionDisplayed = false
+      this.affichage = 0
     }),
-    socket.on('stop-question', () => {
+    socket.on('stop-question', (displayStatus) => {
       this.resetAllData()
+      this.isQuestionDisplayed = false
+      this.affichage = displayStatus
+
     })
   
   },

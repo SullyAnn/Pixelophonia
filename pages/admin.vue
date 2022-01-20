@@ -39,7 +39,7 @@
           </li>
       </ul>
 
-    <div class="goBack" v-on:click="isMenu = !isMenu; isLaunched = !isLaunched">
+    <div class="goBack" @click="stopPartie()">
         <button class="btn back">
         <svg class="svg-icon" 
             viewBox="0 0 1024 1024" 
@@ -149,10 +149,14 @@ export default {
         socket.emit("display-question", questiondata, questionStartTime)
       }
       else{//sinon c'est qu'on est en train de l'arrêter
-        socket.emit("stop-question")
+        socket.emit("stop-question", 2)
+        console.log("question arrêtée")
+
       }
     },
 
+
+    // switch square & triangle (start/stop buttons) 
     switchSVG: function (idToChange) {
       let toChange = document.getElementById(idToChange)
         Array.from(toChange.getElementsByTagName("svg")).forEach(
@@ -162,6 +166,8 @@ export default {
             }
         );
     },
+
+    // switch green & red (start/stop buttons)  
     switchColor: function (idToChange){
       let buttonsList = document.getElementById("listQuestions").getElementsByClassName("btn")
       let btnToChange = document.getElementById(idToChange)
@@ -192,13 +198,17 @@ export default {
         );
       }
     },
+
+    // switch start & stop buttons
     switchClass: function(idToChange) {
       this.switchSVG(idToChange)
       this.switchColor(idToChange)
     },
+
     stopPartie: function(){
-        this.isMenu = !this.isMenu
         socket.emit('stop-partie')
+        console.log("Partie arrêtée.")
+        location.reload(true)
     }
   }
 }
