@@ -21,13 +21,18 @@
                 </svg>
               </button>
 
-              <div v-if="question.temps"><!-- option de visibilité du temps -->
+              <div v-if="question.temps">
+                <!-- option de visibilité du temps -->
                 <input type="checkbox" name="checkTime" class="checkTime" checked>
                 <label for="checkTime">Temps visible sur l'écran</label>
 
-                <div class="timerWrapper" >
+                <div class="timerWrapper">
                   <div id="timeProgress" class="timeProgress"></div>
                 </div>
+              </div>
+              
+              <div v-else class="btnLaunchResults"> <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcule des résultats -->
+                <button @click="launchResultsNoTimer(index)">Lancer les résultats</button>
               </div>
 
           </li>
@@ -142,6 +147,8 @@ methods: {
         }
         else{
           //Faire ce qui est nécéssaire pour les questions sans temps
+          const resultBtnWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.btnLaunchResults')
+          resultBtnWrapper.style.cssText ="display:block;"
         }
       }
         else { //sinon c'est qu'on est en train de l'arrêter
@@ -244,25 +251,15 @@ methods: {
                     timerWrapper.style.cssText ="display:none;"
                   }
         }, 10)
+    },
+    launchResultsNoTimer: function(idQuestionList){
+      if(this.questionIsPlaying){ //on vérifie qu'il y a bien une question en cours pour lancer les résultats
+        socket.emit('calcul-resultat')
+        const resultBtnWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.btnLaunchResults')
+        resultBtnWrapper.style.cssText ="display:none;"
+      }
+      
     }
   }
 }
 </script>
-
-<style>
-.timerWrapper{
-  width: 100%;
-  height: 16px;
-  background-color: #D5DDE5;
-  border-radius: 50px;
-  position: relative;
-  display:none;
-}
-#timeProgress{
-  width: 0;
-  height: 100%;
-  background-color: #98A8CC;
-  border-radius: 50px;
-  /*transition: 0.2s ease;*/
-}
-</style>
