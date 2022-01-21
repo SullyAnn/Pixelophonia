@@ -4,6 +4,7 @@
     <form @submit.prevent="handleSubmit">
         <input v-model="label" type="text" name="label" placeholder="Libellé de la question" class="labelChoice" required>
         <textarea v-model="question" placeholder="Question" name="question" class="labelChoice" required></textarea>
+        <input v-model="temps" type="number" name="temps" placeholder="Durée (en secondes)" class="labelChoice" min="0" step="1">
 
         <div class="choices2">
         <fieldset>
@@ -41,6 +42,7 @@ export default {
     return { 
         label: '',
         question: '',
+        temps: null,
         title1: '',
         img1: [],
         title2: '',
@@ -57,22 +59,29 @@ export default {
       this.img1 = document.getElementById("image1").files[0];
       this.img2 = document.getElementById("image2").files[0];
 
+      /*//gestion du temps
+      let tempsInDB = 0
+      if(this.temps){tempsInDB = parseInt(this.temps)}
+      //----------------*/
+
       const body = {
         label: this.label,
         question: this.question,
+        temps: this.temps,
         title1: this.title1,
         img1: this.img1.name,
         title2: this.title2,
         img2: this.img2.name,
       }
       console.log("avant addQuestions")
+      console.log(body)
       const questions = await addQuestion(this.$axios, body)
       console.log("après addQuestion")
       //const questions = await getQuestions(this.$axios)
 
       //on récupère la dernière question ajoutée pour en récupérer l'id
       console.log(questions)
-      console.log(questions[Object.keys(questions)[Object.keys(questions).length-1]])
+      //console.log(questions[Object.keys(questions)[Object.keys(questions).length-1]])
       let lastAddedQuestion = questions[Object.keys(questions)[Object.keys(questions).length-1]]
 
       const extension1 = (lastAddedQuestion.choices[0].img).split('.')
@@ -87,7 +96,7 @@ export default {
           id2: lastAddedQuestion.choices[1].id,
         }
 
-       const question = await updateQuestion(this.$axios, lastAddedQuestion.id, bodyChanged)
+      const question = await updateQuestion(this.$axios, lastAddedQuestion.id, bodyChanged)
       console.log(question)
       
       // enregistrement des images dans le dossier image du projet 

@@ -77,6 +77,7 @@ app.post('/question', async (req, res) => {
     data: {
       label: req.body.label,
       question : req.body.question,
+      temps : Number(req.body.temps),
       choices : {
         create: [
           { title: req.body.title1, img: req.body.img1 },
@@ -129,6 +130,7 @@ app.put('/question/:id', async (req, res) => {
     data: { 
       label: req.body.label,
       question : req.body.question,
+      temps : Number(req.body.temps),
     },
   })
 
