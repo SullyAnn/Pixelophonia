@@ -25,14 +25,16 @@
                 <!-- option de visibilité du temps -->
                 <input type="checkbox" name="checkTime" class="checkTime" checked>
                 <label for="checkTime">Temps visible sur l'écran</label>
-
-                <div class="timerWrapper">
-                  <div id="timeProgress" class="timeProgress"></div>
-                </div>
+                
+                  <div class="timerWrapper">
+                    <div id="timeProgress" class="timeProgress"></div>
+                  </div>
               </div>
               
               <div v-else class="btnLaunchResults"> <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcule des résultats -->
+                <div v-if="questionIsPlaying && indexQuestionPlaying == index">
                 <button @click="launchResultsNoTimer(index)">Lancer les résultats</button>
+                </div>
               </div>
 
           </li>
@@ -78,6 +80,7 @@ data () {
         newChoice:[],
         isReload: false,
         questionIsPlaying: false,
+        indexQuestionPlaying: -1,
     }
 },
 created(){
@@ -131,6 +134,7 @@ methods: {
       this.questionIsPlaying = !this.questionIsPlaying
 
       if(this.questionIsPlaying){//on lance une question
+        this.indexQuestionPlaying = idQuestionList
         console.log(questiondata)
         console.log("LaunchQuestion "+questiondata.id)
         const questionStartTime = Date.now(); //temps de départ de la question
@@ -147,18 +151,17 @@ methods: {
         if(questiondata.temps){ //si il y a un temps défini pour la question
           this.launchTimer(questionStartTime, questiondata.temps, idQuestionList) //lancer le timer chez l'admin
         }
-        else{
-          //Faire ce qui est nécéssaire pour les questions sans temps
-          const resultBtnWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.btnLaunchResults')
-          resultBtnWrapper.style.cssText ="display:block;"
-        }
       }
         else { //sinon c'est qu'on est en train de l'arrêter
             socket.emit("stop-question", 2)
             console.log("question arrêtée")
-            if(!questiondata.temps){//si on est dans une question à temps indéfini, on s'assure de cacher le bouton de lancement résultats
-              const resultBtnWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.btnLaunchResults')
-              resultBtnWrapper.style.cssText ="display:none;"
+            this.indexQuestionPlaying = -1
+            if(questiondata.temps){ //réinitialisation de la bar pour question à temps
+              const timerWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.timerWrapper')
+              timerWrapper.style.cssText ="display:none;"
+              var element = this.$refs['questionInList'][idQuestionList].querySelector('.timeProgress')
+              element.style.backgroundColor = '#98A8CC';//on réinitialise la barre de progrès
+              element.style.width = 0 + "%";
             }
         }
     },
@@ -219,10 +222,9 @@ methods: {
         console.log("Partie arrêtée.")
         this.$router.push("./")
     }, 
-    launchTimer: async function(questionStartTime, totalTime, idQuestionList){
+    launchTimer: function(questionStartTime, totalTime, idQuestionList){
           const timerWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.timerWrapper')
           timerWrapper.style.cssText ="display:block;"
-          
           //======== TIMER ========//
           console.log('START TIME' + questionStartTime)
           const timeDepart = questionStartTime
@@ -245,26 +247,18 @@ methods: {
                   else {
                     socket.emit('calcul-resultat')
                     clearInterval(myTimer);
-                    element.style.backgroundColor = '#98A8CC';//on remet en bleu
-                    element.style.width = 0 + "%";
-                    timerWrapper.style.cssText ="display:none;"
                   }
 
                   if(!this.questionIsPlaying){ //si on arrete la question avant la fin
-                    element.style.backgroundColor = '#98A8CC';//on remet en bleu
-                    element.style.width = 0 + "%";
                     clearInterval(myTimer)
-                    timerWrapper.style.cssText ="display:none;"
                   }
         }, 10)
     },
     launchResultsNoTimer: function(idQuestionList){
       if(this.questionIsPlaying){ //on vérifie qu'il y a bien une question en cours pour lancer les résultats
         socket.emit('calcul-resultat')
-        const resultBtnWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.btnLaunchResults')
-        resultBtnWrapper.style.cssText ="display:none;"
+        this.indexQuestionPlaying = -1 //fait disparaître le bouton pour lancer les résultat de sorte qu'on le lance qu'une seule fois
       }
-      
     }
   }
 }

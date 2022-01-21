@@ -5,10 +5,6 @@ body{
     background-position: center;
 }
 
-#__nuxt{
-    width: 100vw;
-    height: 100vh;
-}
 #__layout{
     height: 100%;
 }

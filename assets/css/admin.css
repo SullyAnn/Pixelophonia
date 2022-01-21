@@ -303,10 +303,6 @@ fieldset > * {
   /*transition: 0.2s ease;*/
 }
 
-.btnLaunchResults{
-    display: none;
-}
-
 /*=========== bouton form temps ========== */
 .tooltipWrapper {
     position: relative;
