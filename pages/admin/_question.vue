@@ -5,7 +5,10 @@
     <form @submit.prevent="handleSubmit">
         <input v-model="question.label" type="text" name="label"  class="labelChoice" required>
         <textarea v-model="question.question" placeholder="Question" class="labelChoice" required></textarea>
-        <input v-model="question.temps" type="number" name="temps" placeholder="Durée (en secondes)" class="labelChoice" min="0" step="1">
+        <div class="tooltipWrapper">
+        <input v-model="question.temps" type="number" name="temps" placeholder="Durée (en secondes)" class="labelChoice inputTime" min="0" step="1">
+        <span class="tooltipTime">Laisser vide ou mettre zéro pour une question sans durée</span>
+        </div>
 
         <div class="choices2">
         <fieldset>
@@ -107,7 +110,7 @@ import "@/assets/css/admin.css";
         //   data: form,
         //   config: {headers : {'content-type':'multipart/form-data'}}
         // })
-        this.$router.push('./')
+        this.$router.push('./creation')
       },
       previewFile : function(id, idFile) {
         var preview = document.getElementById(id);

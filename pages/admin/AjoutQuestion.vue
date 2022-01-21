@@ -4,7 +4,10 @@
     <form @submit.prevent="handleSubmit">
         <input v-model="label" type="text" name="label" placeholder="Libellé de la question" class="labelChoice" required>
         <textarea v-model="question" placeholder="Question" name="question" class="labelChoice" required></textarea>
-        <input v-model="temps" type="number" name="temps" placeholder="Durée (en secondes)" class="labelChoice" min="0" step="1">
+        <div class="tooltipWrapper">
+        <input v-model="temps" type="number" name="temps" placeholder="Durée (en secondes)" class="labelChoice inputTime" min="0" step="1">
+        <span class="tooltipTime">Laisser vide ou mettre zéro pour une question sans durée</span>
+        </div>
 
         <div class="choices2">
         <fieldset>
@@ -35,6 +38,7 @@
 
 <script>
 import {addQuestion, getQuestions, updateUploadImage, updateQuestion} from "@/assets/classes/Admin.js"
+import "@/assets/css/admin.css";
 
 export default {
   name: 'QuestionForm',
