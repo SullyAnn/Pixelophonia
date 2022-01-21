@@ -42,6 +42,7 @@
 import socket from '~/plugins/socket.io.js';
 import "../assets/css/playerChoice.css";
 import "../assets/css/playerHomePages.css";
+import "../pages/admin/launch.vue";
 
 export default {
   asyncData () {
@@ -76,8 +77,7 @@ export default {
       //alert("reload la page player")
       location.reload(true)
     })
-     socket.on('broadcast-menu', (displayStatus) => {
-      console.log("test")
+     socket.on('affiche-menu', (displayStatus) => {
       this.isQuestionDisplayed = false
       this.affichage = displayStatus
     })

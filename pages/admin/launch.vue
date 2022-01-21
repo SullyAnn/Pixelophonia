@@ -107,6 +107,8 @@ methods: {
     // start game 
     launchPartie: function(){
         this.questions = []
+        socket.emit("affichage-menu", 1)
+        console.log("test")
         // get all questions in database
         getQuestions(this.$axios).then(listQuestions => {
             listQuestions.forEach((question) => {

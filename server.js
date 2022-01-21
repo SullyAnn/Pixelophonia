@@ -64,10 +64,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime, question.temps, showTimerOnScreen)
   })
     //TEST DISPLAY MENU ON LAUNCH PARTY 
-    socket.on('display-menu', function (displayStatus) {
+    socket.on('affichage-menu', function (displayStatus) {
 
-    socket.broadcast.emit('broadcast-menu',displayStatus)
-    socket.broadcast.emit('display-menu-on-screen',displayStatus)
+      socket.broadcast.emit('affiche-menu',displayStatus)
+    socket.broadcast.emit('affiche-menu-on-screen',displayStatus)
   })
 
   socket.on('submit-choice', function (choicesPlayer) {
