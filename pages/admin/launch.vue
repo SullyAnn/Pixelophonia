@@ -156,6 +156,10 @@ methods: {
         else { //sinon c'est qu'on est en train de l'arrêter
             socket.emit("stop-question", 2)
             console.log("question arrêtée")
+            if(!questiondata.temps){//si on est dans une question à temps indéfini, on s'assure de cacher le bouton de lancement résultats
+              const resultBtnWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.btnLaunchResults')
+              resultBtnWrapper.style.cssText ="display:none;"
+            }
         }
     },
 

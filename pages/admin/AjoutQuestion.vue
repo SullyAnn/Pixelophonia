@@ -59,15 +59,15 @@ export default {
       this.img1 = document.getElementById("image1").files[0];
       this.img2 = document.getElementById("image2").files[0];
 
-      /*//gestion du temps
+      //gestion du temps
       let tempsInDB = 0
-      if(this.temps){tempsInDB = parseInt(this.temps)}
-      //----------------*/
+      if(this.temps){tempsInDB = this.temps}
+      //----------------
 
       const body = {
         label: this.label,
         question: this.question,
-        temps: this.temps,
+        temps: tempsInDB,
         title1: this.title1,
         img1: this.img1.name,
         title2: this.title2,
@@ -94,6 +94,7 @@ export default {
           id1: lastAddedQuestion.choices[0].id,
           img2: lastAddedQuestion.choices[1].img,
           id2: lastAddedQuestion.choices[1].id,
+          temps: tempsInDB,
         }
 
       const question = await updateQuestion(this.$axios, lastAddedQuestion.id, bodyChanged)

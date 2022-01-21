@@ -46,7 +46,6 @@ import "@/assets/css/admin.css";
     async asyncData({ params, $axios }) { //va chercher les données de la question et les garde dans les datas (dans question[]) avant de render la page (du côté du serveur)
       //const question = await $axios.$get(`api/question/${params.question}`)
       const question = await getQuestion($axios, params.question)
-      if(!question.temps){question.temps = null}
       return {question}
     },
     data(){
@@ -81,15 +80,15 @@ import "@/assets/css/admin.css";
         const extension2 = (this.img2.name).split('.')
         console.log(extension2[1])
 
-        /*//gestion du temps
+        //gestion du temps
         let tempsInDB = 0
-        if(this.question.temps){tempsInDB = parseInt(this.temps)}
-        //----------------*/
+        if(this.question.temps){tempsInDB = this.question.temps}
+        //----------------
 
         const body = {
           label: this.question.label,
           question: this.question.question,
-          temps: this.question.temps,
+          temps: tempsInDB,
           title1: this.question.choices[0].title,
           img1: `q${this.question.id}_c${this.question.choices[0].id}.${extension1[1]}`,
           id1: this.question.choices[0].id,
