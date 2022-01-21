@@ -2,6 +2,7 @@
   <section id="hostSection">
 
     <div id="waitingSection" v-if="waitingMode">
+
       <div id="qrCodeContent">
         <div id="waitingMessage">
           Bienvenue au concert de l'orchestre Pixelophonia ! <br> <br>
@@ -17,28 +18,16 @@
       <div id="logoLong">
         <img src="../assets/images/logoLong.png">
       </div>
-    </div>
 
     </div>
 
     <div v-else>
-      <div class="spinnerWrapper">
-        <div class="spinner"></div>
-      </div>
-    </div>
-      <div id="parent" class="displayed">
-            <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
-                <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
-                
-            </div>
-            <h2 class="question">{{questionLabel}}</h2>
-      </div>
-    </div>
-    <div v-else>
-      <div id="result">
-          <div v-for="(data, index)  of Object.values(parameters)" :key="index">
-              <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)" alt="image winner" class="images">
-              <h2> <i>{{data.percentage}}</i></h2>
+
+      <div v-if="!displayResult">
+
+        <div v-if="displayTimer">
+          <div class="timerWrapper">
+            <div id="timeProgress" ref="timeProgress"></div>
           </div>
         </div>
         <div v-else>
@@ -58,7 +47,7 @@
             </div>
             <div v-else>
               <div id="result">
-                <div v-for="(data, index) of Object.values(parameters)">
+                <div v-for="(data, index) of Object.values(parameters)" :key="index">
                   <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)"
                     alt="image winner" class="images">
                   <h2> <i>{{data.percentage}}</i></h2>
@@ -67,7 +56,7 @@
             </div>
 
 
-            </div>
+    </div>
 
   </section>
 </template>
