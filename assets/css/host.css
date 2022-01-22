@@ -10,7 +10,7 @@ body{
 
 #hostSection{
     height: 100vh;
-    width: 100vw;
+    /*width: 100vw;*/
 }
 
 #waitingSection{
@@ -19,7 +19,7 @@ body{
     justify-content: center;
     display: flex;
     flex-direction: column;
-    margin-inline: 230px;
+    margin: 0 12%;
 }
 
 #qrCodeContent{
@@ -30,17 +30,54 @@ body{
 }
 
 #waitingMessage {
-    width: 55%;
-    font-size: 45px;
+    width: 60%;
+    font-size: 2.5rem;
 }
 
 #qrCode{
-    padding: 40px;
-    background-color: rgba(255,255,255,0.5);
-    border-radius: 15px;
+    /* padding: 40px; */
+    /* background-color: rgba(255,255,255,0.5); */
+    /* border-radius: 15px; */
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#qrCode img {
+  border: solid 40px rgba(255,255,255,0.5);
+  border-radius: 16px;
+  height: 212px;
+  margin-left: 64px;
+}
+
+@media (max-width: 1200px) {
+  #waitingSection{
+    margin: 0 10%;
+  }
+  #waitingMessage {
+      width: 80%;
+      font-size: 2rem;
+  }
+  #qrCode img {
+    height: 180px;
+    margin-left: 56px;
+  }
+}
+@media (max-width: 768px) {
+  #qrCodeContent{
+    flex-direction: column;
+  }
+  #waitingMessage {
+    text-align: center;
+    width: auto;
+    margin-bottom: 48px;
+    font-size: 1.75rem;
+  }
+  #qrCode img {
+    height: 120px;
+    margin-left: 0;
+    border-width: 32px;
+  }
 }
 
 img{
@@ -80,22 +117,58 @@ img{
 .images{
 height:100%;
 }
-.question{
+.infoContainer{
   position : absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height:auto;
+  width:auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.question{
+  color: rgb(64, 70, 89);
+  font-size: 1.75rem;
+  font-weight: normal;
+  padding: 48px;
+  background-color: rgba(255,255,255,0.7);
+  border-radius:32px;
+  text-align: center;
+  margin-bottom: 32px;
+  max-width: 440px;
+  line-height: 1.5;
+}
+.chatArea h1 {
+  position: absolute;
+  font-size: 1.25rem;
+  padding: 12px 32px;
+  margin: 32px;
+  font-weight: bold;
+  background-color: rgba(64, 70, 89,0.8);
+  color: #fff;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+.qrCodeQuestion {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border: solid 16px rgba(255,255,255,0.5);
+  border-radius: 16px;
+  height: 96px;
+  margin: 32px;
+}
+/*#parent div:last-child{
+ position : absolute;
    top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   height:auto;
   width:auto;
-}
-#parent div:last-child{
-/* position : absolute;
-   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height:auto;
-  width:auto;*/
-}
+}*/
 
 .timerWrapper{
   width: 100%;
@@ -103,6 +176,8 @@ height:100%;
   background-color: #D5DDE5;
   border-radius: 50px;
   position: relative;
+  width: 80vw;
+  max-width: 720px;
 }
 #timeProgress{
   width: 0;

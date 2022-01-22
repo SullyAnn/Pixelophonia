@@ -1,39 +1,46 @@
 <template>
-<div id="addQuestion" class="window">
-    <h2>Ajouter une question</h2>
-    <form @submit.prevent="handleSubmit">
-        <input v-model="label" type="text" name="label" placeholder="Libellé de la question" class="labelChoice" required>
+  <div>
+    <AdminHeader />
+    <div id="addQuestion" class="window">
+      <h2>Ajouter une question</h2>
+      <form @submit.prevent="handleSubmit">
+        <input v-model="label" type="text" name="label" placeholder="Libellé de la question" class="labelChoice"
+          required>
         <textarea v-model="question" placeholder="Question" name="question" class="labelChoice" required></textarea>
         <div class="tooltipWrapper">
-        <input v-model="temps" type="number" name="temps" placeholder="Durée (en secondes)" class="labelChoice inputTime" min="0" step="1">
-        <span class="tooltipTime">Laisser vide ou mettre zéro pour une question sans durée</span>
+          <input v-model="temps" type="number" name="temps" placeholder="Durée (en secondes)"
+            class="labelChoice inputTime" min="0" step="1">
+          <span class="tooltipTime">Laisser vide ou mettre zéro pour une question sans durée</span>
         </div>
 
         <div class="choices2">
-        <fieldset>
+          <fieldset>
             <legend>Choix n°1</legend>
             <input v-model="title1" type="text" name="title1" placeholder="Titre" class="labelChoice" required>
-            <input v-on:change="getImg1(), previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;" required>
-            <label for="image1" class="importImg" >
-              	<img src="@/assets/images/addPic.jpg" width="200" id="display1" />
+            <input v-on:change="getImg1(), previewFile('display1', 'image1')" type="file" accept="image/*" name="img1"
+              id="image1" style="display:none;" required>
+            <label for="image1" class="importImg">
+              <img src="@/assets/images/addPic.jpg" width="200" id="display1" />
             </label>
-        </fieldset>
+          </fieldset>
 
-        <fieldset>
+          <fieldset>
             <legend>Choix n°2</legend>
             <input v-model="title2" type="text" name="title2" placeholder="Titre" class="labelChoice" required>
-            <input v-on:change="getImg2(), previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2" style="display:none;" required>
-            <label for="image2" class="importImg" >
+            <input v-on:change="getImg2(), previewFile('display2', 'image2')" type="file" accept="image/*" name="img2"
+              id="image2" style="display:none;" required>
+            <label for="image2" class="importImg">
               <img src="@/assets/images/addPic.jpg" width="200" id="display2" />
             </label>
-        </fieldset> 
+          </fieldset>
         </div>
 
         <input type="submit" value="ok" class="btn send">
-    </form>
+      </form>
 
-    <NuxtLink to="./creation">Revenir à la liste (sans sauvegarder)</NuxtLink>
-</div>
+      <NuxtLink to="./creation">Revenir à la liste (sans sauvegarder)</NuxtLink>
+    </div>
+  </div>
 </template>
 
 <script>

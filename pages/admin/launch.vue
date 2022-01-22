@@ -1,58 +1,59 @@
 <template>
-  <div id="listQuestions" class="questionsList">
+  <div>
+    <AdminHeader />
+    <div id="listQuestions" class="questionsList launchPage">
       <h2>Liste des questions</h2>
       <ul ref="questions" class="questions">
-          <li v-for="(question, index) in questions" :key="index" class="question" ref="questionInList">
-              <p>{{ question.label }}</p>
-              <button :id="index+1" @click="switchClass(index+1), toggleQuestion(question, index)" class="btn start">
-                <svg style="display:block;"
-                    class="svg-icon" 
-                    viewBox="0 0 1025 1024" 
-                    version="1.1" 
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1024 512l-804.0448 512L219.9552 0 1024 512z"  />
-                </svg>
-                <svg style="display:none;"
-                    class="svg-icon" 
-                    viewBox="0 0 1024 1024" 
-                    version="1.1" 
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 0l1024 0 0 1024L0 1024 0 0z"  />
-                </svg>
-              </button>
+        <li v-for="(question, index) in questions" :key="index" class="question" ref="questionInList">
+          <div class="labelAndStartBtnWrapper">
+            <p>{{ question.label }}</p>
+            <button :id="index+1" @click="switchClass(index+1), toggleQuestion(question, index)" class="btn start">
+              <svg style="display:block;" class="svg-icon" viewBox="0 0 1025 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M1024 512l-804.0448 512L219.9552 0 1024 512z" />
+              </svg>
+              <svg style="display:none;" class="svg-icon" viewBox="0 0 1024 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0l1024 0 0 1024L0 1024 0 0z" />
+              </svg>
+            </button>
+          </div>
 
-              <div v-if="question.temps">
-                <!-- option de visibilité du temps -->
-                <input type="checkbox" name="checkTime" class="checkTime" checked>
-                <label for="checkTime">Temps visible sur l'écran</label>
-                
-                  <div class="timerWrapper">
-                    <div id="timeProgress" class="timeProgress"></div>
-                  </div>
-              </div>
-              
-              <div v-else class="btnLaunchResults"> <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcule des résultats -->
-                <div v-if="questionIsPlaying && indexQuestionPlaying == index">
-                <button @click="launchResultsNoTimer(index)">Lancer les résultats</button>
-                </div>
-              </div>
+          <div v-if="question.temps" class="timeQuestionOptions">
+            <!-- option de visibilité du temps -->
+            <label class="checkTimeLabel"><input type="checkbox" name="checkTime" class="checkTime" checked>Temps
+              visible
+              sur l'écran</label>
 
-          </li>
+
+            <div class="timerWrapper">
+              <div id="timeProgress" class="timeProgress"></div>
+            </div>
+          </div>
+
+          <div v-else class="btnLaunchResults">
+            <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcule des résultats -->
+            <div v-if="questionIsPlaying && indexQuestionPlaying == index">
+              <button @click="launchResultsNoTimer(index)">Lancer les résultats</button>
+            </div>
+          </div>
+
+        </li>
       </ul>
 
-    <div class="goBack" @click="stopPartie()">
+      <div class="goBack" @click="stopPartie()">
         <button class="btn back">
-        <svg class="svg-icon" 
-            viewBox="0 0 1024 1024" 
-            version="1.1" 
-            xmlns="http://www.w3.org/2000/svg">
-            <path d="M810.666667 554.666667H213.333333c-25.6 0-42.666667-17.066667-42.666666-42.666667s17.066667-42.666667 42.666666-42.666667h597.333334c25.6 0 42.666667 17.066667 42.666666 42.666667s-17.066667 42.666667-42.666666 42.666667z"  />
-            <path d="M512 853.333333c-12.8 0-21.333333-4.266667-29.866667-12.8l-298.666666-298.666666c-17.066667-17.066667-17.066667-42.666667 0-59.733334l298.666666-298.666666c17.066667-17.066667 42.666667-17.066667 59.733334 0s17.066667 42.666667 0 59.733333L273.066667 512l268.8 268.8c17.066667 17.066667 17.066667 42.666667 0 59.733333-8.533333 8.533333-17.066667 12.8-29.866667 12.8z"  />
-        </svg>    
+          <svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M810.666667 554.666667H213.333333c-25.6 0-42.666667-17.066667-42.666666-42.666667s17.066667-42.666667 42.666666-42.666667h597.333334c25.6 0 42.666667 17.066667 42.666666 42.666667s-17.066667 42.666667-42.666666 42.666667z" />
+            <path
+              d="M512 853.333333c-12.8 0-21.333333-4.266667-29.866667-12.8l-298.666666-298.666666c-17.066667-17.066667-17.066667-42.666667 0-59.733334l298.666666-298.666666c17.066667-17.066667 42.666667-17.066667 59.733334 0s17.066667 42.666667 0 59.733333L273.066667 512l268.8 268.8c17.066667 17.066667 17.066667 42.666667 0 59.733333-8.533333 8.533333-17.066667 12.8-29.866667 12.8z" />
+          </svg>
         </button>
         Mettre fin au jeu
-    </div>
+      </div>
 
+    </div>
   </div>
 </template>
 

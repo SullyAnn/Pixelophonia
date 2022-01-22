@@ -25,24 +25,29 @@
 
       <div v-if="!displayResult">
 
-        <div v-if="displayTimer">
-          <div class="timerWrapper">
-            <div id="timeProgress" ref="timeProgress"></div>
-          </div>
-        </div>
-        <div v-else>
-          <div class="spinnerWrapper">
-            <div class="spinner"></div>
-          </div>
-        </div>
-
         <div id="parent" class="displayed">
           <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
+            <h1 v-if="index == 0" style="right:0; top:0;">{{data.title}}</h1>
+            <h1 v-else style="left:0; bottom:0;">{{data.title}}</h1>
             <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
-
           </div>
-          <h2 class="question">{{questionLabel}}</h2>
+
+          <div class="infoContainer">
+            <h2 class="question">{{questionLabel}}</h2>
+            <div v-if="displayTimer">
+              <div class="timerWrapper">
+                <div id="timeProgress" ref="timeProgress"></div>
+              </div>
+            </div>
+            <div v-else>
+              <div class="spinnerWrapper">
+                <div class="spinner"></div>
+              </div>
+            </div>
+          </div>
+
         </div>
+
       </div>
       <div v-else>
         <div id="result">
@@ -54,6 +59,8 @@
         </div>
       </div>
 
+
+          <img src="../assets/images/qrCode.png" class="qrCodeQuestion">
 
     </div>
 

@@ -1,18 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 body {
-    background-color: #CDC0C9;
-    font-family: 'Montserrat', sans-serif;
-    color: #3D4D7C;
-    margin: 0;
-    padding: 10px 20px;
+  background-color: #CDC0C9;
+  font-family: 'Montserrat', sans-serif;
+  color: #3D4D7C;
+  margin: 0;
+  padding: 10px 20px;
 }
+
 button {
-    font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 /* === Identification === */
@@ -25,62 +26,67 @@ TO DO :
 - Centrer correctement
 - rajouter la texture en background
 - mettre le titre joli 
-*/ 
+*/
 
 #menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 
-    width: 100%;
-    height: 80vh;
+  width: 100%;
+  height: 80vh;
 }
 
 
 .linkBtnMenu {
-    width: 40%;
-    text-align: center;
-    font-weight:normal;
+  width: 40%;
+  text-align: center;
+  font-weight: normal;
 }
 
 .btnMenu:hover {
-    background:rgba(255, 255, 255, 1);
-    transform: scale(1.1);
-    cursor: pointer;
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .btnMenu {
-    background:rgba(255, 255, 255, 0.5);
-    border-radius: 11px;
-    display: block;
-    border: 1px solid #3D4D7C;
-    width: 100%;
-    padding: 30px;
-    font-weight: bold;
-    color: #3D4D7C;
-    transition: 0.5s;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 11px;
+  display: block;
+  border: 1px solid #3D4D7C;
+  width: 100%;
+  padding: 30px;
+  font-weight: bold;
+  color: #3D4D7C;
+  transition: 0.5s;
 }
 
 /* ==== Launch Game ===== */
 
 .questionsList {
-    list-style: none;
+  list-style: none;
+}
+
+ul.questions {
+  margin: 40px 0px;
 }
 
 li {
-    display: flex;
-    margin-bottom: 10px;
+  display: flex;
+  margin-bottom: 16px;
+  align-items: center;
 }
 
 .questionsList p {
-    display: inline-block;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 13px;
-    width: 200px;
-    height: 100%;
-    margin:0 20px 0 0;
+  display: inline-block;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 13px;
+  width: 200px;
+  height: 100%;
+  margin: 0 20px 0 0;
 
 }
 
@@ -88,202 +94,217 @@ li {
 
 /* ------ Buttons ------- */
 .btn {
-    width: 40px;
-    height: 40px; 
-    border-radius: 50%;
-    margin:0 5px;
-    padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 5px;
+  padding: 0;
 
-    border: none;
+  border: none;
 
-    line-height: 1;
-    position: relative;
-    padding: 1em;
-    color: #fff;
-    background: transparent;
-    transition: .3s;
+  line-height: 1;
+  position: relative;
+  padding: 1em;
+  color: #fff;
+  background: transparent;
+  transition: .3s;
 }
 
 .btn:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .btn:active {
-    transform: scale(1.5);
+  transform: scale(1.5);
 }
 
 .svg-icon {
-    transform: scale(1.1);
-    vertical-align: middle;
-    fill: currentColor;
-    overflow: hidden;
+  transform: scale(1.1);
+  vertical-align: middle;
+  fill: currentColor;
+  overflow: hidden;
 }
 
 .btn.update {
-    background: #4495B8;
+  background: #4495B8;
 }
 
 .btn.update:hover,
 .btn.update:focus {
-    background: #186180;
+  background: #186180;
 }
 
 .btn.delete {
-    background: #CA4B4B;
+  background: #CA4B4B;
 }
 
 .btn.delete:hover,
 .btn.delete:focus {
-    background: #aa1b1b;
+  background: #aa1b1b;
 }
 
 
 .btn.add {
-    background: #9BD088;
+  background: #9BD088;
+  margin-bottom: 16px;
 }
 
 .btn.add:hover,
 .btn.add:focus {
-    background: #6cad56; }
+  background: #6cad56;
+}
 
 
 .goBack {
-    cursor:pointer;
+  cursor: pointer;
 }
+
 .btn.back {
-    background: #fff;
-    color: #3D4D7C;
+  background: #fff;
+  color: #3D4D7C;
 }
 
 .btn.back:hover,
 .btn.back:focus {
-    background: #9ca3b9;
-    color: #fff;
+  background: #9ca3b9;
+  color: #fff;
 }
 
 
 /* ---- See question ---- */
 
 .window {
-    width: 80%;
-    text-align: center;
-    margin:auto;
-    padding: 10% auto;
+  width: 80%;
+  text-align: center;
+  margin: auto;
+  padding: 10% auto;
 }
 
 .window h2 {
-    background: #3D4D7C;
-    color: #fff; 
+  background: #3D4D7C;
+  color: #fff;
 
-    height: 50px;
-    padding: 15px 0 0;
-    border-radius: 13px;
+  height: 50px;
+  padding: 15px 0 0;
+  border-radius: 13px;
 }
 
 .window .choices {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 90%;
-    border: 1px solid #fff;
-    padding: 5%;
-    margin:auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 90%;
+  border: 1px solid #fff;
+  padding: 5%;
+  margin: auto;
 }
 
-.labelChoice, .labelQuestion {
-    background:rgba(255, 255, 255, 0.5);
-    padding: 5px;
-    border-radius: 11px;
-    border:0;
-}
+.labelChoice,
 .labelQuestion {
-    width: 200px;
-    padding: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+  border-radius: 11px;
+  border: 0;
+}
+
+.labelQuestion {
+  width: 200px;
+  padding: 10px;
 }
 
 /* ---- Add question ---- */
 
 form {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-evenly;
-    border: 1px solid #fff;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-evenly;
+  border: 1px solid #fff;
 }
 
-form > * {
-    display: block;
-    width: 70%;
-    padding:0;
-    margin: 10px auto 0;
+form>* {
+  display: block;
+  width: 70%;
+  padding: 0;
+  margin: 10px auto 0;
 }
 
 form .choices2 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding:  10px 5%;
-    height:300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 10px 5%;
+  height: 300px;
 }
 
-form > *  {
-    font-size: 16px;
-    font-family: 'Montserrat', sans-serif;
-    width: 70%;
+form>* {
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+  width: 70%;
 }
 
 fieldset .labelChoice {
-    height: 25px;
-    font-family: montserrat;
+  height: 25px;
+  font-family: montserrat;
 }
 
 .choices2 fieldset {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-    width: 45%;
-    margin:auto;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 45%;
+  margin: auto;
 }
 
-fieldset > * {
-    margin-bottom: 20px;
+fieldset>* {
+  margin-bottom: 20px;
 }
+
 .importImg {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    width:100%;
-    height: 100%;
-    overflow: hidden;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
+
 .importImg img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
 .importImg:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .send {
-    width: 50px;
-    height:50px;
-    background: #9BD088;
-    position: relative;
-    color: #fff;
-    margin: 20px 15% 20px auto;
-    transition: 0.5s;
+  width: 50px;
+  height: 50px;
+  background: #9BD088;
+  position: relative;
+  color: #fff;
+  margin: 20px 15% 20px auto;
+  transition: 0.5s;
 }
 
 .send:hover {
-    background: #6cad56;
-    cursor: pointer;
+  background: #6cad56;
+  cursor: pointer;
 }
 
 /* ==== Launch Game ==== */
 
-.start      {background: #6cad56;}
-.stop       {background: #aa1b1b;}
-.cantSelect {background: #929292;}
+.start {
+  background: #6cad56;
+}
+
+.stop {
+  background: #aa1b1b;
+}
+
+.cantSelect {
+  background: #929292;
+}
 
 /* ==== Timer ==== */
 .timerWrapper {
@@ -293,6 +314,7 @@ fieldset > * {
   border-radius: 50px;
   position: relative;
   display: none;
+  margin-top: 8px;
 }
 
 #timeProgress {
@@ -303,37 +325,118 @@ fieldset > * {
   /*transition: 0.2s ease;*/
 }
 
+/*--------- checkbox -----------*/
+.checkTimeLabel {
+  padding: 12px 0px;
+  padding-right: 24px;
+}
+
+.checkTimeLabel:hover {
+  cursor: pointer;
+}
+
+.timeQuestionOptions {
+  margin: 0px 24px;
+  width: 40%;
+}
+
+.timeQuestionOptions input[type="checkbox"i] {
+  margin-right: 8px;
+}
+
+.labelAndStartBtnWrapper{
+    display: flex;
+    align-items: center;
+}
+
+.btnLaunchResults button {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #37263E;
+    margin-left: 24px;
+    transition: 0.2s ease;
+}
+
+.btnLaunchResults button:hover {
+    cursor: pointer;
+    background-color: #53455A;
+}
+
+@media (max-width: 768px) {
+    .questionsList.launchPage li {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 24px;
+    }
+    .timeQuestionOptions {
+        margin: 0;
+        margin-top: 8px;
+        width: auto;
+        width: 60%;
+        min-width: 240px;
+    }
+
+    .btnLaunchResults button {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .questionsList ul {
+        padding: 0;
+    }
+    .timeQuestionOptions{
+        width: 100%;
+    }
+    .labelAndStartBtnWrapper p {
+        font-size: 1rem;
+        width: 160px;
+    }
+}
+
 /*=========== bouton form temps ========== */
 .tooltipWrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .tooltipTime {
-    visibility: hidden;
-    background-color: rgba(61,77,124,0.92);
-    color: #fff;
-    font-size:0.75rem;
-    text-align: center;
-    padding: 4px;
-    border-radius: 6px;
-   
-    position: absolute;
-    margin-bottom:4px;
-    bottom: 100%;
-    left: 0;
-    width: 120px;
-    z-index: 1;
-    transform: translateX(-5px);
-  }
-  
-  .inputTime {
-    width: 100%;
-    transform: translate(-5px);
-    font-size: 16px;
-    font-family: 'Montserrat', sans-serif;
-  }
-  
-  .inputTime:hover + .tooltipTime {
-    visibility: visible;
-  }
+  position: relative;
+  display: inline-block;
+}
+
+.tooltipTime {
+  visibility: hidden;
+  background-color: rgba(61, 77, 124, 0.92);
+  color: #fff;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 4px;
+  border-radius: 6px;
+
+  position: absolute;
+  margin-bottom: 4px;
+  bottom: 100%;
+  left: 0;
+  width: 120px;
+  z-index: 1;
+  transform: translateX(-5px);
+}
+
+.inputTime {
+  width: 100%;
+  transform: translate(-5px);
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.inputTime:hover+.tooltipTime {
+  visibility: visible;
+}
+
+
+/*======= Page CREATION =======*/
+@media (max-width: 576px) {
+    .questionsList.creationPage {
+        padding: 0;
+    }
+}
+
