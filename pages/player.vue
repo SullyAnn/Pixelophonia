@@ -108,7 +108,7 @@ export default {
         //console.log("IsChoice1Disabled = " + this.IsChoice1Disabled)
         
     }),
-    socket.on('display-final-choice', (totalvotes, winner, percentage) => {
+    socket.on('display-final-choice', (totalvotes, winner, percentage, egalite) => {
       
       console.log('DISPLAY LE RESULTAT')
       this.displayResult = true

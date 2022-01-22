@@ -109,13 +109,22 @@ img{
     justify-content:center;
 }
 
+.questionSection, .questionSection > div, .questionSection > div > div {
+  height: 100%;
+}
+
 .chatArea{
-  height:100vh;
-  width:50vw;
+  /*height:100vh;
+  width:50vw;*/
+  width: 50%;
   overflow:hidden;
 }
 .images{
 height:100%;
+width: 100%;
+object-fit: cover;
+margin-left: 50%;
+transform: translateX(-50%);
 }
 .infoContainer{
   position : absolute;
@@ -151,6 +160,7 @@ height:100%;
   color: #fff;
   border-radius: 8px;
   text-transform: uppercase;
+  z-index: 1;
 }
 .qrCodeQuestion {
   position: absolute;
@@ -161,14 +171,15 @@ height:100%;
   height: 96px;
   margin: 32px;
 }
-/*#parent div:last-child{
- position : absolute;
-   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height:auto;
-  width:auto;
-}*/
+@media (max-width: 768px) {
+  #parent.displayed{
+    flex-direction: column;
+  }
+  .chatArea{
+    height: 50%;
+    width: 100%;
+  }
+}
 
 .timerWrapper{
   width: 100%;
@@ -228,4 +239,53 @@ height:100%;
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+
+/*-------- RESULTAT --------*/
+#result {
+  height: 100%;
+  overflow: hidden;
+}
+#result > div {
+  height: 100%;
+}
+#result img {
+  object-fit: cover;
+}
+#result .infosResult {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#result h2 {
+  color: rgb(64, 70, 89);
+  font-size: 1.75rem;
+  font-weight: normal;
+  padding: 48px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 32px;
+  text-align: center;
+  margin: 0;
+  max-width: 440px;
+  line-height: 1.5;
+}
+
+#result h1 {
+  font-size: 1.25rem;
+  padding: 12px 32px;
+  margin: 32px;
+  font-weight: bold;
+  background-color: rgba(64, 70, 89,0.8);
+  color: #fff;
+  border-radius: 8px;
+  text-transform: uppercase;
+  z-index: 1;
 }

@@ -106,6 +106,7 @@ io.on('connection', (socket) => {
     console.log(choicesResult)
 
     let winner = {}
+    let egalite = false
 
     //================== TROUVE LE WINNER ==================//
       if(choicesResult[0] != null && choicesResult[1] != null){
@@ -120,12 +121,13 @@ io.on('connection', (socket) => {
               let random = Math.floor(Math.random() * (max - min)) + min;
               if(random == 1) winner = choicesResult[0]
               else if(random == 2) winner = choicesResult[1]
+              egalite = true
           }
       
           //calcul pourcentage
           let percentage = (winner.nbvotes/(choicesResult[0].nbvotes + choicesResult[1].nbvotes))*100;
 
-          io.emit('display-final-choice', totalvotes, winner, percentage)
+          io.emit('display-final-choice', totalvotes, winner, percentage, egalite)
           totalvotes=0 //remise à zero des votes
           nbChoice1=0
           nbChoice2=0

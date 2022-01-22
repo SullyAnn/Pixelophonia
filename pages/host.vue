@@ -21,7 +21,7 @@
 
     </div>
 
-    <div v-else>
+    <div v-else class="questionSection">
 
       <div v-if="!displayResult">
 
@@ -54,7 +54,11 @@
           <div v-for="(data, index) of Object.values(parameters)">
             <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)"
               alt="image winner" class="images">
-            <h2> <i>{{data.percentage}}</i></h2>
+            <div class="infosResult">
+            <h2 v-if="!data.egalite">{{data.percentage}} d’entre vous ont choisi cette voie </h2>
+            <h2 v-else>Égalité ! La machine a décidée pour vous</h2>
+            <h1>{{data.winnerTitle}}</h1>
+            </div>
           </div>
         </div>
       </div>
@@ -124,11 +128,11 @@ export default {
       this.questionLabel = questiondata.question
       console.log(this.tab)
     })
-    socket.on('display-final-choice', (totalvotes, winner, percentage) => {
+    socket.on('display-final-choice', (totalvotes, winner, percentage, egalite) => {
        this.parameters = []
        this.displayResult = true
 
-        this.parameters.push({totalvote:totalvotes,winner:winner.img, percentage:Math.floor(percentage)+"%" })
+        this.parameters.push({totalvote:totalvotes,winner:winner.img,winnerTitle:winner.title,percentage:Math.floor(percentage)+"%", egalite: egalite })
     }),
     // quand on arrête la partie
     socket.on('stop-partie', () => {
