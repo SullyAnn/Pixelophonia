@@ -90,6 +90,12 @@ li {
 
 }
 
+.questionsList.creationPage p {
+  width: 40%;
+  max-width: 600px;
+  min-width: 200px;
+}
+
 /* ====== Creation ====== */
 
 /* ------ Buttons ------- */
@@ -157,8 +163,12 @@ li {
 
 .goBack {
   cursor: pointer;
+  width: fit-content;
 }
-
+/*btn goback page creation*/
+.creationGoBackContainer .goBack {
+  float: left;
+}
 .btn.back {
   background: #fff;
   color: #3D4D7C;

@@ -160,6 +160,7 @@ export default {
           const totalTimeMs = totalTime*1000 //on passe le temps en secondes en millisecondes
 
           let myTimer = setInterval(() => {
+            console.log('TIMER TURNING')
              if (!this.waitingMode){
                //console.log('SETINTERVAL')
                   let currentTime = Date.now()
@@ -167,7 +168,8 @@ export default {
                   let tempsEcoule = currentTime-timeDepart //en millisecondes
 
                   if(tempsEcoule<=totalTimeMs){
-                    element.style.width = (tempsEcoule/totalTimeMs)*100 + "%";
+                    //element.style.width = (tempsEcoule/totalTimeMs)*100 + "%";
+                    element.style.width = "calc(16px + ("+tempsEcoule/totalTimeMs+" * (100% - 16px)))";
                     if((tempsEcoule/totalTimeMs)*100 >75){
                       element.style.backgroundColor = '#CA4B4B'; //on passe en rouge
                     }
