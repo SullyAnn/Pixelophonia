@@ -6,11 +6,14 @@
 	<div id="menu">
 		<!-- TO DO : changer newAdmin dans les path -->
 		<NuxtLink to="/admin/launch" class="linkBtnMenu"> 
-			<button class ="btnMenu"> Lancer la partie </button>
+			<button class ="btnMenu"> Lancer un concert </button>
 		</NuxtLink>
 		
 		<NuxtLink to="/admin/creation" class="linkBtnMenu">
-			<button class ="btnMenu"> Créer votre jeu </button>
+			<button class ="btnMenu"> Gérer les questions </button>
+		</NuxtLink>	
+		<NuxtLink to="/admin/concert/" class="linkBtnMenu">
+			<button class ="btnMenu"> Gérer les concerts </button>
 		</NuxtLink>	
 	</div>
 

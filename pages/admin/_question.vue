@@ -61,7 +61,7 @@ import "@/assets/css/admin.css";
     },
     data(){
       return{
-        //form: FormData,
+        form: FormData,
       }
     },
     methods: {

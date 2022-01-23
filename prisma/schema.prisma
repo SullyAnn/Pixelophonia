@@ -21,7 +21,7 @@ model Question {
   id        Int       @id @default(autoincrement())
   label     String
   question  String 
-  temps     Int
+  temps     Int?
   choices   Choice[] 
   concerts QuestionsOnConcerts[]
 }

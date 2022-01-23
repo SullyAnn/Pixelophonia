@@ -137,8 +137,8 @@ export default {
 		if (file) { reader.readAsDataURL(file) }
 		else { 
 			preview.src =  document.getElementById(id).src		
-		} // TO DO : changer ça  
-      
+		} 
+    
     },
 
     // met dans la variable img le fichier que l'utilisateur est allé chercher
