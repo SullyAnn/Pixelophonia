@@ -171,6 +171,21 @@ transform: translateX(-50%);
   height: 96px;
   margin: 32px;
 }
+.nbTotalVotes {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgb(64, 70, 89);
+  font-weight: normal;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+  font-size: 1.25rem;
+  padding: 12px 32px;
+  margin: 32px;
+  font-weight: bold;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
 @media (max-width: 768px) {
   #parent.displayed{
     flex-direction: column;

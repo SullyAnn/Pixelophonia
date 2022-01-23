@@ -33,10 +33,13 @@
 
           <div v-else class="btnLaunchResults">
             <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcule des résultats -->
-            <div v-if="questionIsPlaying && indexQuestionPlaying == index">
+            <div v-if="questionIsPlaying && indexQuestionPlaying == index && displayBtnLancerResultat">
               <button @click="launchResultsNoTimer(index)">Lancer les résultats</button>
             </div>
           </div>
+
+          <!-- nombre de votes courants sur la question -->
+          <div v-if="questionIsPlaying && indexQuestionPlaying == index" class="nbTotalVotes">{{nbTotalVote}} votes</div>
 
         </li>
       </ul>
@@ -82,12 +85,19 @@ data () {
         isReload: false,
         questionIsPlaying: false,
         indexQuestionPlaying: -1,
+        nbTotalVote: 0,
+        displayBtnLancerResultat: true,
     }
 },
 created(){
     this.newQuestion = new Question(null,null,null,null)
 },
-
+beforeMount () {
+    socket.on('augmentation-nb-votes', (totalvotes) => {
+      this.nbTotalVote = totalvotes
+      //console.log('+1')
+    })
+},
 mounted () {
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) 
     {
@@ -157,6 +167,8 @@ methods: {
             socket.emit("stop-question", 2)
             console.log("question arrêtée")
             this.indexQuestionPlaying = -1
+            this.displayBtnLancerResultat = true
+            this.nbTotalVote=0
             if(questiondata.temps){ //réinitialisation de la bar pour question à temps
               const timerWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.timerWrapper')
               timerWrapper.style.cssText ="display:none;"
@@ -261,7 +273,8 @@ methods: {
     launchResultsNoTimer: function(idQuestionList){
       if(this.questionIsPlaying){ //on vérifie qu'il y a bien une question en cours pour lancer les résultats
         socket.emit('calcul-resultat')
-        this.indexQuestionPlaying = -1 //fait disparaître le bouton pour lancer les résultat de sorte qu'on le lance qu'une seule fois
+        //this.indexQuestionPlaying = -1 //fait disparaître le bouton pour lancer les résultat de sorte qu'on le lance qu'une seule fois
+        this.displayBtnLancerResultat = false
       }
     }
   }

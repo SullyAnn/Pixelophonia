@@ -348,6 +348,7 @@ fieldset>* {
 .timeQuestionOptions {
   margin: 0px 24px;
   width: 40%;
+  max-width: 320px;
 }
 
 .timeQuestionOptions input[type="checkbox"i] {
@@ -374,6 +375,12 @@ fieldset>* {
     background-color: #53455A;
 }
 
+.launchPage .nbTotalVotes {
+  font-weight: bold;
+  font-size: 1.125rem;
+  margin: 12px 24px;
+}
+
 @media (max-width: 768px) {
     .questionsList.launchPage li {
         flex-direction: column;
@@ -386,11 +393,16 @@ fieldset>* {
         width: auto;
         width: 60%;
         min-width: 240px;
+        max-width: unset;
     }
 
     .btnLaunchResults button {
         margin-left: 0;
         margin-top: 8px;
+    }
+
+    .launchPage .nbTotalVotes {
+      margin: 12px 0;
     }
 }
 
