@@ -25,6 +25,8 @@
 
       <div v-if="!displayResult">
 
+        <h2 class="nbTotalVotes">{{nbTotalVote}} votes</h2>
+
         <div id="parent" class="displayed">
           <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
             <h1 v-if="index == 0" style="right:0; top:0;">{{data.title}}</h1>
@@ -88,6 +90,7 @@ export default {
       winner:{},
       percentage:0,
       parameters:[],
+      nbTotalVote: 0,
 
       waitingMode: true,
       displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
@@ -140,6 +143,9 @@ export default {
     }),
     socket.on('stop-question', () => {
       this.resetAllData()
+    }),
+    socket.on('augmentation-nb-votes', (totalvotes) => {
+      this.nbTotalVote = totalvotes
     })
   },
   mounted () {
@@ -156,6 +162,7 @@ export default {
       this.winner = {}
       this.percentage = 0
       this.parameters=[]
+      this.nbTotalVote=0
       //console.log('resetdata')
     },
     afficheTimer: async function(questionStartTime, totalTime){

@@ -94,6 +94,10 @@ io.on('connection', (socket) => {
     
     // transmission au player de son choix (comme une sorte de confirmation après son choix)
     io.to(socket.id).emit('display-player-choice', {yourchoice:choicesPlayer.playerChoice})
+
+    //on envoie le nombre de vote au total qui a augmenté
+    //peut-être changer plus tard pour envoyer seulement à l'admin et au host, au lieu de broadcast à tout le monde
+    socket.broadcast.emit('augmentation-nb-votes',totalvotes)
   })
 
   //peut-être temporaire : permet de reload toutes les pages quand admin reload (utile pour developpement)
