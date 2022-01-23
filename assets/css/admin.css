@@ -64,7 +64,7 @@ TO DO :
 
 /* ==== Launch Game ===== */
 
-.questionsList {
+.listElements {
     list-style: none;
 }
 
@@ -73,7 +73,7 @@ li {
     margin-bottom: 10px;
 }
 
-.questionsList p {
+.listElements p {
     display: inline-block;
     padding: 10px;
     background: rgba(255, 255, 255, 0.5);
