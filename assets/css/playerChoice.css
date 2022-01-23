@@ -3,16 +3,26 @@
 }
 
 body{
-    margin: 0;
+    margin: 0!important;
+    padding: 0!important;
 }
 
 h1{
-    margin: 0;
+    /*margin: 0;
     font-weight: 500;
     font-size: 20px;
     margin: 20px;
     font-variant: small-caps;
-    font-weight: 300;
+    font-weight: 300;*/
+    font-size: 1rem;
+    padding: 12px 32px;
+    margin: 24px;
+    font-weight: bold;
+    background-color: rgba(64, 70, 89,0.8);
+    color: #fff;
+    border-radius: 8px;
+    text-transform: uppercase;
+    z-index: 1;
 }
 #choicePageContent{
     position: relative;
@@ -23,16 +33,21 @@ h1{
     flex-direction: column;
 }
 
+.container{
+    display: unset;
+    height: 100%;
+}
+
 #orBlock{
     position: absolute;
-    height: 100%;
-    width: 100%;
     z-index: 10;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 p{
     background-color: rgba(255, 255, 255, 0.5);
@@ -41,6 +56,23 @@ p{
     left: 50%;
     margin: 0;
     padding: 20px;
+}
+#orBlock p{
+    pointer-events: none;
+}
+#choicePageContent .btnSubmitChoice {
+    border: none;
+    padding: 16px 24px;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #37263E;
+    transition: 0.2s ease;
+    font-size: 1.25rem;
+}
+
+#choicePageContent .btnSubmitChoice:hover {
+    cursor: pointer;
+    background-color: #53455A;
 }
 
 #choicesDiv{
@@ -56,16 +88,30 @@ img{
     height: 100%;
     z-index: 7;
     width: 100%;
-    cursor:pointer;
     transition-duration: 0.4s;
     -webkit-transition-duration: 0.4s;
-
+    object-fit: cover;
 }
 
 .choice{
     height: 50%;
     display: flex;
     color: white;
+    transition: 0.2s ease;
+}
+.choice:hover{
+    cursor: pointer;
+}
+.choice .discarded{
+    filter: brightness(0.6);
+}
+.confirmationSubmit {
+    background-color: #0CB4CE;
+    padding: 12px 24px;
+    border-radius: 16px;
+    color: #fff;
+    transition: 0.2s ease;
+    font-size: 1rem;
 }
 @media screen and (min-width : 768px) {
     #choicePageContent{
@@ -76,6 +122,9 @@ img{
         width: 50%;
     }
     h1{
-        font-size: 35px;
+        font-size: 1.25rem;
+    }
+    .container{
+        display:flex;    
     }
 }

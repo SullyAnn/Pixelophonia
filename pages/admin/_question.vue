@@ -1,44 +1,56 @@
 <template>
-  <div class="window">
-    <h2>Modifier : {{ question.label }}</h2>
+  <div>
+    <AdminHeader />
+    <div class="window">
+      <h2>Modifier : {{ question.label }}</h2>
 
-    <form @submit.prevent="handleSubmit">
-        <input v-model="question.label" type="text" name="label"  class="labelChoice" required>
+      <form @submit.prevent="handleSubmit">
+        <input v-model="question.label" type="text" name="label" class="labelChoice" required>
         <textarea v-model="question.question" placeholder="Question" class="labelChoice" required></textarea>
+        <div class="tooltipWrapper">
+          <input v-model="question.temps" type="number" name="temps" placeholder="Durée (en secondes)"
+            class="labelChoice inputTime" min="0" step="1">
+          <span class="tooltipTime">Laisser vide ou mettre zéro pour une question sans durée</span>
+        </div>
 
         <div class="choices2">
-        <fieldset>
+          <fieldset>
             <legend>Choix n°1</legend>
-            <input v-model="question.choices[0].title" type="text" name="title1" placeholder="Titre" class="labelChoice" required> 
+            <input v-model="question.choices[0].title" type="text" name="title1" placeholder="Titre" class="labelChoice"
+              required>
 
-            <input v-on:change="previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1" style="display:none;">
-            <label for="image1" class="importImg" >
+            <input v-on:change="previewFile('display1', 'image1')" type="file" accept="image/*" name="img1" id="image1"
+              style="display:none;">
+            <label for="image1" class="importImg">
               <img :src="require(`assets/images/Question_${question.id}/${question.choices[0].img}`)" id="display1" />
             </label>
-        </fieldset>
+          </fieldset>
 
-        <fieldset>
+          <fieldset>
             <legend>Choix n°2</legend>
-            <input v-model="question.choices[1].title" type="text" name="title2" placeholder="Titre" class="labelChoice" required> 
+            <input v-model="question.choices[1].title" type="text" name="title2" placeholder="Titre" class="labelChoice"
+              required>
 
-            <input v-on:change="previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2" style="display:none;">
-            <label for="image2" class="importImg" >
-              <img :src="require(`assets/images/Question_${question.id}/${question.choices[1].img}`)"  id="display2" />
+            <input v-on:change="previewFile('display2', 'image2')" type="file" accept="image/*" name="img2" id="image2"
+              style="display:none;">
+            <label for="image2" class="importImg">
+              <img :src="require(`assets/images/Question_${question.id}/${question.choices[1].img}`)" id="display2" />
             </label>
-        </fieldset>
+          </fieldset>
         </div>
 
 
         <input type="submit" value="ok" class="btn send">
 
-    </form>
+      </form>
 
-    <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
+      <NuxtLink to="./creation">Revenir à la liste (sans sauvegarder)</NuxtLink>
+    </div>
   </div>
 </template>
 
 <script>
-import {getQuestion, updateQuestion, addImageFile} from "@/assets/classes/Admin.js"
+import {getQuestion, updateQuestion, updateUploadImage} from "@/assets/classes/Admin.js"
 import "@/assets/css/admin.css";
 
   export default {
@@ -74,14 +86,25 @@ import "@/assets/css/admin.css";
         form.append('idQuestion', this.question.id)
         form.append('idChoice1',this.question.choices[0].id)
         form.append('idChoice2',this.question.choices[1].id)
+
+        const extension1 = (this.img1.name).split('.')
+        const extension2 = (this.img2.name).split('.')
+        console.log(extension2[1])
+
+        //gestion du temps
+        let tempsInDB = 0
+        if(this.question.temps){tempsInDB = this.question.temps}
+        //----------------
+
         const body = {
           label: this.question.label,
           question: this.question.question,
+          temps: tempsInDB,
           title1: this.question.choices[0].title,
-          img1: this.img1.name,
+          img1: `q${this.question.id}_c${this.question.choices[0].id}.${extension1[1]}`,
           id1: this.question.choices[0].id,
           title2: this.question.choices[1].title,
-          img2: this.img2.name,
+          img2: `q${this.question.id}_c${this.question.choices[1].id}.${extension2[1]}`,
           id2: this.question.choices[1].id,
         }
         //this.form.push({img1 : this.img1.name}, {img2: this.img2.name})
@@ -95,7 +118,7 @@ import "@/assets/css/admin.css";
         //   data: form,
         //   config: {headers : {'content-type':'multipart/form-data'}}
         // })
-        this.$router.push('./')
+        this.$router.push('./creation')
       },
       previewFile : function(id, idFile) {
         var preview = document.getElementById(id);

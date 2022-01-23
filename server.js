@@ -52,17 +52,24 @@ io.on('connection', (socket) => {
     fn(displayQuestionData)
   })
   
-  socket.on('display-question', function (question, questionStartTime) {
+  socket.on('display-question', function (question, questionStartTime, showTimerOnScreen) {
+    //Initialisation du tableaux de result
+    choicesResult = Object.values(question.choices)
+    //reinitialisation des votes au début de la (nouvelle) question
+    totalvotes=0
+    nbChoice1 = 0
+    nbChoice2 = 0
+
     // transmission des choix pour le player
-    socket.broadcast.emit('broadcast-question', question.choices)
+    socket.broadcast.emit('broadcast-question', {id:question.id, choices:question.choices, question:question.question})
     // transmission de la question pour le screen
-    socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime)
+    socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime, question.temps, showTimerOnScreen)
   })
     //TEST DISPLAY MENU ON LAUNCH PARTY 
-    socket.on('display-menu', function (displayStatus) {
+    socket.on('affichage-menu', function (displayStatus) {
 
-    socket.broadcast.emit('broadcast-menu',displayStatus)
-    socket.broadcast.emit('display-menu-on-screen',displayStatus)
+      socket.broadcast.emit('affiche-menu',displayStatus)
+    socket.broadcast.emit('affiche-menu-on-screen',displayStatus)
   })
 
   socket.on('submit-choice', function (choicesPlayer) {
@@ -81,7 +88,6 @@ io.on('connection', (socket) => {
       arrayChoices.at(1).nbvotes = nbChoice2
 
       choicesPlayer.choices = Object.assign(arrayChoices) // reconversion en objet
-      //console.log(choicesPlayer.choices)
 
 
     choicesResult = Object.assign(arrayChoices)
@@ -103,6 +109,7 @@ io.on('connection', (socket) => {
     console.log(choicesResult)
 
     let winner = {}
+    let egalite = false
 
     //================== TROUVE LE WINNER ==================//
       if(choicesResult[0] != null && choicesResult[1] != null){
@@ -117,15 +124,17 @@ io.on('connection', (socket) => {
               let random = Math.floor(Math.random() * (max - min)) + min;
               if(random == 1) winner = choicesResult[0]
               else if(random == 2) winner = choicesResult[1]
+              egalite = true
           }
-      }
-      //calcul pourcentage
-      let percentage = (winner.nbvotes/(choicesResult[0].nbvotes + choicesResult[1].nbvotes))*100;
+      
+          //calcul pourcentage
+          let percentage = (winner.nbvotes/(choicesResult[0].nbvotes + choicesResult[1].nbvotes))*100;
 
-    io.emit('display-final-choice', totalvotes, winner, percentage)
-    totalvotes=0 //remise à zero des votes
-    nbChoice1=0
-    nbChoice2=0
+          io.emit('display-final-choice', totalvotes, winner, percentage, egalite)
+          totalvotes=0 //remise à zero des votes
+          nbChoice1=0
+          nbChoice2=0
+      }
   })
 
   //quand on appuie sur le bouton pour arrêter la partie depuis l'admin
@@ -146,6 +155,9 @@ io.on('connection', (socket) => {
   socket.on("stop-question", function(displayStatus){
     //on doit arrêter les question et tout remettre a zeros
     socket.broadcast.emit('stop-question',displayStatus)
+    totalvotes=0
+    nbChoice1 = 0
+    nbChoice2 = 0
   })
   /*socket.on("start-partie", function(){
     //socket.broadcast.emit('start-partie')

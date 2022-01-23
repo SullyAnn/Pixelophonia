@@ -1,5 +1,6 @@
 <template>
 <main>
+	<AdminHeader />
 	<h1>Bienvenue sur l'interface administrateur</h1>
 
 	<div id="menu">

@@ -10,6 +10,8 @@ export async function getQuestions(axios){
 
 export async function updateQuestion(axios, id, body){
     await axios.$put(`api/question/${id}`, JSON.stringify(body), {headers: { 'Content-Type': 'application/json' }}).catch(error => { console.log(error) });
+    const question = await axios.$get(`api/question/${id}`)
+    return question
 }
 
 export async function addQuestion(axios, body){

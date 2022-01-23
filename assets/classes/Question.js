@@ -21,11 +21,12 @@ export function calculatePercentage(winnerChoice, allVotes){
 }
 
 export default class Question{
-    constructor(id, label, question, choices){
+    constructor(id, label, question, temps, choices){
         this.id = id
         this.label = label
         this.question = question
         this.choices = choices
+        this.temps = temps
     }
     setId(newId){
         this.id = newId
@@ -36,6 +37,9 @@ export default class Question{
     }
     setQuestion(newQuestion){
         this.question = newQuestion
+    }
+    setChoices(newTemps){
+        this.temps = newTemps
     }
     setChoices(newChoices){
         this.choices = newChoices
