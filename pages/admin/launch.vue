@@ -21,9 +21,7 @@
 
           <div v-if="question.temps" class="timeQuestionOptions">
             <!-- option de visibilité du temps -->
-            <label class="checkTimeLabel"><input type="checkbox" name="checkTime" class="checkTime" checked>Temps
-              visible
-              sur l'écran</label>
+            <label class="checkTimeLabel"><input type="checkbox" name="checkTime" class="checkTime" checked>Temps visible sur l'écran</label>
 
 
             <div class="timerWrapper">
@@ -39,7 +37,7 @@
           </div>
 
           <!-- nombre de votes courants sur la question -->
-          <div v-if="questionIsPlaying && indexQuestionPlaying == index" class="nbTotalVotes">{{nbTotalVote}} votes</div>
+          <div v-if="questionIsPlaying && indexQuestionPlaying == index" class="nbTotalVotes">{{nbTotalVote}} vote(s)</div>
 
         </li>
       </ul>

@@ -24,8 +24,10 @@
     <div v-else class="questionSection">
 
       <div v-if="!displayResult">
-
-        <h2 class="nbTotalVotes">{{nbTotalVote}} votes</h2>
+        <!-- nombre de votes courants sur la question -->
+        <h2 v-if="nbTotalVote<=1" class="nbTotalVotes">{{nbTotalVote}} vote</h2>
+        <h2 v-else class="nbTotalVotes">{{nbTotalVote}} votes</h2>
+        <!---->
 
         <div id="parent" class="displayed">
           <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
