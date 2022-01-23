@@ -67,8 +67,6 @@ app.put('/choice/:id', async (req, res) => {
   res.json(choice)
 })
 
-/* ====== CHOICE ====== */ 
-
 /* ====== QUESTION ====== */ 
 
 //create a question with 2 choices
@@ -161,12 +159,21 @@ app.put('/question/:id', async (req, res) => {
 app.delete(`/question/:id`, async (req, res) => {
   const { id } = req.params
 
+  // delete link with concerts
+  await prisma.questionsOnConcerts.deleteMany({
+    where: {
+      questionId: Number(id),
+    }
+  })
+
+  // delete linked choices
   const deleteChoices = prisma.choice.deleteMany({
     where: {
       questionId: parseInt(id),
     },
   })
-  
+
+  // delete from question
   const deleteQuestion = prisma.question.delete({
     where: {
       id: parseInt(id),
@@ -186,5 +193,98 @@ app.delete(`/question/:id`, async (req, res) => {
   res.json(transaction)
 })
 
-/* ====== QUESTION ====== */ 
+/* ====== CONCERT ====== */ 
+
+//create a concert
+app.post('/concert', async (req, res) => {
+  //create concert
+  const concert = await prisma.concert.create({
+    data: {
+      title: req.body.title
+    }
+  })
+
+  // link to questions
+  for (let element of req.body.questions) {
+    await prisma.questionsOnConcerts.create({
+      data: {
+        concertId: concert.id,
+        questionId: element.id
+      }
+    })
+  }
+  res.status(200).json(concert)
+})
+
+//get all the concerts
+app.get('/concerts', async (req, res) => {
+  const concerts = await prisma.concert.findMany({})
+  res.json(concerts)
+})
+
+
+// get a concert by its id 
+app.get('/concert/:id', async (req, res) => {
+  const { id } = req.params
+  const concert = await prisma.concert.findUnique({
+    where: {
+      id: Number(id),
+    }
+  })
+  const questions = await prisma.questionsOnConcerts.findMany({
+    where: {
+      concertId: Number(id),
+    }
+  })
+  res.json({concert, questions})
+})
+
+// delete a concert by its id 
+app.delete('/concert/:id', async (req, res) => {
+  const { id } = req.params
+  await prisma.questionsOnConcerts.deleteMany({
+    where: {
+      concertId: Number(id),
+    }
+  })
+  const concert = await prisma.concert.delete({
+    where: {
+      id: Number(id),
+    }
+  })
+  res.json(concert)
+})
+
+// update a concert
+app.put('/concert/:id', async (req, res) => {
+  const { id } = req.params
+  const concert = await prisma.concert.update({
+    where: {
+      id: Number(id),
+    },
+    data: { 
+      title: req.body.title
+    },
+  })
+
+  // delete all questions from concert 
+  await prisma.questionsOnConcerts.deleteMany({
+    where: {
+      concertId: Number(id),
+    }
+  })
+
+  // add selected questions to concert
+  for (let element of req.body.questions) {
+    await prisma.questionsOnConcerts.create({
+      data: {
+        concertId: concert.id,
+        questionId: element.id
+      }
+    })
+  }
+
+  res.json(concert)
+})
+
 

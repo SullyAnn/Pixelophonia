@@ -10,26 +10,35 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Partie {
-  id    Int     @id @default(autoincrement())
-  title String
-  question Question[] 
+model Concert {
+  id        Int       @id @default(autoincrement())
+  title     String
+  questions QuestionsOnConcerts[] 
 }
 
+
 model Question {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   label     String
   question  String 
   temps     Int
-  choices Choice[] 
-  partie    Partie?    @relation(fields: [partieId], references: [id])
-  partieId  Int?
+  choices   Choice[] 
+  concerts QuestionsOnConcerts[]
+}
+
+model QuestionsOnConcerts {
+  concert     Concert?  @relation(fields: [concertId], references: [id])  
+  question    Question? @relation(fields: [questionId], references: [id])
+  concertId   Int
+  questionId  Int
+
+  @@id([concertId, questionId])
 }
 
 model Choice {
-  id    Int     @id @default(autoincrement())
-  title String
-  img   String
-  question    Question?    @relation(fields: [questionId], references: [id])
+  id          Int       @id @default(autoincrement())
+  title       String
+  img         String
+  question    Question? @relation(fields: [questionId], references: [id])
   questionId  Int?
 }
