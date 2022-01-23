@@ -55,7 +55,10 @@ io.on('connection', (socket) => {
   socket.on('display-question', function (question, questionStartTime, showTimerOnScreen) {
     //Initialisation du tableaux de result
     choicesResult = Object.values(question.choices)
-
+    //reinitialisation des votes au début de la (nouvelle) question
+    totalvotes=0
+    nbChoice1 = 0
+    nbChoice2 = 0
 
     // transmission des choix pour le player
     socket.broadcast.emit('broadcast-question', {id:question.id, choices:question.choices, question:question.question})
@@ -152,6 +155,9 @@ io.on('connection', (socket) => {
   socket.on("stop-question", function(displayStatus){
     //on doit arrêter les question et tout remettre a zeros
     socket.broadcast.emit('stop-question',displayStatus)
+    totalvotes=0
+    nbChoice1 = 0
+    nbChoice2 = 0
   })
   /*socket.on("start-partie", function(){
     //socket.broadcast.emit('start-partie')

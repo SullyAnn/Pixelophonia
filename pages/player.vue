@@ -3,14 +3,17 @@
     <div v-show="isQuestionDisplayed==true" id="choicePageContent">
       <div v-if="!displayResult" class="container">
         <div id="orBlock">
-          <p>OU</p>
+          <div v-if="!choiceIsSubmitted">
+          <button v-if="selectedChoiceId!=-1" v-on:click="sendChoice(selectedChoiceId)" class="btnSubmitChoice">Valider mon choix</button>
+          <p v-else>OU</p>
+          </div>
+          <p v-else class="confirmationSubmit">Votre réponse a bien été envoyé !</p>
         </div>
 
-        <div v-for="(data, index) in choices" :key="index" class="choice">
+        <div v-for="(data, index) in choices" :key="index" class="choice" v-on:click="selectChoice(index)" ref="choiceSelection">
           <h1 v-if="index == 0" style="right:0; top:0;">{{data.title}}</h1>
           <h1 v-else style="left:0; bottom:0;">{{data.title}}</h1>
-          <img :id="index" v-on:click="sendChoice(index)"
-            :src="require(`assets/images/Question_${idQuestion}/`+data.img)" alt="image test">
+          <img :id="index" :src="require(`assets/images/Question_${idQuestion}/`+data.img)" alt="image test">
         </div>
       </div>
 
@@ -60,7 +63,9 @@ export default {
        displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
        IsChoice1Disabled: true,
        isQuestionDisplayed : false,
-       affichage : 0
+       affichage : 0,
+       selectedChoiceId: -1,
+       choiceIsSubmitted: false,
     }
   },
   head: {
@@ -99,10 +104,10 @@ export default {
         this.IsChoice1Disabled = false;
         // effet grisé une fois une image sélectionnée
         if(choice.yourchoice == 0)  {
-          document.getElementById("1").style.filter = "grayscale(1)"
+          document.getElementById("1").style.filter = "grayscale(1) brightness(0.6)"
           document.getElementById("0").style.filter="brightness(1.25)"}
         else if(choice.yourchoice == 1){ 
-        document.getElementById("0").style.filter = "grayscale(1)"
+        document.getElementById("0").style.filter = "grayscale(1) brightness(0.6)"
         document.getElementById("1").style.filter="brightness(1.25)"
         } 
         //console.log("IsChoice1Disabled = " + this.IsChoice1Disabled)
@@ -147,6 +152,36 @@ export default {
 
       // transmission des choix possibles et de l'id du choix fait par le player
       socket.emit('submit-choice', {choices:this.choices, playerChoice:idChoice})
+
+      //on reinitialise le choix
+      this.selectedChoiceId = -1
+      this.choiceIsSubmitted= true
+
+      //on enlève le pointer hover
+      this.$refs['choiceSelection'][0].style.cursor = "auto"
+      this.$refs['choiceSelection'][1].style.cursor = "auto"
+    },
+    selectChoice: function(index){
+      if(!this.choiceIsSubmitted){ //on vérifie qu'on a pas déjà envoyé une réponse
+        if(this.selectedChoiceId==index){ //le choix est déjà sélectionné, donc on le désélectionne
+          this.selectedChoiceId=-1
+          this.$refs['choiceSelection'][0].querySelector("img").classList.remove("discarded")
+          this.$refs['choiceSelection'][1].querySelector("img").classList.remove("discarded")
+        }
+        else{ //sinon on sélectionne le choix
+          this.selectedChoiceId = index
+          if(index==0){
+            this.$refs['choiceSelection'][1].querySelector("img").classList.add("discarded")
+            this.$refs['choiceSelection'][0].querySelector("img").classList.remove("discarded")
+            }
+          else if (index==1){
+            this.$refs['choiceSelection'][0].querySelector("img").classList.add("discarded")
+            this.$refs['choiceSelection'][1].querySelector("img").classList.remove("discarded")
+            }
+          
+          //console.log('CHANGE SELECT ID', this.selectedChoiceId)
+        }
+      }
     },
     resetAllData: function(){
         this.waitingMode = true
@@ -162,6 +197,8 @@ export default {
         this.winner={}
         this.percentage=0
         this.parameters=[]
+        this.selectedChoiceId= -1
+        this.choiceIsSubmitted=false
         //console.log('resetdata')
     }
   }
