@@ -1,16 +1,19 @@
 <!-- Voir le concert selon l'ID -->
 <template>
-<div>
+<div class="window">
     <h1>Voir le concert</h1>
     <h2>Titre : {{ concert.concert.title }}</h2>
+    
+    <div class="questionsContainer">
     <div v-for="(question, index) in questions" :key="index" @click="toggleInfos(`infos_${question.id}`)">
         <p> {{question.label}}</p>
-        <div :id="`infos_${question.id}`" style="display:none;">
+        <div class="toggleInfos" :id="`infos_${question.id}`">
             {{question.question}}
             <!-- vérifier que les choices existent / s'en assurer -->
             <!-- {{question.choices[0].title}}
             {{question.choices[1].title}} -->
         </div>
+    </div>
     </div>
     <NuxtLink :to="`${concert.concert.id}/update`"> Modifier</Nuxtlink>
     <NuxtLink to="./"> Retour</Nuxtlink>
@@ -41,11 +44,11 @@ for (let element of concert.questions) {
     },
     methods: {
         toggleInfos: function(id) {
-            if (document.getElementById(id).style.display == "block") {
-                document.getElementById(id).style.display="none"
+            if (document.getElementById(id).style.opacity == "100") {
+                document.getElementById(id).style.opacity == "0"
             }
             else {
-                document.getElementById(id).style.display="block"
+                document.getElementById(id).style.opacity == "100"
             }
         }
     }

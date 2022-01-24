@@ -1,15 +1,20 @@
 <!-- Ajouter un concert -->
 
 <template>
-<div>
+<div class="window">
 
+    <h2>Créer un concert</h2>
     <form @submit.prevent="handleSubmit">
-        <input type="text" v-model="title">
-        <div v-for="(question, index) in questions" :key="index">
-        <input type="checkbox" :id="question.id" name="questionsList">
-        <label :for="question.id">{{question.label}}</label>
+        <input type="text" v-model="title" placeholder="Titre du concert" class="labelChoice">
+        
+        <h3> Questions à inclure au concert </h3>
+        <div class="allQuestionsToCheck">
+            <div v-for="(question, index) in questions" :key="index" class="containsCheckQuestion" >
+            <input type="checkbox" :id="question.id" class="checkQuestion" >
+            <label :for="question.id">{{question.label}}</label>
+            </div>
         </div>
-        <input type="submit">
+        <input type="submit" value="ok" class="btn send">
     </form>
     <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
 
