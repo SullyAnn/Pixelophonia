@@ -80,7 +80,7 @@ export default {
 
     socket.on("reload-this-page", (isReload) =>{
       //alert("reload la page player")
-      location.reload(true)
+      //location.reload(true)
     })
      socket.on('affiche-menu', (displayStatus) => {
       this.isQuestionDisplayed = false
