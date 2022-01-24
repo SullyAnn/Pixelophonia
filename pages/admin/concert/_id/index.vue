@@ -4,9 +4,9 @@
     <h1>Voir le concert</h1>
     <h2>{{ concert.concert.title }} </h2>
     <h3>Questions du concert</h3>
-    <div class="questionsContainer">
-    <div class="oneQuestion" v-for="(question, index) in questions" :key="index" @click="toggleInfos(`infos_${question.id}`)">
-        <p class="elementViewConcert"> <b>{{question.label}}</b> | <i>{{question.question}}</i>
+    <ul class="questionsContainer">
+    <li class="oneQuestion" v-for="(question, index) in questions" :key="index" @click="toggleInfos(`infos_${question.id}`)">
+        <p class="elementViewConcert"> <b>{{question.label}}</b> <br /> <i>{{question.question}}</i>
         </p>
 
         <!-- <div class="displayInfos" :id="`infos_${question.id}`">
@@ -14,8 +14,8 @@
             {{question.choices[0].title}}
             {{question.choices[1].title}}
         </div> -->
-    </div>
-    </div>
+    </li>
+    </ul>
 
     <NuxtLink :to="`${concert.concert.id}/update`">
         <button class="btn update">
