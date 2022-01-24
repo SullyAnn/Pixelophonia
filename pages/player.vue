@@ -28,13 +28,13 @@
         <img id="imageLogoLong" src="@/assets/images/logoLong.png">
       </div>
 
-      <div class="">
-        <p v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia,
+      <div >
+        <p class="homePageText" v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia,
           <br>L'ochestre ne propose aucun jeu pour le moment.
         </p>
-        <p v-else-if="affichage==1"> Bienvenue sur l'application Pixélophonia,
+        <p class="homePageText" v-else-if="affichage==1"> Bienvenue sur l'application Pixélophonia,
           <br> Attendez les instructions du chef d'ochestre pour pouvoir voter </p>
-        <p v-else-if="affichage==2"> Merci pour votre participation! </p>
+        <p class="homePageText" v-else-if="affichage==2"> Merci pour votre participation! </p>
       </div>
     </div>
 
@@ -78,10 +78,10 @@ export default {
 
     
 
-    socket.on("reload-this-page", (isReload) =>{
+  /*  socket.on("reload-this-page", (isReload) =>{
       //alert("reload la page player")
       //location.reload(true)
-    })
+    })*/
      socket.on('affiche-menu', (displayStatus) => {
       this.isQuestionDisplayed = false
       this.affichage = displayStatus
@@ -123,10 +123,10 @@ export default {
       this.parameters.push({totalvote:totalvotes,winner:winner.img, percentage:Math.floor(percentage)+"%" })
        
     }),
-    socket.on('stop-partie', () => {
+    socket.on('stop-partie', (displayStatus) => {
       this.resetAllData()
       this.isQuestionDisplayed = false
-      this.affichage = 0
+      this.affichage = displayStatus
     }),
     socket.on('stop-question', (displayStatus) => {
       this.resetAllData()
