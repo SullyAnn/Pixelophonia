@@ -155,9 +155,13 @@ export default {
       this.affichage = displayStatus
     }),
     socket.on('stop-question', (displayStatus) => {
-      this.resetAllData()
-      this.isQuestionDisplayed = false
-      this.affichage = displayStatus
+      if(this.displayResult==false){
+        this.resetAllData()
+        this.isQuestionDisplayed = false
+        this.affichage = displayStatus
+      }else {
+        this.isQuestionDisplayed = true
+      }
 
     })
   
