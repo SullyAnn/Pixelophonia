@@ -40,6 +40,16 @@ let nbChoice2 = 0
 let percentage
 let choicesResult = {}
 
+//Partie status
+/*
+0 : pas de partie en cours
+1 : partie en cours, pas de question
+2 : question en cours - Votes
+3 : question en cours - résultat
+*/
+let partieStatus = 0
+//-------------
+
 
 io.on('connection', (socket) => {
   socket.on('last-questions', function(fn){
@@ -51,8 +61,27 @@ io.on('connection', (socket) => {
   socket.on('data-for-screen', function(fn){
     fn(displayQuestionData)
   })
+
+  //connexion du player
+  socket.on("connection-player", () => {
+    console.log(socket.id, partieStatus);
+    if(partieStatus==0){
+      //rien faire ?
+    }
+    else if(partieStatus==1){
+      io.to(socket.id).emit('update-on-co-partie-playing');
+    }
+    else if(partieStatus==2){
+      io.to(socket.id).emit('update-on-co-question');
+    }
+    else if(partieStatus==3){
+      io.to(socket.id).emit('update-on-co-results');
+    }
+    
+  });
   
   socket.on('display-question', function (question, questionStartTime, showTimerOnScreen) {
+    partieStatus = 2
     //Initialisation du tableaux de result
     choicesResult = Object.values(question.choices)
     //reinitialisation des votes au début de la (nouvelle) question
@@ -67,7 +96,7 @@ io.on('connection', (socket) => {
   })
     //TEST DISPLAY MENU ON LAUNCH PARTY 
     socket.on('affichage-menu', function (displayStatus) {
-
+      partieStatus = 1
       socket.broadcast.emit('affiche-menu',displayStatus)
     socket.broadcast.emit('affiche-menu-on-screen',displayStatus)
   })
@@ -112,6 +141,8 @@ io.on('connection', (socket) => {
     console.log(totalvotes)
     console.log(choicesResult)
 
+    partieStatus = 3
+
     let winner = {}
     let egalite = false
 
@@ -155,6 +186,7 @@ io.on('connection', (socket) => {
     nbChoice2 = 0
     percentage
     choicesResult = {}*/
+    partieStatus = 0
   })
   socket.on("stop-question", function(displayStatus){
     //on doit arrêter les question et tout remettre a zeros
@@ -162,6 +194,8 @@ io.on('connection', (socket) => {
     totalvotes=0
     nbChoice1 = 0
     nbChoice2 = 0
+
+    partieStatus = 1
   })
   /*socket.on("start-partie", function(){
     //socket.broadcast.emit('start-partie')

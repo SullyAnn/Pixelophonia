@@ -30,7 +30,7 @@
 
       <div class="">
         <p v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia,
-          <br>L'ochestre ne propose aucun jeu pour le moment.
+          <br>L'orchestre ne propose aucun jeu pour le moment.
         </p>
         <p v-else-if="affichage==1"> Bienvenue sur l'application Pixélophonia,
           <br> Attendez les instructions du chef d'ochestre pour pouvoir voter </p>
@@ -75,8 +75,18 @@ export default {
     
   },
   beforeMount () {
-
-    
+    //debut de la connexion du player
+    socket.emit("connection-player");
+    socket.on("update-on-co-partie-playing", () =>{
+      this.affichage = 1
+      console.log('Afficher le texte de partie en cours')
+    })
+    socket.on("update-on-co-question", () =>{
+      console.log('Afficher question')
+    })
+    socket.on("update-on-co-results", () =>{
+      console.log('Afficher résultat')
+    })
 
     socket.on("reload-this-page", (isReload) =>{
       //alert("reload la page player")

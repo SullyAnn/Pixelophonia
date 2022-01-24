@@ -60,7 +60,7 @@
               alt="image winner" class="images">
             <div class="infosResult">
             <h2 v-if="!data.egalite">{{data.percentage}} d’entre vous ont choisi cette voie </h2>
-            <h2 v-else>Égalité ! La machine a décidée pour vous</h2>
+            <h2 v-else>Égalité ! La machine a décidé pour vous</h2>
             <h1>{{data.winnerTitle}}</h1>
             </div>
           </div>

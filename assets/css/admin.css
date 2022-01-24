@@ -360,6 +360,11 @@ fieldset>* {
     align-items: center;
 }
 
+.labelAndStartBtnWrapper p {
+  margin-right: 24px;
+  width: 240px;
+}
+
 .btnLaunchResults button {
     border: none;
     padding: 8px 16px;

@@ -23,17 +23,20 @@ p{
 #layoutContainer{
     height: 100vh;
 }
-
+#homePageContent{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-inline: 20px;
+    justify-content: center;  
+    height: 100vh;      
+}
+#logoLong{
+    width: 40%;
+    max-width: 280px;
+}
 @media screen and (max-width: 768px) {
-    #homePageContent{
-        height: 90%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-inline: 20px;
-        justify-content: center;  
-        height: 100vh;      
-    }
     #logoLong{
             height: auto;
             display: flex;
