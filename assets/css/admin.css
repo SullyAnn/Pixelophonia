@@ -79,15 +79,19 @@ li {
   align-items: center;
 }
 
-.listElements p {
-    display: inline-block;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 13px;
-    width: 200px;
-    height: 100%;
-    margin:0 20px 0 0;
+.listElements p, .questionsContainer p {
+  display: inline-block;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 13px;
+  width: 300px;
+  margin:0 20px 0 0;
+  text-align: left;
+  transition: 0.5s;
+}
 
+.listElements p:hover, .questionsContainer p:hover {
+  background: #fff;
 }
 
 .questionsList.creationPage p {
@@ -228,7 +232,7 @@ form {
   display: flex;
   flex-flow: column;
   justify-content: space-evenly;
-  border: 1px solid #fff;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 form>* {
@@ -499,16 +503,13 @@ input[type="checkbox"].checkQuestion:checked + label {
 }
 
 .questionsContainer {
-  display: flex;
+  /* display: flex; */
 }
 .oneQuestion {
 height: auto;
 }
 
-.elementViewConcert {
-  z-index: 10;
-  background: #fff;
-}
+
 
 .displayInfos {
   opacity:1;
