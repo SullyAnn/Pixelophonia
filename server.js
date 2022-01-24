@@ -43,6 +43,7 @@ let choicesResult = {}
 let winner = {}
 let egalite = false
 let percentage = 0
+let updateTimer = {}
 
 //Partie status
 /*
@@ -85,7 +86,7 @@ io.on('connection', (socket) => {
   socket.on("connection-host", () => {
     console.log(socket.id, 'HOST');
     if(partieStatus==2){
-      io.to(socket.id).emit('update-host-on-co-question', {id:currentQuestion.id, choices:currentQuestion.choices, question:currentQuestion.question}, totalvotes);
+      io.to(socket.id).emit('update-host-on-co-question', {id:currentQuestion.id, choices:currentQuestion.choices, question:currentQuestion.question}, totalvotes, updateTimer);
     }
     else if(partieStatus==3){
       io.to(socket.id).emit('update-host-on-co-results', totalvotes, winner, percentage, egalite, currentQuestion.id);
@@ -105,6 +106,8 @@ io.on('connection', (socket) => {
     // transmission des choix pour le player
     socket.broadcast.emit('broadcast-question', {id:question.id, choices:question.choices, question:question.question})
     // transmission de la question pour le screen
+    updateTimer = {start: questionStartTime, total: question.temps, showTimer : showTimerOnScreen}
+    console.log('UPDATE TIMER', updateTimer)
     socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime, question.temps, showTimerOnScreen)
   })
     //TEST DISPLAY MENU ON LAUNCH PARTY 
@@ -211,6 +214,7 @@ io.on('connection', (socket) => {
     winner = {}
     egalite = false
     percentage = 0
+    updateTimer = {}
   })
   /*socket.on("start-partie", function(){
     //socket.broadcast.emit('start-partie')

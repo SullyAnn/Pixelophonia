@@ -111,7 +111,7 @@ export default {
   beforeMount () {
     //debut de la connexion du host
     socket.emit("connection-host");
-    socket.on("update-host-on-co-question", (questiondata, totalvotes) =>{
+    socket.on("update-host-on-co-question", (questiondata, totalvotes, updateTimer) =>{
       console.log('Afficher question')
       //display question
       if (this.waitingMode){this.waitingMode = false}
@@ -122,6 +122,10 @@ export default {
       this.nbTotalVote = totalvotes
       this.questionLabel = questiondata.question
       console.log(this.tab)
+      if(updateTimer.showTimer){//si on a bien un temps à afficher, c'est à dire qu'il n'est pas falsy
+          this.displayTimer = true
+          this.afficheTimer(updateTimer.start, updateTimer.total)
+      }
       //----------------
     })
     socket.on("update-host-on-co-results", (totalvotes, winner, percentage, egalite, idQuestion) =>{
@@ -197,7 +201,7 @@ export default {
           const totalTimeMs = totalTime*1000 //on passe le temps en secondes en millisecondes
 
           let myTimer = setInterval(() => {
-            console.log('TIMER TURNING')
+            // console.log('TIMER TURNING')
              if (!this.waitingMode){
                //console.log('SETINTERVAL')
                   let currentTime = Date.now()

@@ -316,6 +316,10 @@ fieldset>* {
   background: #929292;
 }
 
+.launchPage ul .btn {
+  margin-left: 24px;
+}
+
 /* ==== Timer ==== */
 .timerWrapper {
   width: 100%;
@@ -358,6 +362,10 @@ fieldset>* {
 .labelAndStartBtnWrapper{
     display: flex;
     align-items: center;
+}
+
+.labelAndStartBtnWrapper p {
+  width: 240px;
 }
 
 .btnLaunchResults button {
