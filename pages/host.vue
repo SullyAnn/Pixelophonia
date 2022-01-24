@@ -60,7 +60,7 @@
               alt="image winner" class="images">
             <div class="infosResult">
             <h2 v-if="!data.egalite">{{data.percentage}} d’entre vous ont choisi cette voie </h2>
-            <h2 v-else>Égalité ! La machine a décidée pour vous</h2>
+            <h2 v-else>Égalité ! La machine a décidé pour vous</h2>
             <h1>{{data.winnerTitle}}</h1>
             </div>
           </div>
@@ -109,6 +109,30 @@ export default {
   watch: {
   },
   beforeMount () {
+    //debut de la connexion du host
+    socket.emit("connection-host");
+    socket.on("update-host-on-co-question", (questiondata, totalvotes) =>{
+      console.log('Afficher question')
+      //display question
+      if (this.waitingMode){this.waitingMode = false}
+      console.log(questiondata)
+      this.tab = Object.values(questiondata.choices)
+      this.displayQuestionData.push(questiondata)
+      this.id = questiondata.id
+      this.nbTotalVote = totalvotes
+      this.questionLabel = questiondata.question
+      console.log(this.tab)
+      //----------------
+    })
+    socket.on("update-host-on-co-results", (totalvotes, winner, percentage, egalite, idQuestion) =>{
+      console.log('Afficher résultat')
+      if (this.waitingMode){this.waitingMode = false}
+      this.id = idQuestion
+      this.parameters = []
+      this.displayResult = true
+      this.parameters.push({totalvote:totalvotes,winner:winner.img,winnerTitle:winner.title,percentage:Math.floor(percentage)+"%", egalite: egalite })
+    })
+
     socket.on("reload-this-page", (isReload) =>{
       //alert("on reload la page screen")
       location.reload(true)

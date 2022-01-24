@@ -75,6 +75,32 @@ export default {
     
   },
   beforeMount () {
+    //debut de la connexion du player
+    socket.emit("connection-player");
+    socket.on("update-on-co-partie-playing", () =>{
+      this.affichage = 1
+      console.log('Afficher le texte de partie en cours')
+    })
+    socket.on("update-on-co-question", (questiondata) =>{
+      console.log('Afficher question')
+      //display question
+      if (this.waitingMode){this.waitingMode = false}
+      this.choices = []
+      this.idQuestion = questiondata.id
+      this.choices = Object.values(questiondata.choices)
+      console.log(this.choices)
+      this.isQuestionDisplayed = true
+      //----------------
+    })
+    socket.on("update-on-co-results", (totalvotes, winner, percentage, egalite, idQuestion) =>{
+      console.log('Afficher résultat')
+      if (this.waitingMode){this.waitingMode = false}
+      this.isQuestionDisplayed = true
+      this.idQuestion = idQuestion
+      this.displayResult = true
+      this.parameters = []
+      this.parameters.push({totalvote:totalvotes,winner:winner.img, percentage:Math.floor(percentage)+"%" })
+    })
 
     
 
@@ -200,7 +226,7 @@ export default {
         this.selectedChoiceId= -1
         this.choiceIsSubmitted=false
         //console.log('resetdata')
-    }
+    },
   }
 }
 </script>
