@@ -29,10 +29,10 @@
       </div>
 
       <div class="">
-        <p v-if="affichage ==0"> Bienvenue sur l'application Pixélophonia,
-          <br>L'ochestre ne propose aucun jeu pour le moment.
+        <p v-if="affichage ==0"> Bienvenue sur l'application Pixelophonia,
+          <br>L'orchestre ne propose aucun jeu pour le moment.
         </p>
-        <p v-else-if="affichage==1"> Bienvenue sur l'application Pixélophonia,
+        <p v-else-if="affichage==1"> Bienvenue sur l'application Pixelophonia,
           <br> Attendez les instructions du chef d'ochestre pour pouvoir voter </p>
         <p v-else-if="affichage==2"> Merci pour votre participation! </p>
       </div>
@@ -75,8 +75,32 @@ export default {
     
   },
   beforeMount () {
-
-    
+    //debut de la connexion du player
+    socket.emit("connection-player");
+    socket.on("update-on-co-partie-playing", () =>{
+      this.affichage = 1
+      console.log('Afficher le texte de partie en cours')
+    })
+    socket.on("update-on-co-question", (questiondata) =>{
+      console.log('Afficher question')
+      //display question
+      if (this.waitingMode){this.waitingMode = false}
+      this.choices = []
+      this.idQuestion = questiondata.id
+      this.choices = Object.values(questiondata.choices)
+      console.log(this.choices)
+      this.isQuestionDisplayed = true
+      //----------------
+    })
+    socket.on("update-on-co-results", (totalvotes, winner, percentage, egalite, idQuestion) =>{
+      console.log('Afficher résultat')
+      if (this.waitingMode){this.waitingMode = false}
+      this.isQuestionDisplayed = true
+      this.idQuestion = idQuestion
+      this.displayResult = true
+      this.parameters = []
+      this.parameters.push({totalvote:totalvotes,winner:winner.img, percentage:Math.floor(percentage)+"%" })
+    })
 
     socket.on("reload-this-page", (isReload) =>{
       //alert("reload la page player")
@@ -200,7 +224,7 @@ export default {
         this.selectedChoiceId= -1
         this.choiceIsSubmitted=false
         //console.log('resetdata')
-    }
+    },
   }
 }
 </script>
