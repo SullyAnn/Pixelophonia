@@ -499,15 +499,19 @@ input[type="checkbox"].checkQuestion:checked + label {
 }
 
 .questionsContainer {
-  background: red;
   display: flex;
 }
-
-.questionsContainer > * {
-  cursor: pointer; 
+.oneQuestion {
+height: auto;
 }
 
-.questionsContainer .toggleInfos {
-  opacity:0;
+.elementViewConcert {
+  z-index: 10;
+  background: #fff;
+}
+
+.displayInfos {
+  opacity:1;
   transition: 0.5s;
+  display: none;
 }

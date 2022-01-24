@@ -1,18 +1,22 @@
 <!-- Update le concert selon l'ID -->
 
 <template>
-<div>
-<h1>Modifier : {{ concert.concert.title }}</h1>
-
+<div class="window">
+<h2>Modifier le concert : {{ concert.concert.title }}</h2>
 <form @submit.prevent="handleSubmit">
-    <input type="text" v-model="concert.concert.title">
-    <div v-for="(question, index) in allQuestions" :key="index">
-      <input type="checkbox" :id="`question_${question.id}`" name="questionsList">
+    <input type="text" v-model="concert.concert.title" placeholder="Titre du concert" class="labelChoice">
+    
+
+    <h3> Questions à inclure au concert </h3>
+    <div class="allQuestionsToCheck">
+    <div v-for="(question, index) in allQuestions" :key="index" class="containsCheckQuestion" >
+      <input type="checkbox" :id="`question_${question.id}`" class="checkQuestion">
       <label :for="`question_${question.id}`">{{question.label}}</label>
     </div>
-    <input type="submit">
+    </div>
+    <input type="submit" value="ok" class="btn send">
 </form>
-<NuxtLink to=".">Annuler</NuxtLink>
+<NuxtLink to=".">Annuler (sans sauvegarder)</NuxtLink>
 
 </div>  
 </template>
