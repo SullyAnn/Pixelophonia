@@ -165,7 +165,7 @@ methods: {
         }
       }
         else { //sinon c'est qu'on est en train de l'arrêter
-            socket.emit("stop-question", 2)
+            socket.emit("stop-question", 1)
             console.log("question arrêtée")
             this.indexQuestionPlaying = -1
             this.displayBtnLancerResultat = true
@@ -232,7 +232,7 @@ methods: {
     },
     
     stopPartie: function(){
-        socket.emit('stop-partie')
+        socket.emit('stop-partie', 2)
         console.log("Partie arrêtée.")
         this.$router.push("./")
     }, 

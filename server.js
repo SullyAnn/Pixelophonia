@@ -184,9 +184,9 @@ io.on('connection', (socket) => {
   })
 
   //quand on appuie sur le bouton pour arrêter la partie depuis l'admin
-  socket.on("stop-partie", function(){
+  socket.on("stop-partie", function(displayStatus){
     console.log('TOUT ARRETER')
-    socket.broadcast.emit('stop-partie')
+    socket.broadcast.emit('stop-partie', displayStatus)
     //on reset toutes les données
     /*messages = []
     choices = []
