@@ -143,6 +143,7 @@ io.on('connection', (socket) => {
 
     //on envoie le nombre de vote au total qui a augmenté
     //peut-être changer plus tard pour envoyer seulement à l'admin et au host, au lieu de broadcast à tout le monde
+    socket.broadcast.emit('augmentation-nb-votes-admin',{total : totalvotes, votesChoice1 : nbChoice1, votesChoice2 : nbChoice2})
     socket.broadcast.emit('augmentation-nb-votes',totalvotes)
   })
 
