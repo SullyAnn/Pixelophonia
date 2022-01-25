@@ -268,7 +268,7 @@ launchPartie: function(){
     stopPartie: function(){
         socket.emit('stop-partie', 2)
         console.log("Partie arrêtée.")
-        this.$router.push("./")
+        this.$router.push("../launchConcert")
     }, 
     launchTimer: function(questionStartTime, totalTime, idQuestionList){
           const timerWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.timerWrapper')
