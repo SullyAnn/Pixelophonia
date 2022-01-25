@@ -2,7 +2,7 @@
 <main>
 	<AdminHeader />
 	<div>
-		<button @click="logout" class ="btnLogOut"> Log out </button>
+		<!--<button @click="logout" class ="btnLogOut"> Log out </button>-->
 	</div>
 	<h1>Bienvenue sur l'interface administrateur</h1>
 

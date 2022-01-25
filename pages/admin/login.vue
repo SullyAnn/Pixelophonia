@@ -3,37 +3,12 @@
     <div class="container">
       <div class="columns">
         <div class="column is-4 is-offset-4">
-          <h2 class="title has-text-centered">Welcome back!</h2>
+            <form method="post" @submit.prevent="login">
+                <input v-model="email" type="text" name="email" class="labelChoice" required>
+                <input v-model="password" type="password" name="password" class="labelChoice" required>
 
-          <!--<Notification :message="error" v-if="error"/>-->
-
-          <form method="post" @submit.prevent="login">
-            <div class="field">
-              <label class="label">Email</label>
-              <div class="control">
-                <input
-                  type="text"
-                  class="input"
-                  name="email"
-                  v-model="email"
-                />
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Password</label>
-              <div class="control">
-                <input
-                  type="password"
-                  class="input"
-                  name="password"
-                  v-model="password"
-                />
-              </div>
-            </div>
-            <div class="control">
-              <button type="submit" class="button is-dark is-fullwidth">Log In</button>
-            </div>
-          </form>
+                  <button type="submit" class="btnMenu btnLogIn">Log In</button>
+            </form>
         </div>
       </div>
     </div>
@@ -42,7 +17,7 @@
 
 <script>
 // import Notification from '~/components/Notification'
-
+import "@/assets/css/admin.css";
 export default {
 //   components: {
 //     Notification,
@@ -79,3 +54,9 @@ export default {
   }
 }
 </script>
+<style>
+.btnLogIn{
+  width:20vw;
+  padding:10px !important;
+}
+</style>
