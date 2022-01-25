@@ -20,6 +20,7 @@ if (config.dev) {
   builder.build()
 }
 app.use(nuxt.render)
+//const authRouter = require("./routes/authRouter");
 
 app.use("/player", nuxt.render);
 app.use("/admin", nuxt.render);
@@ -215,6 +216,10 @@ io.on('connection', (socket) => {
     egalite = false
     percentage = 0
     updateTimer = {}
+  })
+  socket.on("menu", function(displayStatus){
+    console.log("menuuu " + displayStatus)
+    socket.emit("affiche-menu", displayStatus)
   })
   /*socket.on("start-partie", function(){
     //socket.broadcast.emit('start-partie')

@@ -37,10 +37,23 @@ module.exports = {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/axios','~/io'],
+  modules: ['@nuxtjs/axios','~/io', '@nuxtjs/auth'],
   env:{
     WS_URL: process.env.WS_URL || 'http://localhost:3000'
   },
+//   auth: {
+//     strategies: {
+//       local: {
+//         endpoints: {
+//           login: { url: "/api/login", method: "post", propertyName: 'data.token' },
+// //        refresh: { url: "/api/auth/refresh-token", method: "post" },
+//           logout: false, //  we don't have an endpoint for our logout in our API and we just remove the token from localstorage
+//           admin: { url: "/admin/", method: "get", propertyName:'data' }
+//         },
+//         tokenType:''
+//       }
+//     }
+//   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
@@ -50,5 +63,31 @@ module.exports = {
            fs: 'empty'
        }
    }
-  }
+  },
+
+  auth: {
+  localStorage: true,
+  strategies: {
+    local: {
+      endpoints: {
+        login: {
+          url: '/api/login',
+          method: 'post',
+          propertyName: 'token'
+        },
+        logout: false,
+        user: {
+          url: '/api/user',
+          method: 'get',
+          propertyName: false
+        },
+      },
+    }
+  },
+  redirect: {
+    logout: '/admin/login',
+    callback: '/login',
+    home: '/admin/'
+  },
+},
 }

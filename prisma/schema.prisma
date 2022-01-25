@@ -42,3 +42,8 @@ model Choice {
   question    Question? @relation(fields: [questionId], references: [id])
   questionId  Int?
 }
+
+model Admin {
+  email       String    @id
+  password    String    
+}

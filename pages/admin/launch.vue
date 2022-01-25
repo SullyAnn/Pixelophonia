@@ -114,13 +114,14 @@ mounted () {
     this.launchPartie()
     
 },
-
+beforeMount(){
+},
 methods: {
 
     // ========= BACK ========== //
 
     // start game 
-    launchPartie: function(){
+    launchPartie: function(){      
         this.questions = []
         socket.emit("affichage-menu", 1)
         console.log("test")

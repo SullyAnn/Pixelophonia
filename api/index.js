@@ -1,10 +1,14 @@
 import express from 'express'
 import { PrismaClient } from '@prisma/client'
 import * as fs from 'fs'
+import {signUserToken} from '../controllers/authController.js'
+const passport = require('passport')
+const jwt = require('jsonwebtoken');
 
+//require('../controllers/authController')(passport)
 const prisma = new PrismaClient()
 const app = express()
-
+app.use(passport.initialize())
 app.use(express.json())
 
 /** 
@@ -14,6 +18,48 @@ export default {
   path: '/api',
   handler: app
 }
+
+//app.post(`/login`, postLogin);
+app.post(`/login`, async(req, res) => {
+    passport.authenticate('local', { session: false }, (err, user, message) => {
+    if (err) {
+      // you should log it
+      console.log(err)
+      return res.status(500).send(err)
+    } else if (!user) {
+      // you should log it
+      return res.status(403).send(message)
+    } else {
+      const token = jwt.sign({email: user.email}, 'secret')
+      //const token = signUserToken(user)
+      return res.send({ token })
+    }
+  })(req, res)
+});
+
+app.get('/user', async (req, res) => {
+  // console.log(req.cookies['auth._token.local'])
+  passport.authenticate('jwt', { session: false }, (err, user, message) => {
+    if (err) {
+      // you should log it
+      return res.status(400).send(err)
+    } else if (!user) {
+      // you should log it
+      return res.status(403).send({ message })
+    } else {
+      return res.send({ user })
+    }
+  })(res, req)
+})
+
+
+
+app.get('/admin', async (req, res) => {
+  const admins = await prisma.admin.findUnique({
+    where:{ id : id}
+  })
+  res.json(admins)
+})
 
 /* ====== CHOICE ====== */ 
 
@@ -28,6 +74,7 @@ app.post(`/choice`, async (req, res) => {
   })
   res.json(result)
 })
+
 
 // get a choice
 app.get('/choice/:id', async (req, res) => {

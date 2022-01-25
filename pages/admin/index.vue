@@ -1,6 +1,9 @@
 <template>
 <main>
 	<AdminHeader />
+	<div>
+		<button @click="logout" class ="btnLogOut"> Log out </button>
+	</div>
 	<h1>Bienvenue sur l'interface administrateur</h1>
 
 	<div id="menu">
@@ -28,21 +31,26 @@ export default {
 	head: {
 		title: 'Admin'
 	},
-
+	middleware: ['auth'],
 	mounted () { 
 		// ce bloc est appelé plusieurs les pages : en faire un fonction globale ?
-		if (performance.navigation.type == performance.navigation.TYPE_RELOAD) 
-		{
-			this.reload = true;
-			console.info( "This page is reloaded" );
-			socket.emit("reload-all-pages", this.isReload)
-		} 
-		else {
-			console.info( "This page is not reloaded");
-		}
+		// if (performance.navigation.type == performance.navigation.TYPE_RELOAD) 
+		// {
+		// 	this.reload = true;
+		// 	console.info( "This page is reloaded" );
+		// 	socket.emit("reload-all-pages", this.isReload)
+		// } 
+		// else {
+		// 	console.info( "This page is not reloaded");
+		// }
 	},
 	methods: {
-
+		lauchMenu: function(){
+			socket.emit("menu", 1)
+		},
+		async logout() {
+			await this.$auth.logout();  // this method will logout the user and make token to false on the local storage of the user browser
+		}
 	}
 }
 </script>
