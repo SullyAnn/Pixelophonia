@@ -173,13 +173,13 @@ export default {
       if(!this.IsChoice1Disabled){return} // trouver une meilleure solution pour désactiver event click sur les images
       console.log("vous avez cliqué sur l'image " + idChoice)
       const idPlayerChoice = Object.values(this.choices).at(idChoice).id
-      //console.log(this.choices)
+      // console.log("choice a", this.choices)
 
       console.log("choice a", this.choices)
 
       this.choices.find(element => element.id == idPlayerChoice).nbvotes++
       //console.log(Object.values(this.choices).at(0).nbvotes)
-      console.log("choice b", this.choices)
+      // console.log("choice b", this.choices)
 
       // transmission des choix possibles et de l'id du choix fait par le player
       socket.emit('submit-choice', {choices:this.choices, playerChoice:idChoice})
