@@ -155,7 +155,7 @@ methods: {
                 this.newQuestion = new Question(question.id, question.label, question.question, question.temps, this.newChoice),
                 this.questions.push(this.newQuestion)
                 this.newChoice=[]
-                //console.log(this.questions)
+                console.log(this.questions)
             })
         })
     },
@@ -177,7 +177,7 @@ methods: {
         else{ //sinon c'est que la question a un temps indéterminé
           showTimerOnScreen = false
         }
-        
+        console.log('QUESTIONDATA', questiondata)
         socket.emit("display-question", questiondata, questionStartTime, showTimerOnScreen)
         if(questiondata.temps){ //si il y a un temps défini pour la question
           this.launchTimer(questionStartTime, questiondata.temps, idQuestionList) //lancer le timer chez l'admin
