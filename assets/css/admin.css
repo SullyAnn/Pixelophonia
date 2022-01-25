@@ -100,6 +100,26 @@ li {
   min-width: 200px;
 }
 
+.launchPage table {
+  border-collapse:collapse;
+  /* width: 25%; */
+}
+.launchPage table, .launchPage td{
+  border: 1px solid #3D4D7C;
+}
+
+.launchPage th {
+    background-color: #3D4D7C;
+    color: #fff;
+}
+
+th,td {
+  padding: 4px 16px;
+  font-size: 1rem;
+}
+table td:nth-child(2), table th:nth-child(2){
+  text-align: center;
+}
 /* ====== Creation ====== */
 
 /* ------ Buttons ------- */
