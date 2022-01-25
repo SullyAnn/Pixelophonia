@@ -86,8 +86,9 @@ module.exports = {
   },
   redirect: {
     logout: '/admin/login',
-    callback: '/login',
-    home: '/admin/'
+    callback: '/admin/login',
+    home: '/admin/',
+    login:'/admin/login'
   },
 },
 }

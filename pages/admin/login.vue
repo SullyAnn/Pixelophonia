@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="container">
+    <div class="login">
       <div class="columns">
         <div class="column is-4 is-offset-4">
             <form method="post" @submit.prevent="login">
@@ -58,5 +58,16 @@ export default {
 .btnLogIn{
   width:20vw;
   padding:10px !important;
+}
+
+.login{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section{
+  height:100vh;
 }
 </style>

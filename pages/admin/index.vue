@@ -43,6 +43,9 @@ export default {
 		// else {
 		// 	console.info( "This page is not reloaded");
 		// }
+		// if (!this.$auth.loggedIn) {
+        //   this.$router.push('/admin/login')
+        // }
 	},
 	methods: {
 		lauchMenu: function(){
