@@ -118,9 +118,10 @@ export default {
         this.choices = []
         this.idQuestion = questiondata.id
         // for (const [key, value] of Object.entries(questiondata)) {
-        //   this.choices.push(value)
+          //   this.choices.push(value)
         // }
         this.choices = Object.values(questiondata.choices)
+          console.log("dans broadcast", this.choices)
         console.log(this.choices)
         this.isQuestionDisplayed = true
     })
@@ -177,11 +178,15 @@ export default {
       const idPlayerChoice = Object.values(this.choices).at(idChoice).id
       //console.log(this.choices)
 
+      console.log("choice a", this.choices)
+
       this.choices.find(element => element.id == idPlayerChoice).nbvotes++
       //console.log(Object.values(this.choices).at(0).nbvotes)
+      console.log("choice b", this.choices)
 
       // transmission des choix possibles et de l'id du choix fait par le player
       socket.emit('submit-choice', {choices:this.choices, playerChoice:idChoice})
+      console.log(this.choices, idChoice)
 
       //on reinitialise le choix
       this.selectedChoiceId = -1
