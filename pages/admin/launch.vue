@@ -40,7 +40,25 @@
           </div>
 
           <!-- nombre de votes courants sur la question -->
-          <div v-if="questionIsPlaying && indexQuestionPlaying == index" class="nbTotalVotes">{{nbTotalVote}} vote(s)</div>
+          <div v-if="questionIsPlaying && indexQuestionPlaying == index" class="nbTotalVotes">
+            <table>
+            <tr>
+              <th colspan="2">Nombre de votes</th>
+            </tr>
+            <tr>
+              <td>{{question.choices[0].title}}</td>
+              <td>{{votesData.votesChoice1}}</td>
+            </tr>
+            <tr>
+              <td>{{question.choices[1].title}}</td>
+              <td>{{votesData.votesChoice2}}</td>
+            </tr>
+            <tr>
+              <th>Total</th>
+              <th>{{votesData.total}}</th>
+            </tr>
+            </table>
+          </div>
 
         </li>
       </ul>
@@ -86,7 +104,7 @@ data () {
         isReload: false,
         questionIsPlaying: false,
         indexQuestionPlaying: -1,
-        nbTotalVote: 0,
+        votesData: {total:0, votesChoice1:0, votesChoice2: 0},
         displayBtnLancerResultat: true,
     }
 },
@@ -94,8 +112,8 @@ created(){
     this.newQuestion = new Question(null,null,null,null)
 },
 beforeMount () {
-    socket.on('augmentation-nb-votes', (totalvotes) => {
-      this.nbTotalVote = totalvotes
+    socket.on('augmentation-nb-votes-admin', (votesInfos) => {
+      this.votesData = votesInfos
       //console.log('+1')
     })
 },
@@ -170,7 +188,7 @@ methods: {
             console.log("question arrêtée")
             this.indexQuestionPlaying = -1
             this.displayBtnLancerResultat = true
-            this.nbTotalVote=0
+            this.votesData={total:0, votesChoice1:0, votesChoice2: 0}
             if(questiondata.temps){ //réinitialisation de la bar pour question à temps
               const timerWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.timerWrapper')
               timerWrapper.style.cssText ="display:none;"
