@@ -53,7 +53,7 @@ export default {
         const concert = await getConcert($axios, id)
         const questions = []
 
-for (let element of concert.questions) {
+        for (let element of concert.questions) {
         // add to questions all questions contained in concert
             questions.push(await getQuestion($axios, element.questionId))
         }

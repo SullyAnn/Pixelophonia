@@ -8,7 +8,7 @@
 
 	<div id="menu">
 		<!-- TO DO : changer newAdmin dans les path -->
-		<NuxtLink to="/admin/launch" class="linkBtnMenu"> 
+		<NuxtLink to="/admin/launchConcert" class="linkBtnMenu"> 
 			<button class ="btnMenu"> Lancer un concert </button>
 		</NuxtLink>
 		
