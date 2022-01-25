@@ -102,10 +102,6 @@ export default {
       this.parameters.push({totalvote:totalvotes,winner:winner.img, percentage:Math.floor(percentage)+"%" })
     })
 
-    socket.on("affiche-menu", (displayStatus)=>{
-      console.log(displayStatus)
-    })
-
   /*  socket.on("reload-this-page", (isReload) =>{
       //alert("reload la page player")
       //location.reload(true)
