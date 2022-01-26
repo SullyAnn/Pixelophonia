@@ -191,7 +191,13 @@ export default {
       this.resetAllData()
     }),
     socket.on('stop-question', () => {
-      this.resetAllData()
+       if(this.displayResult==false){
+        this.resetAllData()
+        this.waitingMode = true
+      }else {
+        this.waitingMode = false
+      }
+
     }),
     socket.on('augmentation-nb-votes', (votesInfos) => {
       this.votesData = votesInfos
