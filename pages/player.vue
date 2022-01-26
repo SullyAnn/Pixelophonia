@@ -18,7 +18,8 @@
       </div>
 
       <div id="resultSection" v-else>
-        <div class="resultMessage" v-if="choiceId == winnerID">
+        <div class="resultMessage" v-if="!choiceIsSubmitted"></div>
+        <div class="resultMessage" v-else-if="choiceId == winnerID">
           <p class="resultText">Bien joué voyageur ! Nous nous dirigeons vers la direction souhaitée </p>
         </div>
         <div  class="resultMessage" v-else>
