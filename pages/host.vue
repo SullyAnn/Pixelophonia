@@ -57,7 +57,7 @@
       </div>
       <div v-else>
         <div id="result">
-          <div v-for="(data, index) of Object.values(parameters)">
+          <div v-for="(data, index) of Object.values(parameters)" :key="index">
             <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)"
               alt="image winner" class="images">
             <div class="infosResult">
@@ -197,7 +197,13 @@ export default {
       this.resetAllData()
     }),
     socket.on('stop-question', () => {
-      this.resetAllData()
+       if(this.displayResult==false){
+        this.resetAllData()
+        this.waitingMode = true
+      }else {
+        this.waitingMode = false
+      }
+
     }),
     socket.on('augmentation-nb-votes', (votesInfos) => {
       this.votesData = votesInfos

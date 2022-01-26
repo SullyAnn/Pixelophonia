@@ -17,7 +17,13 @@
         </div>
       </div>
 
-      <div v-else>
+      <div id="resultSection" v-else>
+        <div class="resultMessage" v-if="choiceId == winnerID">
+          <p class="resultText">Bien joué voyageur! Nous nous dirigeons vers la direction souhaitée </p>
+        </div>
+        <div  class="resultMessage" v-else>
+          <p class="resultText">Pas de chance, nous empruntons l'autre chemin </p>
+        </div>
         <img :src="require(`assets/images/Question_${idQuestion}/`+this.parameters[0].winner)" alt="image test">
       </div>
 
@@ -66,7 +72,10 @@ export default {
        affichage : 0,
        selectedChoiceId: -1,
        choiceIsSubmitted: false,
-       isTimerDone : false
+       isTimerDone : false,
+       winnerID : -1,
+       choiceId : -1,
+       keepChoiceIdInMemory : -1
     }
   },
   head: {
@@ -113,23 +122,19 @@ export default {
     })
   
     socket.on('broadcast-question', (questiondata) => {
+        this.resetAllData()
         if (this.waitingMode){this.waitingMode = false} //comme on a lancé une question on est plus en waitingMode
         this.choices = []
         this.idQuestion = questiondata.id
-        // for (const [key, value] of Object.entries(questiondata)) {
-          //   this.choices.push(value)
-        // }
         this.choices = Object.values(questiondata.choices)
           console.log("dans broadcast", this.choices)
         console.log(this.choices)
         this.isQuestionDisplayed = true
     })
     socket.on('get-votes-not-validated',()=>{
-      console.log("timer is done ")
       if(!this.choiceIsSubmitted){ 
-        console.log("timer is done AND this.choiceIsSubmitted is false")
-        this.sendChoice(this.selectedChoiceId)
-        this.isTimerDone = true
+        console.log("choiceIsSubmitted is FALSE : le joueur n'a pas validé",this.keepChoiceIdInMemory )
+        this.sendChoice(this.keepChoiceIdInMemory)
       }
       socket.emit('who-is-the-winner')
     })
@@ -159,18 +164,21 @@ export default {
        
     }),
     socket.on('stop-partie', (displayStatus) => {
-      this.resetAllData()
       this.isQuestionDisplayed = false
       this.affichage = displayStatus
     }),
     socket.on('stop-question', (displayStatus) => {
-      //if(this.displayResult==false){
+      if(this.displayResult==false){
         this.resetAllData()
         this.isQuestionDisplayed = false
         this.affichage = displayStatus
-      /*}else {
+      }else {
         this.isQuestionDisplayed = true
-      }*/
+      }
+    })
+    socket.on('winnerChoice',(winner)=>{
+      this.winnerID = winner.id;
+
     })
   
   },
@@ -183,13 +191,14 @@ export default {
       if(!this.IsChoice1Disabled){return} // trouver une meilleure solution pour désactiver event click sur les images
       console.log("vous avez cliqué sur l'image " + idChoice)
       const idPlayerChoice = Object.values(this.choices).at(idChoice).id
-      // console.log("choice a", this.choices)
+      this.choiceId = idPlayerChoice
+      //console.log(this.choices)
 
       console.log("choice a", this.choices)
 
       this.choices.find(element => element.id == idPlayerChoice).nbvotes++
       //console.log(Object.values(this.choices).at(0).nbvotes)
-      // console.log("choice b", this.choices)
+      console.log("choice b", this.choices)
 
       // transmission des choix possibles et de l'id du choix fait par le player
       socket.emit('submit-choice', {choices:this.choices, playerChoice:idChoice})
@@ -205,6 +214,8 @@ export default {
     },
     selectChoice: function(index){
       if(!this.choiceIsSubmitted){ //on vérifie qu'on a pas déjà envoyé une réponse
+        this.keepChoiceIdInMemory = index
+        console.log(this.keepChoiceIdInMemory)
         if(this.selectedChoiceId==index){ //le choix est déjà sélectionné, donc on le désélectionne
           this.selectedChoiceId=-1
           this.$refs['choiceSelection'][0].querySelector("img").classList.remove("discarded")
