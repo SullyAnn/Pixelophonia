@@ -66,7 +66,7 @@ export default {
        affichage : 0,
        selectedChoiceId: -1,
        choiceIsSubmitted: false,
-       isTimerDone : false
+       keepChoiceIdInMemory : -1
     }
   },
   head: {
@@ -116,20 +116,15 @@ export default {
         if (this.waitingMode){this.waitingMode = false} //comme on a lancé une question on est plus en waitingMode
         this.choices = []
         this.idQuestion = questiondata.id
-        // for (const [key, value] of Object.entries(questiondata)) {
-          //   this.choices.push(value)
-        // }
         this.choices = Object.values(questiondata.choices)
           console.log("dans broadcast", this.choices)
         console.log(this.choices)
         this.isQuestionDisplayed = true
     })
     socket.on('get-votes-not-validated',()=>{
-      console.log("timer is done ")
       if(!this.choiceIsSubmitted){ 
-        console.log("timer is done AND this.choiceIsSubmitted is false")
-        this.sendChoice(this.selectedChoiceId)
-        this.isTimerDone = true
+        console.log("choiceIsSubmitted is FALSE : le joueur n'a pas validé",this.keepChoiceIdInMemory )
+        this.sendChoice(this.keepChoiceIdInMemory)
       }
       socket.emit('who-is-the-winner')
     })
@@ -189,7 +184,7 @@ export default {
 
       this.choices.find(element => element.id == idPlayerChoice).nbvotes++
       //console.log(Object.values(this.choices).at(0).nbvotes)
-      // console.log("choice b", this.choices)
+      console.log("choice b", this.choices)
 
       // transmission des choix possibles et de l'id du choix fait par le player
       socket.emit('submit-choice', {choices:this.choices, playerChoice:idChoice})
@@ -205,6 +200,8 @@ export default {
     },
     selectChoice: function(index){
       if(!this.choiceIsSubmitted){ //on vérifie qu'on a pas déjà envoyé une réponse
+        this.keepChoiceIdInMemory = index
+        console.log(this.keepChoiceIdInMemory)
         if(this.selectedChoiceId==index){ //le choix est déjà sélectionné, donc on le désélectionne
           this.selectedChoiceId=-1
           this.$refs['choiceSelection'][0].querySelector("img").classList.remove("discarded")

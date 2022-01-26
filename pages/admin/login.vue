@@ -3,6 +3,7 @@
     <div class="login">
       <div class="columns">
         <div class="column is-4 is-offset-4">
+        <Notification :message="error" v-if="error"/>
             <form method="post" @submit.prevent="login">
                 <input v-model="email" type="text" name="email" class="labelChoice" required>
                 <input v-model="password" type="password" name="password" class="labelChoice" required>
@@ -16,13 +17,12 @@
 </template>
 
 <script>
-// import Notification from '~/components/Notification'
 import "@/assets/css/admin.css";
+import Notification from '~/components/Notification'
 export default {
-//   components: {
-//     Notification,
-//   },
-
+  components: {
+    Notification,
+  },
   data(){
     return {
       email: 'testemail',
@@ -49,6 +49,7 @@ export default {
         console.log(response)
       } catch (err) {
         console.log(err)
+        this.error = err.response.data.message
       }
     }
   }
