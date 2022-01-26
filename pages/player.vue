@@ -66,6 +66,7 @@ export default {
        affichage : 0,
        selectedChoiceId: -1,
        choiceIsSubmitted: false,
+       isTimerDone : false
     }
   },
   head: {
@@ -122,6 +123,15 @@ export default {
           console.log("dans broadcast", this.choices)
         console.log(this.choices)
         this.isQuestionDisplayed = true
+    })
+    socket.on('get-votes-not-validated',()=>{
+      console.log("timer is done ")
+      if(!this.choiceIsSubmitted){ 
+        console.log("timer is done AND this.choiceIsSubmitted is false")
+        this.sendChoice(this.selectedChoiceId)
+        this.isTimerDone = true
+      }
+      socket.emit('who-is-the-winner')
     })
     socket.on('display-player-choice', (choice) => {
         console.log("maintenant on est dans le display-player-choice du client " + choice.yourchoice )

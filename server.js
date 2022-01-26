@@ -55,7 +55,10 @@ let updateTimer = {}
 */
 let partieStatus = 0
 let currentQuestion = {}
+let test = 2
 //-------------
+
+
 
 io.on('connection', (socket) => {
   socket.on('last-questions', function(fn){
@@ -154,12 +157,15 @@ io.on('connection', (socket) => {
     socket.broadcast.emit("reload-this-page", isReload)
   })
 
-  //on affiche les résultats quand le timer est fini
   socket.on("calcul-resultat", function(){
+    console.log("let's get the votes not validated")
+    io.emit('get-votes-not-validated')
+  })
+  //on affiche les résultats quand le timer est fini
+  socket.on("who-is-the-winner", function(){
     console.log('ENVOYER LES RESULTATS')
     console.log(totalvotes)
     console.log(choicesResult)
-
     //================== TROUVE LE WINNER ==================//
       if(choicesResult[0] != null && choicesResult[1] != null){
           if(choicesResult[0].nbvotes > choicesResult[1].nbvotes){
