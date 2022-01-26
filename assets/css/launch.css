@@ -1,0 +1,176 @@
+/*--------- checkbox -----------*/
+.checkLabel {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    /* background-color: rgba(255, 255, 255, 0.5); */
+    border-radius: 2px;
+    margin: 8px 0;
+    justify-content: space-between;
+    transition: 0.2s ease-in-out;
+}
+
+.checkLabel:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5); 
+}
+.settingsContainer{
+    margin: 8px 0;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+}
+.settingsContainer span {
+    margin: 8px;
+    display: block;
+    font-weight: bold;
+}
+
+.timeQuestionOptions {
+  margin: 0px 24px;
+  width: 40%;
+  max-width: 320px;
+}
+
+.settingsContainer input[type="checkbox"i] {
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+}
+
+.labelAndStartBtnWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.labelAndStartBtnWrapper p {
+  width: 240px;
+  background-color: #3D4D7C;
+  color: #fff;
+  padding: 8px 24px;
+}
+
+.btnLaunchResults button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #fff;
+  background-color: #37263E;
+  margin-left: 24px;
+  transition: 0.2s ease;
+  font-size: 1.25rem;
+}
+
+.btnLaunchResults button:hover {
+  cursor: pointer;
+  background-color: #53455A;
+}
+
+.launchPage .nbTotalVotes {
+  font-weight: bold;
+  font-size: 1.125rem;
+  margin: 12px 24px;
+}
+
+@media (max-width: 768px) {
+  .questionsList.launchPage li {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .timeQuestionOptions {
+    margin: 0;
+    margin-top: 8px;
+    width: auto;
+    width: 60%;
+    min-width: 240px;
+    max-width: unset;
+  }
+
+  .btnLaunchResults button {
+    margin-left: 0;
+    margin-top: 12px;
+    font-size: 1rem;
+  }
+
+  .launchPage .nbTotalVotes {
+    margin: 12px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .questionsList ul {
+    padding: 0;
+  }
+
+  .timeQuestionOptions {
+    width: 100%;
+  }
+
+  .labelAndStartBtnWrapper p {
+    font-size: 1rem;
+    width: 160px;
+  }
+}
+
+/* SWITCH */
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+}
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .switch .slider {
+    position: relative;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ADADAD;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 40px;
+    height: 16px;
+    width: 40px;
+    margin: 0;
+    margin-right: 12px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    -webkit-transition: .2s;
+    transition: .2s ease;
+    border-radius: 50%;
+    box-shadow: -1px 1px 4px #ADADAD;
+  }
+  
+  input:checked + .slider {
+    background-color: #0CB4CE;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #0CB4CE;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translate(16px, -50%);
+    background-color: #00697e;
+    box-shadow: 1px 1px 4px #ADADAD;
+  }

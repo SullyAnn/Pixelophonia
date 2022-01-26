@@ -1,5 +1,6 @@
 <template>
 <div>
+    <AdminHeader />
     <h1>Lancer un concert</h1>
     <p>Choisissez le concert à lancer !</p>
 	<ul class="listElements">

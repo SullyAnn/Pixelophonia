@@ -25,8 +25,8 @@
 
       <div v-if="!displayResult">
         <!-- nombre de votes courants sur la question -->
-        <h2 v-if="nbTotalVote<=1" class="nbTotalVotes">{{nbTotalVote}} vote</h2>
-        <h2 v-else class="nbTotalVotes">{{nbTotalVote}} votes</h2>
+        <h2 v-if="votesData.total<=1" class="nbTotalVotes">{{votesData.total}} vote</h2>
+        <h2 v-else class="nbTotalVotes">{{votesData.total}} votes</h2>
         <!---->
 
         <div id="parent" class="displayed">
@@ -38,6 +38,21 @@
 
           <div class="infoContainer">
             <h2 class="question">{{questionLabel}}</h2>
+
+            <div class="directResults">
+                <!--{{votesData.votesChoice1}}
+                {{votesData.votesChoice2}}-->
+
+              <div v-if="displayDirectResults">
+                <div>
+                  <div id="vote1" class="directResultMove choice1"></div>
+                </div>
+                <div>
+                  <div id="vote2" class="directResultMove choice2"></div>
+                </div>
+              </div>
+            </div>
+
             <div v-if="displayTimer">
               <div class="timerWrapper">
                 <div id="timeProgress" ref="timeProgress"></div>
@@ -92,11 +107,12 @@ export default {
       winner:{},
       percentage:0,
       parameters:[],
-      nbTotalVote: 0,
+      votesData: {total:0, votesChoice1:0, votesChoice2: 0},
 
       waitingMode: true,
       displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
       displayTimer: false,
+      displayDirectResults: false,
 
       idQuestion:0,
       questionLabel:'',
@@ -111,7 +127,7 @@ export default {
   beforeMount () {
     //debut de la connexion du host
     socket.emit("connection-host");
-    socket.on("update-host-on-co-question", (questiondata, totalvotes, updateTimer) =>{
+    socket.on("update-host-on-co-question", (questiondata, votesInfos, updateTimer) =>{
       console.log('Afficher question')
       //display question
       if (this.waitingMode){this.waitingMode = false}
@@ -119,7 +135,7 @@ export default {
       this.tab = Object.values(questiondata.choices)
       this.displayQuestionData.push(questiondata)
       this.id = questiondata.id
-      this.nbTotalVote = totalvotes
+      this.votesData = votesInfos
       this.questionLabel = questiondata.question
       console.log(this.tab)
       if(updateTimer.showTimer){//si on a bien un temps à afficher, c'est à dire qu'il n'est pas falsy
@@ -142,13 +158,16 @@ export default {
       location.reload(true)
     })
     // ici on récupère la question
-    socket.on('display-question-on-screen', (questiondata, questionStartTime, totalTime, showTimerOnScreen)=> {
+    socket.on('display-question-on-screen', (questiondata, questionStartTime, totalTime, showTimerOnScreen, showDirectResultsOnScreen)=> {
         if (this.waitingMode){this.waitingMode = false}
         //console.log('QUESTION DATA'+questiondata)
         this.displayQuestionData.push(questiondata)
         if(showTimerOnScreen){//si on a bien un temps à afficher, c'est à dire qu'il n'est pas falsy
           this.displayTimer = true
           this.afficheTimer(questionStartTime, totalTime)
+        }
+        if(showDirectResultsOnScreen){//si on veut bien afficher les résultats en direct à afficher, c'est à dire qu'il n'est pas falsy
+          this.displayDirectResults = true
         }
     }),
     // ici on récupère les images des choix de la question 
@@ -174,8 +193,11 @@ export default {
     socket.on('stop-question', () => {
       this.resetAllData()
     }),
-    socket.on('augmentation-nb-votes', (totalvotes) => {
-      this.nbTotalVote = totalvotes
+    socket.on('augmentation-nb-votes', (votesInfos) => {
+      this.votesData = votesInfos
+      console.log(votesInfos)
+      document.getElementById("vote1").style.width = `${(votesInfos.votesChoice1/votesInfos.total)*100}%`
+      document.getElementById("vote2").style.width = `${(votesInfos.votesChoice2/votesInfos.total)*100}%`
     })
   },
   mounted () {
@@ -185,6 +207,7 @@ export default {
       this.waitingMode = true
       this.displayResult= false
       this.displayTimer= false
+      this.displayDirectResults= false
 
       this.displayQuestionData = []
       this.finalChoice = 
@@ -192,7 +215,7 @@ export default {
       this.winner = {}
       this.percentage = 0
       this.parameters=[]
-      this.nbTotalVote=0
+      this.votesData= {total:0, votesChoice1:0, votesChoice2: 0}
       //console.log('resetdata')
     },
     afficheTimer: async function(questionStartTime, totalTime){
@@ -223,7 +246,7 @@ export default {
                     clearInterval(myTimer);
              }
         }, 10)
-    }
+    },
   }
 }
 </script>
