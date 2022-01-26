@@ -5,7 +5,6 @@ import {signUserToken} from '../controllers/authController.js'
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 
-//require('../controllers/authController')(passport)
 const prisma = new PrismaClient()
 const app = express()
 app.use(passport.initialize())
@@ -19,7 +18,6 @@ export default {
   handler: app
 }
 
-//app.post(`/login`, postLogin);
 app.post(`/login`, async(req, res) => {
     passport.authenticate('local', { session: false }, (err, user, message) => {
     if (err) {
@@ -30,15 +28,15 @@ app.post(`/login`, async(req, res) => {
       // you should log it
       return res.status(403).send(message)
     } else {
-      const token = jwt.sign({email: user.email}, 'secret')
-      //const token = signUserToken(user)
+      const token = jwt.sign({email: user.email}, 'secret',{
+        expiresIn: "20m", // it will expire token after 20 minutes and if the user then refresh the page will log out
+      })
       return res.send({ token })
     }
   })(req, res)
 });
 
 app.get('/user', async (req, res) => {
-  // console.log(req.cookies['auth._token.local'])
   passport.authenticate('jwt', { session: false }, (err, user, message) => {
     if (err) {
       // you should log it
@@ -50,15 +48,6 @@ app.get('/user', async (req, res) => {
       return res.send({ user })
     }
   })(res, req)
-})
-
-
-
-app.get('/admin', async (req, res) => {
-  const admins = await prisma.admin.findUnique({
-    where:{ id : id}
-  })
-  res.json(admins)
 })
 
 /* ====== CHOICE ====== */ 
@@ -226,16 +215,19 @@ app.delete(`/question/:id`, async (req, res) => {
       id: parseInt(id),
     },
   })
-    console.log(__dirname)
-    const path = `./assets/images/Question_${id}`;
-    if(fs.existsSync(path)){
-        fs.rmdir(path, {recursive: true,},(err) => {
+  //delete folder of images 
+  console.log(__dirname)
+  const path = `./assets/images/Question_${id}`;
+  if(fs.existsSync(path)){
+      fs.rmdir(path, {recursive: true,},(err) => {
         if(err){
-            throw err;
+          throw err;
         }
         console.log(`${path} is deleted!`);
-        })
-    }else console.log(`this ${path} directory does not exist`)
+      })
+  }
+  else console.log(`this ${path} directory does not exist`)
+  
   const transaction = await prisma.$transaction([deleteChoices, deleteQuestion])
   res.json(transaction)
 })
