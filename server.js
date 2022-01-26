@@ -187,6 +187,7 @@ io.on('connection', (socket) => {
           partieStatus = 3
 
           io.emit('display-final-choice', totalvotes, winner, percentage, egalite)
+          io.emit('winnerChoice',winner)
           totalvotes=0 //remise à zero des votes
           nbChoice1=0
           nbChoice2=0

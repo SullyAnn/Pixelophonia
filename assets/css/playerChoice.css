@@ -113,6 +113,18 @@ img{
     transition: 0.2s ease;
     font-size: 1rem;
 }
+#resultSection{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.resultMessage{
+    z-index: 20;
+    position: absolute;
+    width: 85%;
+}
+
 @media screen and (min-width : 768px) {
     #choicePageContent{
         flex-direction: row;
@@ -142,5 +154,14 @@ img{
     }
     #logoLong{
         width: 150px;
+    }
+    #resultSection{
+        width: 100%;
+    }
+    p{
+        font-size: 25px;
+    }
+    .resultMessage{
+        width: 30%;
     }
 }

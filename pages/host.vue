@@ -70,7 +70,7 @@
       </div>
       <div v-else>
         <div id="result">
-          <div v-for="(data, index) of Object.values(parameters)" >
+          <div v-for="(data, index) of Object.values(parameters)" :key="index">
             <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)"
               alt="image winner" class="images">
             <div class="infosResult">
