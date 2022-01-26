@@ -84,15 +84,10 @@ export default {
         title2: this.title2,
         img2: this.img2.name,
       }
-      console.log("avant addQuestions")
-      console.log(body)
       const questions = await addQuestion(this.$axios, body)
-      console.log("après addQuestion")
-      //const questions = await getQuestions(this.$axios)
 
       //on récupère la dernière question ajoutée pour en récupérer l'id
       console.log(questions)
-      //console.log(questions[Object.keys(questions)[Object.keys(questions).length-1]])
       let lastAddedQuestion = questions[Object.keys(questions)[Object.keys(questions).length-1]]
 
       const extension1 = (lastAddedQuestion.choices[0].img).split('.')
@@ -111,7 +106,7 @@ export default {
       const question = await updateQuestion(this.$axios, lastAddedQuestion.id, bodyChanged)
       console.log(question)
       
-      // enregistrement des images dans le dossier image du projet 
+      // enregistrement des images dans le dossier assets/images du projet 
       const form = new FormData()
       console.log(this.img2)
       console.log(this.img1.name)

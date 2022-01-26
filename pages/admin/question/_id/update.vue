@@ -65,17 +65,13 @@ import "@/assets/css/admin.css";
       }
     },
     methods: {
-      getImg1: function() {
-          this.img1 = event.target.files[0];
-      },
-      getImg2: function() {
-          this.img2 = event.target.files[0];
-      },
       //envoie le formulaire : update les données de la question et de ses choix
       handleSubmit: async function (e) {
         e.preventDefault()
         this.img1 = document.getElementById("image1").files[0];
         this.img2 = document.getElementById("image2").files[0];
+
+        // même si les images ne sont pas modifiés par l'utilisateur on remplit les variables par les images préexistantes
         if(this.img2 == null)this.img2 = {name:this.question.choices[1].img}
         if(this.img1 == null)this.img1 = {name:this.question.choices[0].img}
         const form = new FormData()
@@ -87,9 +83,9 @@ import "@/assets/css/admin.css";
         form.append('idChoice1',this.question.choices[0].id)
         form.append('idChoice2',this.question.choices[1].id)
 
+        // on récupère les extensions des fichiers images 
         const extension1 = (this.img1.name).split('.')
         const extension2 = (this.img2.name).split('.')
-        console.log(extension2[1])
 
         //gestion du temps
         let tempsInDB = 0
@@ -101,24 +97,17 @@ import "@/assets/css/admin.css";
           question: this.question.question,
           temps: tempsInDB,
           title1: this.question.choices[0].title,
-          img1: `q${this.question.id}_c${this.question.choices[0].id}.${extension1[1]}`,
+          img1: `q${this.question.id}_c${this.question.choices[0].id}.${extension1[1]}`, //oblige image du choix 1 de la question N à avoir un nom unique "qN-c1.extension"
           id1: this.question.choices[0].id,
           title2: this.question.choices[1].title,
           img2: `q${this.question.id}_c${this.question.choices[1].id}.${extension2[1]}`,
           id2: this.question.choices[1].id,
         }
-        //this.form.push({img1 : this.img1.name}, {img2: this.img2.name})
-        
-        console.log(body)
+      
         await updateQuestion(this.$axios, this.question.id, body) 
-        await updateUploadImage(this.$axios, form)       
-        // await this.$axios({
-        //   method:'post',
-        //   url:'http://127.0.0.1:3333/upload',
-        //   data: form,
-        //   config: {headers : {'content-type':'multipart/form-data'}}
-        // })
-        this.$router.push('./')
+        await updateUploadImage(this.$axios, form)       //upload la nouvelle image dans le dossier assets/images (la nouvelle image écrase l'ancienne)
+
+        this.$router.push('./creation')
       },
       previewFile : function(id, idFile) {
         var preview = document.getElementById(id);
@@ -135,8 +124,7 @@ import "@/assets/css/admin.css";
           preview.src = "https://sdr-lab.u-pem.fr/cherrier.jpg"; // cliquez pour ajouter 
         }
         
-      },
-      // Factoriser ces fonctions pour qu'il n'y en ait plus qu'une   
+      },  
 
     },
 }
