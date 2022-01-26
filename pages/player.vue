@@ -17,7 +17,13 @@
         </div>
       </div>
 
-      <div v-else>
+      <div id="resultSection" v-else>
+        <div v-if="choiceId == winnerID">
+          <p>Votre choix</p>
+        </div>
+        <div v-else>
+          <p>pas Votre choix</p>
+        </div>
         <img :src="require(`assets/images/Question_${idQuestion}/`+this.parameters[0].winner)" alt="image test">
       </div>
 
@@ -66,7 +72,9 @@ export default {
        affichage : 0,
        selectedChoiceId: -1,
        choiceIsSubmitted: false,
-       isTimerDone : false
+       isTimerDone : false,
+       winnerID : -1,
+       choiceId : -1
     }
   },
   head: {
@@ -113,6 +121,7 @@ export default {
     })
   
     socket.on('broadcast-question', (questiondata) => {
+        this.resetAllData()
         if (this.waitingMode){this.waitingMode = false} //comme on a lancé une question on est plus en waitingMode
         this.choices = []
         this.idQuestion = questiondata.id
@@ -159,18 +168,21 @@ export default {
        
     }),
     socket.on('stop-partie', (displayStatus) => {
-      this.resetAllData()
       this.isQuestionDisplayed = false
       this.affichage = displayStatus
     }),
     socket.on('stop-question', (displayStatus) => {
-      //if(this.displayResult==false){
+      if(this.displayResult==false){
         this.resetAllData()
         this.isQuestionDisplayed = false
         this.affichage = displayStatus
-      /*}else {
+      }else {
         this.isQuestionDisplayed = true
-      }*/
+      }
+    })
+    socket.on('winnerChoice',(winner)=>{
+      this.winnerID = winner.id;
+
     })
   
   },
@@ -183,7 +195,8 @@ export default {
       if(!this.IsChoice1Disabled){return} // trouver une meilleure solution pour désactiver event click sur les images
       console.log("vous avez cliqué sur l'image " + idChoice)
       const idPlayerChoice = Object.values(this.choices).at(idChoice).id
-      // console.log("choice a", this.choices)
+      this.choiceId = idPlayerChoice
+      //console.log(this.choices)
 
       console.log("choice a", this.choices)
 
