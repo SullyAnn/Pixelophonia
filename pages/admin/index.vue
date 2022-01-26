@@ -8,11 +8,11 @@
 
 	<div id="menu">
 		<!-- TO DO : changer newAdmin dans les path -->
-		<NuxtLink to="/admin/launchConcert" class="linkBtnMenu"> 
+		<NuxtLink to="/admin/launch" class="linkBtnMenu"> 
 			<button class ="btnMenu"> Lancer un concert </button>
 		</NuxtLink>
 		
-		<NuxtLink to="/admin/creation" class="linkBtnMenu">
+		<NuxtLink to="/admin/question/" class="linkBtnMenu">
 			<button class ="btnMenu"> Gérer les questions </button>
 		</NuxtLink>	
 		<NuxtLink to="/admin/concert/" class="linkBtnMenu">

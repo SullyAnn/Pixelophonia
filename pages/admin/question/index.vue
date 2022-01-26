@@ -3,16 +3,19 @@
   	<AdminHeader />
     <h1>Création des questions</h1>
 
-    <ul class="questionsList creationPage">
+    <ul class="listElements creationPage">
       <li v-for="(question, index) in questions" :key="index">
 
         <!-- TO DO : mise en page propre ici  -->
-        <p> <b>{{ question.label }}</b>
+            <NuxtLink  :to="`./${question.id}`">
+        <p> 
+          <b>{{ question.label }}</b>
           <br />
-          <i>{{ question.question }}</i></p>
-
+          <i>{{ question.question }}</i>
+          </p>
+            </NuxtLink>
         <div>
-          <NuxtLink :to="`${question.id}`">
+        <NuxtLink :to="`${question.id}/update`">
             <button class="btn update">
               <svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -32,7 +35,7 @@
       </li>
     </ul>
 
-    <NuxtLink to="./AjoutQuestion">
+    <NuxtLink to="./add">
       <button class="btn add">
         <svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -42,7 +45,7 @@
     </NuxtLink>
 
 
-    <NuxtLink to="./" class="creationGoBackContainer">
+    <NuxtLink to="../" class="creationGoBackContainer">
       <div class="goBack">
         <button class="btn back">
           <svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">

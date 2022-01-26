@@ -7,7 +7,7 @@
           <button v-if="selectedChoiceId!=-1" v-on:click="sendChoice(selectedChoiceId)" class="btnSubmitChoice">Valider mon choix</button>
           <p v-else>OU</p>
           </div>
-          <p v-else class="confirmationSubmit">Votre réponse a bien été envoyé !</p>
+          <p v-else class="confirmationSubmit">Votre réponse a bien été envoyée !</p>
         </div>
 
         <div v-for="(data, index) in choices" :key="index" class="choice" v-on:click="selectChoice(index)" ref="choiceSelection">

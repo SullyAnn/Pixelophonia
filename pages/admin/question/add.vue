@@ -38,7 +38,7 @@
         <input type="submit" value="ok" class="btn send">
       </form>
 
-      <NuxtLink to="./creation">Revenir à la liste (sans sauvegarder)</NuxtLink>
+      <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
     </div>
   </div>
 </template>
@@ -87,13 +87,14 @@ export default {
       const questions = await addQuestion(this.$axios, body)
 
       //on récupère la dernière question ajoutée pour en récupérer l'id
+      console.log(questions)
       let lastAddedQuestion = questions[Object.keys(questions)[Object.keys(questions).length-1]]
-      //on récupère les extension des fichiers images
+
       const extension1 = (lastAddedQuestion.choices[0].img).split('.')
       const extension2 = (lastAddedQuestion.choices[1].img).split('.')
       lastAddedQuestion.choices[0].img = `q${lastAddedQuestion.id}_c${lastAddedQuestion.choices[0].id}.${extension1[1]}`
       lastAddedQuestion.choices[1].img = `q${lastAddedQuestion.id}_c${lastAddedQuestion.choices[1].id}.${extension2[1]}`
-      // on update juste le nom des images 
+
       const bodyChanged = {
           img1: lastAddedQuestion.choices[0].img,
           id1: lastAddedQuestion.choices[0].id,
@@ -116,7 +117,7 @@ export default {
       form.append('idChoice2',lastAddedQuestion.choices[1].id)
       await updateUploadImage(this.$axios, form) 
 
-      this.$router.push('./creation') //on revient à la page de liste des questions
+      this.$router.push('./') //on revient à la page de liste des questions
     },
 
     previewFile : function(id, idFile) {

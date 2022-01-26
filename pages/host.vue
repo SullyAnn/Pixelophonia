@@ -30,28 +30,14 @@
         <!---->
 
         <div id="parent" class="displayed">
-          <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
-            <h1 v-if="index == 0" style="right:0; top:0;">{{data.title}}</h1>
-            <h1 v-else style="left:0; bottom:0;">{{data.title}}</h1>
+          <div v-for="(data, index) in tab" :key="index+1" class="chatArea" ref="halfChoiceContainer" idChoice=data.id>
+            <h1>{{data.title}}</h1>
             <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
+            <div class="directResultMove" v-if="displayDirectResults"></div>
           </div>
 
           <div class="infoContainer">
             <h2 class="question">{{questionLabel}}</h2>
-
-            <div class="directResults">
-                <!--{{votesData.votesChoice1}}
-                {{votesData.votesChoice2}}-->
-
-              <div v-if="displayDirectResults">
-                <div>
-                  <div id="vote1" class="directResultMove choice1"></div>
-                </div>
-                <div>
-                  <div id="vote2" class="directResultMove choice2"></div>
-                </div>
-              </div>
-            </div>
 
             <div v-if="displayTimer">
               <div class="timerWrapper">
@@ -63,6 +49,7 @@
                 <div class="spinner"></div>
               </div>
             </div>
+
           </div>
 
         </div>
@@ -182,7 +169,26 @@ export default {
     })
     socket.on('display-final-choice', (totalvotes, winner, percentage, egalite) => {
        this.parameters = []
-       this.displayResult = true
+
+      //transition avant de passer au résultat
+      if(window.innerWidth>768){
+        this.$refs['halfChoiceContainer'][winner.id-this.tab[0].id].style.width = "100%"
+        this.$refs['halfChoiceContainer'][Math.abs(winner.id-this.tab[1].id)].style.width = "0%"
+      }
+      else{ //si l'écran est trop petit, on passe en vertical
+        this.$refs['halfChoiceContainer'][winner.id-this.tab[0].id].style.height = "100%"
+        this.$refs['halfChoiceContainer'][Math.abs(winner.id-this.tab[1].id)].style.height = "0%"
+      }
+
+      /*if(this.displayDirectResults){
+        document.querySelector(".directResultMove").style.opacity = "0"
+        console.log('METTRE OPACITY A 0', document.querySelector(".directResultMove"))
+      }*/
+
+        setTimeout(function () {
+            this.displayResult = true
+            console.log('HELLO 1sec')
+        }.bind(this), 1500)
 
         this.parameters.push({totalvote:totalvotes,winner:winner.img,winnerTitle:winner.title,percentage:Math.floor(percentage)+"%", egalite: egalite })
     }),
@@ -191,13 +197,21 @@ export default {
       this.resetAllData()
     }),
     socket.on('stop-question', () => {
-      this.resetAllData()
+       if(this.displayResult==false){
+        this.resetAllData()
+        this.waitingMode = true
+      }else {
+        this.waitingMode = false
+      }
+
     }),
     socket.on('augmentation-nb-votes', (votesInfos) => {
       this.votesData = votesInfos
       console.log(votesInfos)
-      document.getElementById("vote1").style.width = `${(votesInfos.votesChoice1/votesInfos.total)*100}%`
-      document.getElementById("vote2").style.width = `${(votesInfos.votesChoice2/votesInfos.total)*100}%`
+      if(!this.displayResult && this.displayDirectResults){
+        this.$refs['halfChoiceContainer'][0].querySelector('.directResultMove').style.height = `${(votesInfos.votesChoice1/votesInfos.total)*100}%`
+        this.$refs['halfChoiceContainer'][1].querySelector('.directResultMove').style.height = `${(votesInfos.votesChoice2/votesInfos.total)*100}%`
+      }
     })
   },
   mounted () {
