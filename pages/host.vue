@@ -30,7 +30,7 @@
         <!---->
 
         <div id="parent" class="displayed">
-          <div v-for="(data, index) in tab" :key="index+1" class="chatArea">
+          <div v-for="(data, index) in tab" :key="index+1" class="chatArea" ref="halfChoiceContainer" idChoice=data.id>
             <h1 v-if="index == 0" style="right:0; top:0;">{{data.title}}</h1>
             <h1 v-else style="left:0; bottom:0;">{{data.title}}</h1>
             <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
@@ -182,7 +182,20 @@ export default {
     })
     socket.on('display-final-choice', (totalvotes, winner, percentage, egalite) => {
        this.parameters = []
-       this.displayResult = true
+
+      //transition avant de passer au résultat
+      if(window.innerWidth>768){
+        this.$refs['halfChoiceContainer'][winner.id-this.tab[0].id].style.width = "100%"
+        this.$refs['halfChoiceContainer'][Math.abs(winner.id-this.tab[1].id)].style.width = "0%"
+      }
+      else{ //si l'écran est trop petit, on passe en vertical
+        this.$refs['halfChoiceContainer'][winner.id-this.tab[0].id].style.height = "100%"
+        this.$refs['halfChoiceContainer'][Math.abs(winner.id-this.tab[1].id)].style.height = "0%"
+      }
+        setTimeout(function () {
+            this.displayResult = true
+            console.log('HELLO 1sec')
+        }.bind(this), 1500)
 
         this.parameters.push({totalvote:totalvotes,winner:winner.img,winnerTitle:winner.title,percentage:Math.floor(percentage)+"%", egalite: egalite })
     }),
