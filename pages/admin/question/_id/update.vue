@@ -44,7 +44,7 @@
 
       </form>
 
-      <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
+      <NuxtLink to="../">Revenir à la liste (sans sauvegarder)</NuxtLink>
     </div>
   </div>
 </template>
@@ -107,7 +107,7 @@ import "@/assets/css/admin.css";
         await updateQuestion(this.$axios, this.question.id, body) 
         await updateUploadImage(this.$axios, form)       //upload la nouvelle image dans le dossier assets/images (la nouvelle image écrase l'ancienne)
 
-        this.$router.push('./creation')
+        this.$router.push('./')
       },
       previewFile : function(id, idFile) {
         var preview = document.getElementById(id);
@@ -118,11 +118,10 @@ import "@/assets/css/admin.css";
           preview.src = reader.result;
         }
 
-        if (file) {
-          reader.readAsDataURL(file);
-        } else {
-          preview.src = "https://sdr-lab.u-pem.fr/cherrier.jpg"; // cliquez pour ajouter 
-        }
+        if (file) { reader.readAsDataURL(file) }
+        else { 
+          preview.src =  document.getElementById(id).src		
+        } 
         
       },  
 

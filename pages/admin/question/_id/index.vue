@@ -18,7 +18,7 @@
 		</fieldset>
 	</div>
 
-    <NuxtLink to="./">Revenir à la liste</NuxtLink>
+    <NuxtLink to="../">Revenir à la liste</NuxtLink>
   </div>
 </template>
 
