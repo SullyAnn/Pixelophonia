@@ -18,11 +18,11 @@
       </div>
 
       <div id="resultSection" v-else>
-        <div v-if="choiceId == winnerID">
-          <p>Votre choix</p>
+        <div class="resultMessage" v-if="choiceId == winnerID">
+          <p class="resultText">Bien joué voyageur! Nous nous dirigeons vers la direction souhaitée </p>
         </div>
-        <div v-else>
-          <p>pas Votre choix</p>
+        <div  class="resultMessage" v-else>
+          <p class="resultText">Pas de chance, nous empruntons l'autre chemin </p>
         </div>
         <img :src="require(`assets/images/Question_${idQuestion}/`+this.parameters[0].winner)" alt="image test">
       </div>
