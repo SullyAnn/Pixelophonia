@@ -1,8 +1,10 @@
 <template>
   <div class="adminHeader">
-    <img src="../assets/images/Logo-carre-BD.png">
-    <p>Administrateur</p>
-    <button @click="logout" class ="btnLogOut btnMenu"> Log out </button>
+    <div class="administrateur">
+      <img src="../assets/images/Logo-carre-BD.png">
+      <p>Administrateur</p>
+    </div>
+    <button @click="logout" class="btnLogOut btnMenu"> Log out </button>
   </div>
 </template>
 <script>
@@ -18,6 +20,7 @@ export default {
 .adminHeader{
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .adminHeader img {
 height: 32px;
@@ -32,8 +35,13 @@ width: auto;
 text-align:left;
 padding-left: 12px;
 }
-.btnLogOut{
-  margin-left:80vw;
-  padding: 10px !important;
+.administrateur{
+  display: flex; 
+  align-items: center;
+}
+.adminHeader .btnLogOut{
+  /*margin-left:80vw;*/
+  padding: 10px 24px;
+  width: unset;
 }
 </style>

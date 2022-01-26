@@ -1,6 +1,7 @@
 <!-- Voir le concert selon l'ID -->
 <template>
 <div>
+    <AdminHeader />
     <h1>Voir le concert</h1>
     <h2>{{ concert.concert.title }} </h2>
     <h3>Questions du concert</h3>

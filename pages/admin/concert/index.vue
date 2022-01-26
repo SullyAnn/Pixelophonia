@@ -2,6 +2,7 @@
 
 <template>
 <div>
+    <AdminHeader />
     <h1>Gestion des concerts</h1>
 	<ul class="listElements">
 		<li v-for="(concert, index) in concerts" :key="index">

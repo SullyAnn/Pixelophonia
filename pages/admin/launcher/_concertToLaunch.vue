@@ -1,6 +1,4 @@
 <!-- questions contenues dans le concert -->
-
-
 <template>
   <div>
     <AdminHeader />
@@ -9,7 +7,24 @@
       <ul ref="questions" class="questions">
         <li v-for="(question, index) in tabQuestions" :key="index" class="question" ref="questionInList">
           <div class="labelAndStartBtnWrapper">
-            <p>{{ question.label }}</p>
+            <div>
+              <p>{{ question.label }}</p>
+              
+              <div class="settingsContainer">
+                <span>Paramètres sur l'écran</span>
+                <!-- option de visibilité des résultats en direct -->
+                <label class="checkLabel checkDirectResultLabel switch">
+                  Résultats en direct<input type="checkbox" name="checkDirectResult" class="checkDirectResult"><span class="slider round"></span>
+                </label>
+                <!-- option de visibilité du temps -->
+                <div v-if="question.temps">
+                  <label class="checkLabel checkTimeLabel switch">
+                    Barre de temps<input type="checkbox" name="checkTime" class="checkTime" checked><span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
             <button :id="index+1" @click="switchClass(index+1), toggleQuestion(question, index)" class="btn start">
               <svg style="display:block;" class="svg-icon" viewBox="0 0 1025 1024" version="1.1"
                 xmlns="http://www.w3.org/2000/svg">
@@ -23,16 +38,12 @@
           </div>
 
           <div v-if="question.temps" class="timeQuestionOptions">
-            <!-- option de visibilité du temps -->
-            <label class="checkTimeLabel"><input type="checkbox" name="checkTime" class="checkTime" checked>Temps visible sur l'écran</label>
-
-
             <div class="timerWrapper">
               <div id="timeProgress" class="timeProgress"></div>
             </div>
           </div>
 
-          <div v-else class="btnLaunchResults">
+          <div v-if="!question.temps" class="btnLaunchResults">
             <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcule des résultats -->
             <div v-if="questionIsPlaying && indexQuestionPlaying == index && displayBtnLancerResultat">
               <button @click="launchResultsNoTimer(index)">Lancer les résultats</button>
@@ -42,21 +53,21 @@
           <!-- nombre de votes courants sur la question -->
           <div v-if="questionIsPlaying && indexQuestionPlaying == index" class="nbTotalVotes">
             <table>
-            <tr>
-              <th colspan="2">Nombre de votes</th>
-            </tr>
-            <tr>
-              <td>{{question.choices[0].title}}</td>
-              <td>{{votesData.votesChoice1}}</td>
-            </tr>
-            <tr>
-              <td>{{question.choices[1].title}}</td>
-              <td>{{votesData.votesChoice2}}</td>
-            </tr>
-            <tr>
-              <th>Total</th>
-              <th>{{votesData.total}}</th>
-            </tr>
+              <tr>
+                <th colspan="2">Nombre de votes</th>
+              </tr>
+              <tr>
+                <td>{{question.choices[0].title}}</td>
+                <td>{{votesData.votesChoice1}}</td>
+              </tr>
+              <tr>
+                <td>{{question.choices[1].title}}</td>
+                <td>{{votesData.votesChoice2}}</td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <th>{{votesData.total}}</th>
+              </tr>
             </table>
           </div>
 
@@ -82,6 +93,7 @@
 
 <script>
 import "@/assets/css/admin.css";
+import "@/assets/css/launch.css";
 import socket from '~/plugins/socket.io.js'
 import Choice from '@/assets/classes/Choice.js'
 import Question from '@/assets/classes/Question.js'
@@ -124,9 +136,8 @@ created(){
     this.newQuestion = new Question(null,null,null,null)
 },
 beforeMount () {
-    socket.on('augmentation-nb-votes-admin', (votesInfos) => {
+    socket.on('augmentation-nb-votes', (votesInfos) => {
       this.votesData = votesInfos
-      //console.log('+1')
     })
 },
 mounted () {
@@ -183,6 +194,8 @@ launchPartie: function(){
         console.log(questiondata)
         console.log("LaunchQuestion "+questiondata.id)
         const questionStartTime = Date.now(); //temps de départ de la question
+
+        //display de la barre de temps ou non
         let showTimerOnScreen = false
         if(questiondata.temps){//si la question est timée, on regarde si l'admin a coché la case visibilité ou pas
           showTimerOnScreen = this.$refs['questionInList'][idQuestionList].querySelector('.checkTime').checked
@@ -191,9 +204,14 @@ launchPartie: function(){
         else{ //sinon c'est que la question a un temps indéterminé
           showTimerOnScreen = false
         }
-        
+
+        //display des votes ou non
+        let showDirectResultsOnScreen = false
+        if(this.$refs['questionInList'][idQuestionList].querySelector('.checkDirectResult').checked){showDirectResultsOnScreen = true}
+        console.log('SHOW RESULSTS :'+showDirectResultsOnScreen)
+
         console.log("question data dans launchquestion", questiondata)
-        socket.emit("display-question", questiondata, questionStartTime, showTimerOnScreen)
+        socket.emit("display-question", questiondata, questionStartTime, showTimerOnScreen, showDirectResultsOnScreen)
         if(questiondata.temps){ //si il y a un temps défini pour la question
           this.launchTimer(questionStartTime, questiondata.temps, idQuestionList) //lancer le timer chez l'admin
         }

@@ -1,24 +1,27 @@
 <!-- Update le concert selon l'ID -->
 
 <template>
-<div class="window">
-<h2>Modifier le concert : {{ concert.concert.title }}</h2>
-<form @submit.prevent="handleSubmit">
-    <input type="text" v-model="concert.concert.title" placeholder="Titre du concert" class="labelChoice">
-    
+  <div>
+    <AdminHeader />
+    <div class="window">
+      <h2>Modifier le concert : {{ concert.concert.title }}</h2>
+      <form @submit.prevent="handleSubmit">
+        <input type="text" v-model="concert.concert.title" placeholder="Titre du concert" class="labelChoice">
 
-    <h3> Questions à inclure au concert </h3>
-    <div class="allQuestionsToCheck">
-    <div v-for="(question, index) in allQuestions" :key="index" class="containsCheckQuestion" >
-      <input type="checkbox" :id="`question_${question.id}`" class="checkQuestion">
-      <label :for="`question_${question.id}`">{{question.label}}</label>
-    </div>
-    </div>
-    <input type="submit" value="ok" class="btn send">
-</form>
-<NuxtLink to=".">Annuler (sans sauvegarder)</NuxtLink>
 
-</div>  
+        <h3> Questions à inclure au concert </h3>
+        <div class="allQuestionsToCheck">
+          <div v-for="(question, index) in allQuestions" :key="index" class="containsCheckQuestion">
+            <input type="checkbox" :id="`question_${question.id}`" class="checkQuestion">
+            <label :for="`question_${question.id}`">{{question.label}}</label>
+          </div>
+        </div>
+        <input type="submit" value="ok" class="btn send">
+      </form>
+      <NuxtLink to=".">Annuler (sans sauvegarder)</NuxtLink>
+
+    </div>
+  </div>
 </template>
 
 <script>

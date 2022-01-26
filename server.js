@@ -87,14 +87,14 @@ io.on('connection', (socket) => {
   socket.on("connection-host", () => {
     console.log(socket.id, 'HOST');
     if(partieStatus==2){
-      io.to(socket.id).emit('update-host-on-co-question', {id:currentQuestion.id, choices:currentQuestion.choices, question:currentQuestion.question}, totalvotes, updateTimer);
+      io.to(socket.id).emit('update-host-on-co-question', {id:currentQuestion.id, choices:currentQuestion.choices, question:currentQuestion.question}, {total : totalvotes, votesChoice1 : nbChoice1, votesChoice2 : nbChoice2}, updateTimer);
     }
     else if(partieStatus==3){
       io.to(socket.id).emit('update-host-on-co-results', totalvotes, winner, percentage, egalite, currentQuestion.id);
     }
   });
   
-  socket.on('display-question', function (question, questionStartTime, showTimerOnScreen) {
+  socket.on('display-question', function (question, questionStartTime, showTimerOnScreen, showDirectResultsOnScreen) {
     partieStatus = 2
     currentQuestion = question
     //Initialisation du tableaux de result
@@ -109,7 +109,7 @@ io.on('connection', (socket) => {
     // transmission de la question pour le screen
     updateTimer = {start: questionStartTime, total: question.temps, showTimer : showTimerOnScreen}
     console.log('UPDATE TIMER', updateTimer)
-    socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime, question.temps, showTimerOnScreen)
+    socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime, question.temps, showTimerOnScreen, showDirectResultsOnScreen)
   })
     //TEST DISPLAY MENU ON LAUNCH PARTY 
     socket.on('affichage-menu', function (displayStatus) {
@@ -144,8 +144,7 @@ io.on('connection', (socket) => {
 
     //on envoie le nombre de vote au total qui a augmenté
     //peut-être changer plus tard pour envoyer seulement à l'admin et au host, au lieu de broadcast à tout le monde
-    socket.broadcast.emit('augmentation-nb-votes-admin',{total : totalvotes, votesChoice1 : nbChoice1, votesChoice2 : nbChoice2})
-    socket.broadcast.emit('augmentation-nb-votes',totalvotes)
+    socket.broadcast.emit('augmentation-nb-votes',{total : totalvotes, votesChoice1 : nbChoice1, votesChoice2 : nbChoice2})
   })
 
   //peut-être temporaire : permet de reload toutes les pages quand admin reload (utile pour developpement)
