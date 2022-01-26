@@ -220,6 +220,7 @@ export default {
         console.log(this.keepChoiceIdInMemory)
         if(this.selectedChoiceId==index){ //le choix est déjà sélectionné, donc on le désélectionne
           this.selectedChoiceId=-1
+          this.keepChoiceIdInMemory = -1
           this.$refs['choiceSelection'][0].querySelector("img").classList.remove("discarded")
           this.$refs['choiceSelection'][1].querySelector("img").classList.remove("discarded")
         }
@@ -254,6 +255,10 @@ export default {
         this.parameters=[]
         this.selectedChoiceId= -1
         this.choiceIsSubmitted=false
+        this.isTimerDone= false
+        this.winnerID= -1
+        this.choiceId= -1
+        this.keepChoiceIdInMemory= -1
         //console.log('resetdata')
     },
     delay: function(ms){
