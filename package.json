@@ -34,6 +34,7 @@
     "socket.io-client": "^4.4.1",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
+    "vue-session": "^1.0.0",
     "vue-template-compiler": "^2.6.14",
     "webpack": "^4.46.0"
   },

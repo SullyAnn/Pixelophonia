@@ -6,6 +6,7 @@ const app = require('express')()
 const server = http.createServer(app)
 const io = require('socket.io')(server)
 const cors = require('cors')
+const vueSession = require('vue-session')
 
 app.use(cors())
 const { Nuxt, Builder } = require('nuxt')
@@ -19,6 +20,7 @@ if (config.dev) {
   const builder = new Builder(nuxt)
   builder.build()
 }
+app.use(vueSession)
 app.use(nuxt.render)
 //const authRouter = require("./routes/authRouter");
 

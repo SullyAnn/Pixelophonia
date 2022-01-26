@@ -56,7 +56,7 @@ import "../pages/admin/launch.vue";
 export default {
   asyncData () {
     return new Promise(resolve =>{
-        socket.emit('last-choices', choices => resolve({ choices })) // on récupère le tableau créé dans server.js
+        socket.emit('last-choices', choices => resolve({ choices }))
     })
   },
   data () {
@@ -132,11 +132,11 @@ export default {
         this.isQuestionDisplayed = true
     })
     socket.on('get-votes-not-validated',()=>{
-      if(!this.choiceIsSubmitted){ 
+      if(!this.choiceIsSubmitted && this.keepChoiceIdInMemory != -1){ 
         console.log("choiceIsSubmitted is FALSE : le joueur n'a pas validé",this.keepChoiceIdInMemory )
         this.sendChoice(this.keepChoiceIdInMemory)
-      }
-      socket.emit('who-is-the-winner')
+      }   
+      this.justWait()   
     })
     socket.on('display-player-choice', (choice) => {
         console.log("maintenant on est dans le display-player-choice du client " + choice.yourchoice )
@@ -178,12 +178,14 @@ export default {
     })
     socket.on('winnerChoice',(winner)=>{
       this.winnerID = winner.id;
-
+      console.log("winnerChoice", winner.id)
     })
   
   },
   mounted () {
-    
+    // if(!this.$session.exists()){
+    //   this.$session.start();
+    // }
   },
   methods: {
     sendChoice: function(idChoice){
@@ -192,7 +194,7 @@ export default {
       console.log("vous avez cliqué sur l'image " + idChoice)
       const idPlayerChoice = Object.values(this.choices).at(idChoice).id
       this.choiceId = idPlayerChoice
-      //console.log(this.choices)
+      console.log("choiceId", this.choiceId)
 
       console.log("choice a", this.choices)
 
@@ -253,6 +255,15 @@ export default {
         this.selectedChoiceId= -1
         this.choiceIsSubmitted=false
         //console.log('resetdata')
+    },
+    delay: function(ms){
+      return new Promise(res => setTimeout(res, ms))
+    },
+    justWait : async function (){
+      console.log("Wait 3s");
+      const wewait = await this.delay(3000);
+      console.log("you Waited 3s");
+      socket.emit('who-is-the-winner')
     },
   }
 }
