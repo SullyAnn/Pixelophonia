@@ -19,7 +19,7 @@
 
       <div id="resultSection" v-else>
         <div class="resultMessage" v-if="choiceId == winnerID">
-          <p class="resultText">Bien joué voyageur! Nous nous dirigeons vers la direction souhaitée </p>
+          <p class="resultText">Bien joué voyageur ! Nous nous dirigeons vers la direction souhaitée </p>
         </div>
         <div  class="resultMessage" v-else>
           <p class="resultText">Pas de chance, nous empruntons l'autre chemin </p>

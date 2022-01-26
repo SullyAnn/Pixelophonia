@@ -226,7 +226,7 @@ launchPartie: function(){
               const timerWrapper = this.$refs['questionInList'][idQuestionList].querySelector('.timerWrapper')
               timerWrapper.style.cssText ="display:none;"
               var element = this.$refs['questionInList'][idQuestionList].querySelector('.timeProgress')
-              element.style.backgroundColor = '#98A8CC';//on réinitialise la barre de progrès
+              element.style.backgroundColor = '#0CB4CE';//on réinitialise la barre de progrès
               element.style.width = 0 + "%";
             }
         }
@@ -318,7 +318,7 @@ launchPartie: function(){
 
                   if(!this.questionIsPlaying){ //si on arrete la question avant la fin
                     element.style.width = 0 + "%";
-                    element.style.backgroundColor = '#98A8CC';
+                    element.style.backgroundColor = '#0CB4CE';
                     clearInterval(myTimer)
                   }
         }, 10)
