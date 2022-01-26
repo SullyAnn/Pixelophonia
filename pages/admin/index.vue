@@ -33,19 +33,6 @@ export default {
 	},
 	middleware: ['auth'],
 	mounted () { 
-		// ce bloc est appelé plusieurs les pages : en faire un fonction globale ?
-		// if (performance.navigation.type == performance.navigation.TYPE_RELOAD) 
-		// {
-		// 	this.reload = true;
-		// 	console.info( "This page is reloaded" );
-		// 	socket.emit("reload-all-pages", this.isReload)
-		// } 
-		// else {
-		// 	console.info( "This page is not reloaded");
-		// }
-		// if (!this.$auth.loggedIn) {
-        //   this.$router.push('/admin/login')
-        // }
 	},
 	methods: {
 		lauchMenu: function(){

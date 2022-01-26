@@ -39,7 +39,7 @@ module.exports = {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxtjs/axios','~/io', '@nuxtjs/auth'],
   env:{
-    WS_URL: process.env.WS_URL || 'http://localhost:3000'
+    WS_URL: process.env.WS_URL || 'http://localhost:3000'//'http://192.168.0.14:3000'
   },
 //   auth: {
 //     strategies: {

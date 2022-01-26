@@ -76,18 +76,3 @@ export default class Question{
         return (winnerChoice.nbvotes/(this.choices.choice1.nbvotes + this.choices.choice2.nbvotes))*100;
     }
 };
-
-/*
-export async function getQuestionData(id){
-    const response = await fetch('api/question/' + id)
-    const questionData = await response.json();
-    console.log(questionData)
-    return questionData
-    // fetch('api/question/:id', {method: 'GET'})
-    // .then( response => response.json())
-    // .then( data => {
-    //     console.log(data);
-    // })
-    // .catch(error => {console.log(error)});
-};
-*/
