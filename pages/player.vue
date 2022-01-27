@@ -131,13 +131,6 @@ export default {
         console.log(this.choices)
         this.isQuestionDisplayed = true
     })
-    socket.on('get-votes-not-validated',()=>{
-      if(!this.choiceIsSubmitted && this.keepChoiceIdInMemory != -1){ 
-        console.log("choiceIsSubmitted is FALSE : le joueur n'a pas validé",this.keepChoiceIdInMemory )
-        this.sendChoice(this.keepChoiceIdInMemory)
-      }   
-      this.justWait()   
-    })
     socket.on('display-player-choice', (choice) => {
         console.log("maintenant on est dans le display-player-choice du client " + choice.yourchoice )
         // on empêche le player de changer de vote (ça bloque les événements sur le click)
@@ -183,9 +176,6 @@ export default {
   
   },
   mounted () {
-    // if(!this.$session.exists()){
-    //   this.$session.start();
-    // }
   },
   methods: {
     sendChoice: function(idChoice){
@@ -216,8 +206,6 @@ export default {
     },
     selectChoice: function(index){
       if(!this.choiceIsSubmitted){ //on vérifie qu'on a pas déjà envoyé une réponse
-        this.keepChoiceIdInMemory = index
-        console.log(this.keepChoiceIdInMemory)
         if(this.selectedChoiceId==index){ //le choix est déjà sélectionné, donc on le désélectionne
           this.selectedChoiceId=-1
           this.$refs['choiceSelection'][0].querySelector("img").classList.remove("discarded")
@@ -255,15 +243,6 @@ export default {
         this.selectedChoiceId= -1
         this.choiceIsSubmitted=false
         //console.log('resetdata')
-    },
-    delay: function(ms){
-      return new Promise(res => setTimeout(res, ms))
-    },
-    justWait : async function (){
-      console.log("Wait 3s");
-      const wewait = await this.delay(3000);
-      console.log("you Waited 3s");
-      socket.emit('who-is-the-winner')
     },
   }
 }
