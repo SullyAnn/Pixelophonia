@@ -88,7 +88,8 @@ TO DO :
 }
 
 ul.questions {
-  margin: 40px 0px;
+  margin: 0;
+  padding-left: 115px;
 }
 
 li {
@@ -223,6 +224,10 @@ table td:nth-child(2), table th:nth-child(2){
 .btn.add:focus {
   background: #6cad56;
 }
+.add{
+  display: flex;
+  justify-content: flex-start;
+}
 
 
 .goBack {
@@ -248,10 +253,15 @@ table td:nth-child(2), table th:nth-child(2){
 /* ---- See question ---- */
 
 .window {
-  width: 80%;
+  width: 50%;
   text-align: center;
   margin: auto;
   padding: 10% auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 75vh;
+  justify-content: center;
 }
 
 .window h2 {
@@ -261,7 +271,9 @@ table td:nth-child(2), table th:nth-child(2){
   height: 50px;
   padding: 15px 0 0;
   border-radius: 13px;
+  width: 100%;
 }
+.admin
 
 .window .choices {
   display: flex;
@@ -271,6 +283,13 @@ table td:nth-child(2), table th:nth-child(2){
   border: 1px solid #fff;
   padding: 5%;
   margin: auto;
+}
+.choices2{
+  width: -webkit-fill-available;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
 }
 
 .labelChoice,
@@ -319,6 +338,7 @@ form>* {
 fieldset .labelChoice {
   height: 25px;
   font-family: montserrat;
+  width: -webkit-fill-available;
 }
 
 .choices2 fieldset {
@@ -327,6 +347,7 @@ fieldset .labelChoice {
   height: 100%;
   width: 45%;
   margin: auto;
+  align-items: center;
 }
 
 fieldset>* {
@@ -493,4 +514,11 @@ height: auto;
   opacity:1;
   transition: 0.5s;
   display: none;
+}
+
+#concertContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 73vh;
 }

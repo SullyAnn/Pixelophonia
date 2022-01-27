@@ -2,6 +2,7 @@
 <template>
 <div>
     <AdminHeader />
+    <div id="seeConcert">
     <h1>Voir le concert</h1>
     <h2>{{ concert.concert.title }} </h2>
     <h3>Questions du concert</h3>
@@ -17,7 +18,7 @@
         </div> -->
     </li>
     </ul>
-
+    </div>
     <NuxtLink :to="`${concert.concert.id}/update`">
         <button class="btn update">
             <svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -72,4 +73,18 @@ export default {
     }
   }
 </script>
+
+<style>
+#seeConcert{
+  display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    height: 75vh;
+}
+#seeConcert a {
+  display: flex;
+  align-items: center;
+}
+</style>
 

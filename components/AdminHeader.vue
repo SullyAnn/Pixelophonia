@@ -21,7 +21,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 10vh;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-between;
 }
 .adminHeader img {
