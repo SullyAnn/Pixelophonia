@@ -44,7 +44,7 @@
 }
 
 .labelAndStartBtnWrapper p {
-  width: 240px;
+  width: 264px;
   background-color: #3D4D7C;
   color: #fff;
   padding: 8px 24px;
@@ -70,6 +70,7 @@
   font-weight: bold;
   font-size: 1.125rem;
   margin: 12px 24px;
+  width: 600px;
 }
 
 @media (max-width: 768px) {

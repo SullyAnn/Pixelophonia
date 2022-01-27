@@ -11,11 +11,11 @@
             <form method="post" @submit.prevent="login">
                 <div>
                   <img src="../../assets/images/mail.png" class="icon">
-                  <input v-model="email" type="text" name="email" class="labelChoice" required>
+                  <input v-model="email" type="text" name="email" class="labelChoicelogin" required>
                 </div>
                 <div id="passwordInput">
                   <img src="../../assets/images/password.png" class="icon">
-                  <input v-model="password" type="password" name="password" class="labelChoice" required>
+                  <input v-model="password" type="password" name="password" class="labelChoicelogin" required>
                 </div>
                 <button type="submit" class="btnMenu btnLogIn">Log In</button>
             </form>
@@ -69,7 +69,7 @@ export default {
   width: 5vw;
   padding: 10px !important;
 }
-form .btnMenu{
+.login form .btnMenu{
   border: none;
   margin: 0;
   align-self: center;
@@ -77,8 +77,9 @@ form .btnMenu{
   background-color: #3D4D7C;
   color: white;
 }
-form .btnMenu:hover{
+.login form .btnMenu:hover{
   color: #3D4D7C;
+  background-color : white;
 }
 
 .login{
@@ -91,7 +92,7 @@ form .btnMenu:hover{
 .section{
   height:100vh;
 }
-.columns{
+.login .columns{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -102,17 +103,18 @@ form .btnMenu:hover{
     background: rgba(255,255,255,0.5);
   
 }
-.labelChoice{
+.labelChoicelogin{
   background: unset;
   padding: 16px;
   font-size: 16px;
+  border: unset;
   margin: 0;
   width: -webkit-fill-available;
 }
-form{
+.login form{
   background-color: unset;
 }
-form div{
+.login form div{
     margin: 0;
     border-bottom: solid;
     border-width: thin;

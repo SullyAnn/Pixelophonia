@@ -2,8 +2,8 @@
 <template>
   <div>
     <AdminHeader />
-    <div id="listQuestions" class="questionsList launchPage">
-      <h2>Liste des questions</h2>
+    <div id="listQuestions" class="questionsList launchPage launchContainer">
+      <h1>Liste des questions</h1>
       <ul ref="questions" class="questions">
         <li v-for="(question, index) in tabQuestions" :key="index" class="question" ref="questionInList">
           <div class="labelAndStartBtnWrapper">
@@ -74,6 +74,9 @@
         </li>
       </ul>
 
+
+    </div>
+    
       <div class="goBack" @click="stopPartie()">
         <button class="btn back">
           <svg class="svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -85,8 +88,6 @@
         </button>
         Mettre fin au jeu
       </div>
-
-    </div>
   </div>
 </template>
 

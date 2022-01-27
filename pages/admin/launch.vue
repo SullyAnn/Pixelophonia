@@ -1,16 +1,18 @@
 <template>
 <div>
     <AdminHeader />
-    <h1>Lancer un concert</h1>
-    <p>Choisissez le concert à lancer !</p>
-	<ul class="listElements">
-		<li v-for="(concert, index) in concerts" :key="index">
+
+    <div class="launchContainer">
+
+      <h1>Choisissez le concert à lancer !</h1>
+      <ul class="listElements">
+        <li v-for="(concert, index) in concerts" :key="index">
             <NuxtLink  :to="`launcher/${concert.id}`">
                 <p>{{ concert.title }}</p>
             </NuxtLink>
-        </li>
-    </ul>
-
+          </li>
+      </ul>
+    </div>
     <NuxtLink to="./" class="creationGoBackContainer">
       <div class="goBack">
         <button class="btn back">

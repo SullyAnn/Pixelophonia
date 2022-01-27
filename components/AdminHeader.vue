@@ -19,7 +19,9 @@ export default {
 <style>
 .adminHeader{
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  height: 10vh;
+  align-items: start;
   justify-content: space-between;
 }
 .adminHeader img {
@@ -41,7 +43,23 @@ padding-left: 12px;
 }
 .adminHeader .btnLogOut{
   /*margin-left:80vw;*/
-  padding: 10px 24px;
-  width: unset;
+   width: 5vw;
+  padding: 10px ;
 }
+.adminHeader .btnMenu{
+  border: none;
+  margin: 0;
+  align-self: center;
+  background-color: #3D4D7C;
+  color: white;
+  align-self: flex-start;
+}
+.adminHeader .btnMenu:hover{
+  color: #3D4D7C;
+}
+.linkBtnMenu .btnMenu{
+  font-size: 24px;
+  border-color: white;
+}
+
 </style>
