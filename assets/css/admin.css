@@ -16,6 +16,11 @@ button {
 a {
   text-decoration: none;
 }
+
+a:hover, a:active {
+  color: #112f8a;
+}
+
 h1{
   border-block: 1px solid;
   padding: 20px;
@@ -23,17 +28,8 @@ h1{
   font-size: 24px;
 }
 
-/* === Identification === */
-
 
 /* ======== Menu ======== */
-
-/* 
-TO DO : 
-- Centrer correctement
-- rajouter la texture en background
-- mettre le titre joli 
-*/
 
 #menu {
   display: flex;
@@ -216,13 +212,13 @@ table td:nth-child(2), table th:nth-child(2){
 
 
 .btn.add {
-  background: #9BD088;
+  background: #6cad56;
   margin-bottom: 16px;
 }
 
 .btn.add:hover,
 .btn.add:focus {
-  background: #6cad56;
+  background: #4c8a38;
 }
 .add{
   display: flex;
@@ -354,7 +350,7 @@ fieldset>* {
   margin-bottom: 20px;
 }
 
-.importImg {
+.importImg, .viewImg {
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -363,7 +359,7 @@ fieldset>* {
   overflow: hidden;
 }
 
-.importImg img {
+.importImg img, .viewImg img {
   width: 100%;
   height: auto;
 }
