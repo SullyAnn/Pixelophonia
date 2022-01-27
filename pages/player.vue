@@ -183,7 +183,9 @@ export default {
         
       if(!this.IsChoice1Disabled){return} // trouver une meilleure solution pour désactiver event click sur les images
       console.log("vous avez cliqué sur l'image " + idChoice)
-      const idPlayerChoice = Object.values(this.choices).at(idChoice).id
+      //const idPlayerChoice = Object.values(this.choices).at(idChoice).id
+      const idPlayerChoice = Object.values(this.choices)[idChoice].id
+
       this.choiceId = idPlayerChoice
       console.log("choiceId", this.choiceId)
 
