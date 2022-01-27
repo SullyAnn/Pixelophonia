@@ -6,7 +6,6 @@ const app = require('express')()
 const server = http.createServer(app)
 const io = require('socket.io')(server)
 const cors = require('cors')
-//const vueSession = require('vue-session')
 
 app.use(cors())
 const { Nuxt, Builder } = require('nuxt')
@@ -20,9 +19,9 @@ if (config.dev) {
   const builder = new Builder(nuxt)
   builder.build()
 }
-//app.use(vueSession)
+
 app.use(nuxt.render)
-//const authRouter = require("./routes/authRouter");
+
 
 app.use("/player", nuxt.render);
 app.use("/admin", nuxt.render);
@@ -159,12 +158,8 @@ io.on('connection', (socket) => {
     socket.broadcast.emit("reload-this-page", isReload)
   })
 
-  socket.on("calcul-resultat", function(){
-    console.log("let's get the votes not validated")
-    io.emit('get-votes-not-validated')
-  })
   //on affiche les résultats quand le timer est fini
-  socket.on("who-is-the-winner", function(){
+  socket.on("calcul-resultat", function(){
     console.log('ENVOYER LES RESULTATS')
     console.log(totalvotes)
     console.log(choicesResult)
