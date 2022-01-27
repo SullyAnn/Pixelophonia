@@ -46,7 +46,7 @@ let winner = {}
 let egalite = false
 let percentage = 0
 let updateTimer = {}
-
+let updateShowDirectResults = false
 //Partie status
 /*
 0 : pas de partie en cours
@@ -91,7 +91,7 @@ io.on('connection', (socket) => {
   socket.on("connection-host", () => {
     console.log(socket.id, 'HOST');
     if(partieStatus==2){
-      io.to(socket.id).emit('update-host-on-co-question', {id:currentQuestion.id, choices:currentQuestion.choices, question:currentQuestion.question}, {total : totalvotes, votesChoice1 : nbChoice1, votesChoice2 : nbChoice2}, updateTimer);
+      io.to(socket.id).emit('update-host-on-co-question', {id:currentQuestion.id, choices:currentQuestion.choices, question:currentQuestion.question}, {total : totalvotes, votesChoice1 : nbChoice1, votesChoice2 : nbChoice2, displayDirectResults: updateShowDirectResults}, updateTimer);
     }
     else if(partieStatus==3){
       io.to(socket.id).emit('update-host-on-co-results', totalvotes, winner, percentage, egalite, currentQuestion.id);
@@ -113,6 +113,7 @@ io.on('connection', (socket) => {
     // transmission de la question pour le screen
     updateTimer = {start: questionStartTime, total: question.temps, showTimer : showTimerOnScreen}
     console.log('UPDATE TIMER', updateTimer)
+    updateShowDirectResults = showDirectResultsOnScreen //booléen qui dit si on doit montrer les votes en direct sur le host
     socket.broadcast.emit('display-question-on-screen', {question:question.question}, questionStartTime, question.temps, showTimerOnScreen, showDirectResultsOnScreen)
   })
     //TEST DISPLAY MENU ON LAUNCH PARTY 
@@ -220,6 +221,7 @@ io.on('connection', (socket) => {
     egalite = false
     percentage = 0
     updateTimer = {}
+    updateShowDirectResults = false
   })
   socket.on("menu", function(displayStatus){
     console.log("menuuu " + displayStatus)

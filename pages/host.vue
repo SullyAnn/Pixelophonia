@@ -33,7 +33,7 @@
           <div v-for="(data, index) in tab" :key="index+1" class="chatArea" ref="halfChoiceContainer" idChoice=data.id>
             <h1>{{data.title}}</h1>
             <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
-            <div class="directResultMove" v-if="displayDirectResults"></div>
+            <div class="directResultMove" v-show="displayDirectResults"></div>
           </div>
 
           <div class="infoContainer">
@@ -129,6 +129,7 @@ export default {
           this.displayTimer = true
           this.afficheTimer(updateTimer.start, updateTimer.total)
       }
+      this.displayDirectResults = votesInfos.displayDirectResults
       //----------------
     })
     socket.on("update-host-on-co-results", (totalvotes, winner, percentage, egalite, idQuestion) =>{
@@ -215,6 +216,15 @@ export default {
     })
   },
   mounted () {
+    //Mettre à jour l'affichage des votes en direct si le display est true
+    socket.on("update-host-on-co-question", (questiondata, votesInfos, updateTimer) =>{
+      if(this.displayDirectResults){ //si on doit montrer les votes en direct, on met à jour les votes existants
+        this.$nextTick(()=>{
+          this.$refs['halfChoiceContainer'][0].querySelector('.directResultMove').style.height = `${(votesInfos.votesChoice1/votesInfos.total)*100}%`
+          this.$refs['halfChoiceContainer'][1].querySelector('.directResultMove').style.height = `${(votesInfos.votesChoice2/votesInfos.total)*100}%`
+        });
+      }
+    })
   },
   methods: {
     resetAllData: function(){

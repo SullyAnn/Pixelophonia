@@ -1,6 +1,7 @@
 <template>
   <div>
   	<AdminHeader />
+    <div id="creationContainer">
     <h1>Création des questions</h1>
 
     <ul class="listElements creationPage">
@@ -34,6 +35,7 @@
 
       </li>
     </ul>
+    </div>
 
     <NuxtLink to="./add">
       <button class="btn add">

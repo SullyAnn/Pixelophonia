@@ -4,8 +4,7 @@
 	<div>
 		<!--<button @click="logout" class ="btnLogOut"> Log out </button>-->
 	</div>
-	<h1>Bienvenue sur l'interface administrateur</h1>
-
+	
 	<div id="menu">
 		<!-- TO DO : changer newAdmin dans les path -->
 		<NuxtLink to="/admin/launch" class="linkBtnMenu"> 

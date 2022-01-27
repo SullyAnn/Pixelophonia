@@ -18,8 +18,9 @@
       </div>
 
       <div id="resultSection" v-else>
-        <div class="resultMessage" v-if="choiceId == winnerID">
-          <p class="resultText">Bien joué voyageur! Nous nous dirigeons vers la direction souhaitée </p>
+        <div class="resultMessage" v-if="!choiceIsSubmitted"></div>
+        <div class="resultMessage" v-else-if="choiceId == winnerID">
+          <p class="resultText">Bien joué voyageur ! Nous nous dirigeons vers la direction souhaitée </p>
         </div>
         <div  class="resultMessage" v-else>
           <p class="resultText">Pas de chance, nous empruntons l'autre chemin </p>
@@ -208,6 +209,7 @@ export default {
       if(!this.choiceIsSubmitted){ //on vérifie qu'on a pas déjà envoyé une réponse
         if(this.selectedChoiceId==index){ //le choix est déjà sélectionné, donc on le désélectionne
           this.selectedChoiceId=-1
+          this.keepChoiceIdInMemory = -1
           this.$refs['choiceSelection'][0].querySelector("img").classList.remove("discarded")
           this.$refs['choiceSelection'][1].querySelector("img").classList.remove("discarded")
         }
@@ -242,6 +244,10 @@ export default {
         this.parameters=[]
         this.selectedChoiceId= -1
         this.choiceIsSubmitted=false
+        this.isTimerDone= false
+        this.winnerID= -1
+        this.choiceId= -1
+        this.keepChoiceIdInMemory= -1
         //console.log('resetdata')
     },
   }
