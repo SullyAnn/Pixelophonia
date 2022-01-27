@@ -98,6 +98,15 @@ img{
     display: flex;
     color: white;
     transition: 0.2s ease;
+    position: relative;
+}
+.choice:nth-child(3) h1 {
+    left:0;
+    bottom:0;
+}
+.choice:nth-child(2) h1 {
+  right: 0;
+  top: 0;
 }
 .choice:hover{
     cursor: pointer;
@@ -166,5 +175,18 @@ img{
     }
     .resultMessage{
         width: 30%;
+    }
+    .choice:nth-child(3) h1 {
+        left:unset;
+        bottom:unset;
+        right:0;
+        top:0;
+    }
+
+    .choice:nth-child(2) h1 {
+      right: unset;
+      top: unset;
+      left: 0;
+      bottom: 0;
     }
 }

@@ -11,8 +11,7 @@
         </div>
 
         <div v-for="(data, index) in choices" :key="index" class="choice" v-on:click="selectChoice(index)" ref="choiceSelection">
-          <h1 v-if="index == 0" style="right:0; top:0;">{{data.title}}</h1>
-          <h1 v-else style="left:0; bottom:0;">{{data.title}}</h1>
+          <h1>{{data.title}}</h1>
           <img :id="index" :src="require(`assets/images/Question_${idQuestion}/`+data.img)" alt="image test">
         </div>
       </div>
