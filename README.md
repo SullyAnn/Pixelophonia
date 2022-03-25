@@ -1,5 +1,21 @@
 # Pixelophonia
-# Branche modifiée test par Clément BOIN
+## Branche modifiée test par Clément BOIN
+
+## Instructions 
+
+npm install depuis la racine du projet
+Ajouter le fichier .env dans le dossier server (il n'est pas pris en compte par git)
+
+npm install depuis le dossier server
+
+Depuis la racine du projet : 
+npx prisma db push
+npx prisma generate
+Pour avoir la bdd et les éléments dedans
+npx prisma studio pour voir la bdd, optionnel
+npm run versionOK 
+
+
 
 ## Build Setup
 
