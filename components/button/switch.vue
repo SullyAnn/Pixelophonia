@@ -29,7 +29,7 @@ export default {
     if (this.selected != 0) this.checked = true
   },
   updated() {
-    this.$root.$emit(this.switchName+"-state", this.idQuestion, this.checked);
+    this.$root.$emit(this.switchName+"-state", this.checked);
   },
 };
 </script>

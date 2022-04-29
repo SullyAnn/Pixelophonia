@@ -25,31 +25,19 @@
         </div>
       </div>
 
-      <ButtonStart
-        :index="question.id"
-        @click.native="toggleQuestion(question, question.id)"
-      />
+      <ButtonStart :index="question.id" @click.native="toggleQuestion" />
     </div>
 
-    <div
-      v-if="question.temps"
-      class="timeQuestionOptions"
-      id="timeProgress"
-      ref="timeProgress"
-    >
-      {{ activeTimer }}
-      <div v-if="activeTimer" class="timerWrapper">
-        coucou
-        <div class="timeProgress"></div>
+    <div v-if="question.temps" class="timeQuestionOptions">
+      <div class="timerWrapper">
+        <div ref="timeProgress" class="timeProgress" id="timeProgress"></div>
       </div>
     </div>
 
-    <div v-else class="btnLaunchResults">
-      <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcul des résultats -->
+    <div v-if="!question.temps" class="btnLaunchResults">
+      <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcule des résultats -->
       <div v-if="questionIsPlaying && displayBtnLancerResultat">
-        <button @click="launchResultsNoTimer(question.id)">
-          Lancer les résultats
-        </button>
+        <button @click="launchResultsNoTimer()">Lancer les résultats</button>
       </div>
     </div>
 
@@ -78,10 +66,18 @@
 
 <script>
 import socket from "~/plugins/socket.io.js";
+import "@/assets/css/launch.css";
+import "@/assets/css/admin.css";
 
 export default {
   props: {
     question: Object,
+  },
+
+  watch: {
+    activeTimer() {
+      this.launchTimer(Date.now(), this.question.temps); //lancer le timer chez l'admin
+    },
   },
 
   data() {
@@ -99,18 +95,16 @@ export default {
     };
   },
 
-  created() {
-    console.log(this.question);
-  },
-
   beforeMount() {
-    this.$root.$on("checkTime-state", (id, state) => {
-      if (state) this.timerBar = true;
-      else this.timerBar = false;
+    socket.on("augmentation-nb-votes", (votesInfos) => {
+      this.votesData = votesInfos;
     });
-    this.$root.$on("checkDirectResult-state", (id, state) => {
-      if (state) this.directResult = true;
-      else this.directResult = false;
+
+    this.$root.$on("checkTime-state", (state) => {
+      this.timerBar = state;
+    });
+    this.$root.$on("checkDirectResult-state", (state) => {
+      this.directResult = state;
     });
   },
 
@@ -130,7 +124,7 @@ export default {
     },
 
     // launch one question : à voir pour grouper avec switch class ?
-    toggleQuestion: function (questiondata, idQuestionList) {
+    toggleQuestion: function () {
       this.questionIsPlaying = !this.questionIsPlaying;
 
       if (this.questionIsPlaying) {
@@ -138,43 +132,38 @@ export default {
         const questionStartTime = Date.now(); //temps de départ de la question
 
         //display de la barre de temps ou non
-        let showTimerOnScreen = this.displayTimer(questiondata.temps);
+        let showTimerOnScreen = this.displayTimer(this.question.temps);
 
         //display des votes ou non
         let showDirectResultsOnScreen = this.displayVotes();
 
         socket.emit(
           "display-question",
-          questiondata,
+          this.question,
           questionStartTime,
           showTimerOnScreen,
           showDirectResultsOnScreen
         );
 
-        if (questiondata.temps) {
+        if (this.question.temps) {
           //si il y a un temps défini pour la question
-          this.launchTimer(
-            questionStartTime,
-            questiondata.temps,
-            idQuestionList
-          ); //lancer le timer chez l'admin
+          this.activeTimer = true;
+
+          this.launchTimer(questionStartTime, this.question.temps); //lancer le timer chez l'admin
         }
       } else {
         //sinon c'est qu'on est en train de l'arrêter
         socket.emit("stop-question", 1);
-        this.resetDisplay(questiondata.temps);
+        this.resetDisplay(this.question.temps);
       }
     },
 
     launchTimer: function (questionStartTime, totalTime) {
-      this.activeTimer = true;
       //======== TIMER ========//
       const timeDepart = questionStartTime;
       const totalTimeMs = totalTime * 1000; //on passe le temps en secondes en millisecondes
 
-      console.log("test", this.activeTimer);
-      const element = this.$refs.timeProgress;
-      console.log("ha", element);
+      let progressBar = this.$refs["timeProgress"];
 
       let myTimer = setInterval(() => {
         let currentTime = Date.now();
@@ -182,10 +171,10 @@ export default {
         let tempsEcoule = currentTime - timeDepart; //en millisecondes
 
         if (tempsEcoule <= totalTimeMs) {
-          element.style.width =
+          progressBar.style.width =
             "calc(16px + (" + tempsEcoule / totalTimeMs + " * (100% - 16px)))";
           if ((tempsEcoule / totalTimeMs) * 100 > 75) {
-            element.style.backgroundColor = "#CA4B4B"; //on passe en rouge
+            progressBar.style.backgroundColor = "#CA4B4B"; //on passe en rouge
           }
         } else {
           socket.emit("calcul-resultat");
@@ -194,8 +183,8 @@ export default {
 
         if (!this.questionIsPlaying) {
           //si on arrete la question avant la fin
-          element.style.width = 0 + "%";
-          element.style.backgroundColor = "#0CB4CE";
+          progressBar.style.width = 0 + "%";
+          progressBar.style.backgroundColor = "#0CB4CE";
           clearInterval(myTimer);
         }
       }, 10);
@@ -205,16 +194,23 @@ export default {
       this.indexQuestionPlaying = -1;
       this.displayBtnLancerResultat = true;
       this.votesData = { total: 0, votesChoice1: 0, votesChoice2: 0 };
+      this.activeTimer = false;
 
       if (temps) {
-        this.activeTimer = false;
-
         //on réinitialise la barre de progrès
-        var progressBar = this.$refs.timeProgress;
+        let progressBar = this.$refs.timeProgress;
 
         progressBar.style.backgroundColor = "#0CB4CE";
         progressBar.style.width = 0 + "%";
       }
+    },
+    launchResultsNoTimer: function () {
+      if (this.questionIsPlaying) {
+        socket.emit("calcul-resultat");
+        this.displayBtnLancerResultat = false;
+        this.activeTimer = false;
+      }
+      this.questionIsPlaying = false;
     },
   },
 };
