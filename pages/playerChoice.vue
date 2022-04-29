@@ -53,7 +53,6 @@ export default {
   },
   beforeMount () {
     socket.on("reload-this-page", (isReload) =>{
-      //alert("reload la page player")
       location.reload(true)
     })
     socket.on('broadcast-question', (questiondata) => {
@@ -92,10 +91,8 @@ export default {
       if(!this.IsChoice1Disabled){return} // trouver une meilleure solution pour désactiver event click sur les images
       console.log("vous avez cliqué sur l'image " + idChoice)
       const idPlayerChoice = Object.values(this.choices).at(idChoice).id
-      //console.log(this.choices)
 
       this.choices.find(element => element.id == idPlayerChoice).nbvotes++
-      //console.log(Object.values(this.choices).at(0).nbvotes)
 
       // transmission des choix possibles et de l'id du choix fait par le player
       socket.emit('submit-choice', {choices:this.choices, playerChoice:idChoice})

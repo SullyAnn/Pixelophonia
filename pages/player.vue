@@ -148,7 +148,6 @@ export default {
     }),
     socket.on('display-final-choice', (totalvotes, winner, percentage, egalite) => {
       
-      console.log('DISPLAY LE RESULTAT')
       this.displayResult = true
 
       this.parameters = []
