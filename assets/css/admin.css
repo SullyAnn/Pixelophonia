@@ -201,16 +201,6 @@ table td:nth-child(2), table th:nth-child(2){
   background: #186180;
 }
 
-.btn.delete {
-  background: #CA4B4B;
-}
-
-.btn.delete:hover,
-.btn.delete:focus {
-  background: #aa1b1b;
-}
-
-
 .btn.add {
   background: #6cad56;
   margin-bottom: 16px;
@@ -229,20 +219,6 @@ table td:nth-child(2), table th:nth-child(2){
 .goBack {
   cursor: pointer;
   width: fit-content;
-}
-/*btn goback page creation*/
-.creationGoBackContainer .goBack {
-  float: left;
-}
-.btn.back {
-  background: #fff;
-  color: #3D4D7C;
-}
-
-.btn.back:hover,
-.btn.back:focus {
-  background: #9ca3b9;
-  color: #fff;
 }
 
 

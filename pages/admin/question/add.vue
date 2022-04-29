@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {addQuestion, getQuestions, updateUploadImage, updateQuestion} from "@/assets/classes/Admin.js"
+import {addQuestion, updateUploadImage, updateQuestion} from "@/assets/classes/Admin.js"
 import "@/assets/css/admin.css";
 
 export default {

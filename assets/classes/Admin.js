@@ -42,7 +42,6 @@ export async function getConcert(axios, id) {
 // get all concerts 
 export async function getConcerts(axios) {
     const concerts = await axios.$get(`api/concerts`)
-    console.log(concerts)
     return concerts
 }
 
