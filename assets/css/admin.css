@@ -386,12 +386,11 @@ fieldset>* {
   position: relative;
 }
 
-#timeProgress {
+.timeProgress {
   width: 0;
   height: 100%;
   background-color: #0CB4CE;
   border-radius: 50px;
-  display: none;
   /*transition: 0.2s ease;*/
 }
 

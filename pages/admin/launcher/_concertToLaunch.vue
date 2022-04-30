@@ -73,8 +73,6 @@ export default {
   },
 
   methods: {
-    // ========= BACK ========== //
-
     // start game
     launchPartie: function () {
       this.tabQuestions = [];
@@ -100,11 +98,8 @@ export default {
       });
     },
 
-    // ========= FRONT ========= //
-
     stopPartie: function () {
       socket.emit("stop-partie", 2);
-      // this.$router.push("../launch");
     },
 
   },

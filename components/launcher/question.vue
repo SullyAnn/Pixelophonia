@@ -3,18 +3,17 @@
     <div class="labelAndStartBtnWrapper">
       <div>
         <p>{{ question.label }}</p>
-
         <div class="settingsContainer">
           <span>Paramètres sur l'écran</span>
-          <!-- option de visibilité des résultats en direct -->
+
+          <!-- voir les résultats en direct -->
           <ButtonSwitch
             text="Résultats en direct"
             switchName="checkDirectResult"
             :idQuestion="question.id"
-            :selected="0"
           />
 
-          <!-- option de visibilité du temps -->
+          <!-- voir la barre de temps -->
           <ButtonSwitch
             v-if="question.temps"
             text="Barre de temps"
@@ -28,39 +27,22 @@
       <ButtonStart :index="question.id" @click.native="toggleQuestion" />
     </div>
 
-    <div v-if="question.temps" class="timeQuestionOptions">
-      <div class="timerWrapper">
-        <div ref="timeProgress" class="timeProgress" id="timeProgress"></div>
+    <div v-if="questionIsPlaying">
+      <div v-if="timerBar">
+        <div class="timerWrapper">
+          <div class="timeProgress" :id="'timeProgress' + question.id"></div>
+        </div>
       </div>
-    </div>
-
-    <div v-if="!question.temps" class="btnLaunchResults">
-      <!-- si la question est infinie, mettre un bouton pour choisir quand lancer le calcule des résultats -->
-      <div v-if="questionIsPlaying && displayBtnLancerResultat">
+      <div v-else class="btnLaunchResults">
         <button @click="launchResultsNoTimer()">Lancer les résultats</button>
       </div>
+
+      <LauncherTableVotes
+        :title1="question.choices[0].title"
+        :title2="question.choices[1].title"
+      />
     </div>
 
-    <!-- nombre de votes courants sur la question -->
-    <div v-if="questionIsPlaying" class="nbTotalVotes">
-      <table>
-        <tr>
-          <th colspan="2">Nombre de votes</th>
-        </tr>
-        <tr>
-          <td>{{ question.choices[0].title }}</td>
-          <td>{{ votesData.votesChoice1 }}</td>
-        </tr>
-        <tr>
-          <td>{{ question.choices[1].title }}</td>
-          <td>{{ votesData.votesChoice2 }}</td>
-        </tr>
-        <tr>
-          <th>Total</th>
-          <th>{{ votesData.total }}</th>
-        </tr>
-      </table>
-    </div>
   </li>
 </template>
 
@@ -75,8 +57,12 @@ export default {
   },
 
   watch: {
-    activeTimer() {
-      this.launchTimer(Date.now(), this.question.temps); //lancer le timer chez l'admin
+    questionIsPlaying() {
+      if (this.questionIsPlaying) {
+        this.launchQuestion();
+      } else {
+        socket.emit("stop-question", 1);
+      }
     },
   },
 
@@ -85,77 +71,46 @@ export default {
       questionIsPlaying: false,
       directResult: false,
       timerBar: false,
-      activeTimer: false,
-      votesData: {
-        total: 0,
-        votesChoice1: 0,
-        votesChoice2: 0,
-      },
-      displayBtnLancerResultat: true,
     };
   },
 
   beforeMount() {
-    socket.on("augmentation-nb-votes", (votesInfos) => {
-      this.votesData = votesInfos;
+    this.$root.$on("checkTime-state", (id, state) => {
+      if (this.question.id == id) this.timerBar = state;
     });
 
-    this.$root.$on("checkTime-state", (state) => {
-      this.timerBar = state;
-    });
-    this.$root.$on("checkDirectResult-state", (state) => {
-      this.directResult = state;
+    this.$root.$on("checkDirectResult-state", (id, state) => {
+      if (this.question.id == id) this.directResult = state;
     });
   },
 
   methods: {
-    setSwitches: function () {
-      if (question.temps != 0) this.displayTimer = true;
-    },
-
     displayTimer: function (timer) {
-      if (timer) {
-        return this.timerBar;
-      } else return false;
+      if (timer) return this.timerBar;
+      else return false;
     },
 
-    displayVotes: function () {
-      return this.directResult;
+    launchQuestion: function () {
+      const questionStartTime = Date.now();
+
+      socket.emit(
+        "display-question",
+        this.question,
+        questionStartTime,
+        this.timerBar,
+        this.directResult
+      );
+
+      // launch admin timer
+      if (this.timerBar) {
+        this.$nextTick(() => {
+          this.launchTimer(questionStartTime, this.question.temps); 
+        });
+      }
     },
 
-    // launch one question : à voir pour grouper avec switch class ?
     toggleQuestion: function () {
       this.questionIsPlaying = !this.questionIsPlaying;
-
-      if (this.questionIsPlaying) {
-        //on lance une question
-        const questionStartTime = Date.now(); //temps de départ de la question
-
-        //display de la barre de temps ou non
-        let showTimerOnScreen = this.displayTimer(this.question.temps);
-
-        //display des votes ou non
-        let showDirectResultsOnScreen = this.displayVotes();
-
-        socket.emit(
-          "display-question",
-          this.question,
-          questionStartTime,
-          showTimerOnScreen,
-          showDirectResultsOnScreen
-        );
-
-        if (this.question.temps) {
-          //si il y a un temps défini pour la question
-          this.activeTimer = true;
-
-          this.launchTimer(questionStartTime, this.question.temps); //lancer le timer chez l'admin
-        }
-      } else {
-        //sinon c'est qu'on est en train de l'arrêter
-        socket.emit("stop-question", 1);
-        this.resetDisplay(this.question.temps);
-      }
     },
 
     launchTimer: function (questionStartTime, totalTime) {
@@ -163,7 +118,9 @@ export default {
       const timeDepart = questionStartTime;
       const totalTimeMs = totalTime * 1000; //on passe le temps en secondes en millisecondes
 
-      let progressBar = this.$refs["timeProgress"];
+        let progressBar = document.getElementById(
+          "timeProgress" + this.question.id
+        );
 
       let myTimer = setInterval(() => {
         let currentTime = Date.now();
@@ -171,6 +128,7 @@ export default {
         let tempsEcoule = currentTime - timeDepart; //en millisecondes
 
         if (tempsEcoule <= totalTimeMs) {
+          console.log(progressBar.style.width)
           progressBar.style.width =
             "calc(16px + (" + tempsEcoule / totalTimeMs + " * (100% - 16px)))";
           if ((tempsEcoule / totalTimeMs) * 100 > 75) {
@@ -190,26 +148,8 @@ export default {
       }, 10);
     },
 
-    resetDisplay: function (temps) {
-      this.indexQuestionPlaying = -1;
-      this.displayBtnLancerResultat = true;
-      this.votesData = { total: 0, votesChoice1: 0, votesChoice2: 0 };
-      this.activeTimer = false;
-
-      if (temps) {
-        //on réinitialise la barre de progrès
-        let progressBar = this.$refs.timeProgress;
-
-        progressBar.style.backgroundColor = "#0CB4CE";
-        progressBar.style.width = 0 + "%";
-      }
-    },
     launchResultsNoTimer: function () {
-      if (this.questionIsPlaying) {
         socket.emit("calcul-resultat");
-        this.displayBtnLancerResultat = false;
-        this.activeTimer = false;
-      }
       this.questionIsPlaying = false;
     },
   },

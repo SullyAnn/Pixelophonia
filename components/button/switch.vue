@@ -17,7 +17,10 @@ export default {
     switchName: String,
     text: String,
     idQuestion: Number,
-    selected: Number
+    selected:{
+      type: Number,
+      default: 0
+    }
   },
 
   data() {
@@ -29,7 +32,8 @@ export default {
     if (this.selected != 0) this.checked = true
   },
   updated() {
-    this.$root.$emit(this.switchName+"-state", this.checked);
+    console.log(this.switchName+"-state", this.checked)
+    this.$root.$emit(this.switchName+"-state", this.idQuestion, this.checked);
   },
 };
 </script>
