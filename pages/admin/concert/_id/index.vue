@@ -7,16 +7,11 @@
       <h2>{{ concert.concert.title }}</h2>
       <h3>Questions du concert</h3>
       <ul class="questionsContainer">
-        <li
-          class="oneQuestion"
+        <QuestionInList
           v-for="(question, index) in questions"
           :key="index"
-        >
-          <p class="elementViewConcert">
-            <b>{{ question.label }}</b> <br />
-            <i>{{ question.question }}</i>
-          </p>
-        </li>
+          :question="question"
+        />
       </ul>
     </div>
 
@@ -26,7 +21,6 @@
     />
 
     <ButtonReturn linkBack="./" />
-
   </div>
 </template>
 
@@ -35,13 +29,12 @@ import { getConcert, getQuestion } from "@/assets/classes/Admin.js";
 
 export default {
   async asyncData({ params, $axios }) {
-    const id = params.id; // get the id of the concert
+    const id = params.id;
     try {
       const concert = await getConcert($axios, id);
       const questions = [];
 
       for (let element of concert.questions) {
-        // add to questions all questions contained in concert
         questions.push(await getQuestion($axios, element.questionId));
       }
       return { concert, questions };

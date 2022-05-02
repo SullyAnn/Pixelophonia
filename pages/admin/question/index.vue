@@ -5,6 +5,9 @@
       <h1>Création des questions</h1>
 
       <ul class="listElements creationPage">
+
+        <!-- A voir : grouper avec composant QuestionInList ? -->
+
         <li v-for="(question, index) in questions" :key="index">
           <NuxtLink :to="`./${question.id}`">
             <p>
@@ -18,6 +21,7 @@
             <ButtonDelete typeToDelete="question" :idToDelete="question.id" />
           </div>
         </li>
+
       </ul>
     </div>
     <ButtonAdd />
