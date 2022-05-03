@@ -55,7 +55,6 @@ export default {
 
   methods: {
     verifCheck: function () {
-      console.log(this.allQuestions);
       this.allQuestions.forEach((element) => {
         for (let elem of this.concert.questions) {
           if (elem.questionId == element.id) {

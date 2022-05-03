@@ -1,61 +1,30 @@
 <template>
   <section>
-    <div v-show="isQuestionDisplayed" id="choicePageContent">
+    <div v-if="question" v-show="isQuestionDisplayed" id="choicePageContent">
       <div v-if="!displayResult" class="container">
-        <div id="orBlock">
-          <div v-if="!choiceIsSubmitted">
-            <button
-              v-if="selectedChoiceId != -1"
-              v-on:click="sendChoice(selectedChoiceId)"
-              class="btnSubmitChoice"
-            >
-              Valider mon choix
-            </button>
-            <p v-else>OU</p>
-          </div>
+        <PlayerOrBlock
+          :isChoiceSubmitted="choiceIsSubmitted"
+          :choices="question.choices"
+          :selectedId="choiceId"
+        />
 
-          <p v-else class="confirmationSubmit">
-            Votre réponse a bien été envoyée !
-          </p>
-        </div>
-
-        <div
-          v-for="(data, index) in choices"
+        <PlayerOneChoice
+          v-for="(data, index) in question.choices"
           :key="index"
-          class="choice"
-          v-on:click="selectChoice(index)"
-          ref="choiceSelection"
-        >
-          <h1>{{ data.title }}</h1>
-          <img
-            :id="index"
-            :src="require(`assets/images/Question_${idQuestion}/` + data.img)"
-            alt="image test"
-          />
-        </div>
-      </div>
-
-      <div id="resultSection" v-else>
-        <div class="resultMessage">
-          <p class="resultText" v-if="!choiceIsSubmitted">test</p>
-
-          <p class="resultText" v-else-if="choiceId == winnerID">
-            Bien joué voyageur ! Nous nous dirigeons vers la direction souhaitée.
-          </p>
-
-          <p class="resultText" v-else>
-            Pas de chance ! nous empruntons l'autre chemin.
-          </p>
-        </div>
-
-        <img
-          :src="
-            require(`assets/images/Question_${idQuestion}/` +
-              this.parameters.winnerChoice.img)
-          "
-          alt="image test"
+          :choiceData="data"
+          :idChoice="question.choices[index].id"
+          :idQuestion="question.id"
+          :isAChoiceSubmitted="choiceIsSubmitted"
         />
       </div>
+
+      <PlayerResult
+        v-else
+        :isChoiceSubmitted="choiceIsSubmitted"
+        :isPlayerChoiceWinner="isPlayerChoiceWinner"
+        :idQuestion="question.id"
+        :img="parameters.winnerChoice.img"
+      />
     </div>
 
     <PlayerHomePage v-show="!isQuestionDisplayed" :affichage="affichage" />
@@ -69,40 +38,26 @@ import "../assets/css/playerHomePages.css";
 import "../pages/admin/launch.vue";
 
 export default {
-  asyncData() {
-    return new Promise((resolve) => {
-      socket.emit("last-choices", (choices) => resolve({ choices }));
-    });
-  },
   data() {
-    // PARTIE STATUS = AFFICHAGE
-    /*
-        0 : pas de partie en cours
-        1 : partie en cours, pas de question
-        2 : question en cours - Votes
-        3 : question en cours - résultat
-    */
-
     return {
-      idQuestion: null,
-      winner: {},
-      percentage: 0,
-      parameters: [],
-      displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
-      IsChoice1Disabled: true,
-      isQuestionDisplayed: false,
       affichage: 0,
-      selectedChoiceId: -1,
+      question: [],
+      parameters: [],
+
+      displayResult: false,
+
+      isQuestionDisplayed: false,
       choiceIsSubmitted: false,
-      winnerID: -1,
-      choiceId: -1,
-      keepChoiceIdInMemory: -1,
+
+      winnerID: null,
+      choiceId: null,
+      isPlayerChoiceWinner: false,
     };
   },
   head: {
     title: "Joueur",
   },
-  watch: {},
+
   beforeMount() {
     //debut de la connexion du player
     socket.emit("connection-player");
@@ -110,33 +65,18 @@ export default {
       this.affichage = 1;
     });
     socket.on("update-on-co-question", (questiondata) => {
-      //display question
-      if (this.waitingMode) this.waitingMode = false;
-
-      this.choices = [];
-      this.idQuestion = questiondata.id;
-      this.choices = Object.values(questiondata.choices);
+      this.setWaitingMode();
+      this.question = questiondata;
       this.isQuestionDisplayed = true;
-      //----------------
     });
 
-    socket.on(
-      "update-on-co-results",
-      (totalvotes, winner, percentage, egalite, idQuestion) => {
-        if (this.waitingMode) {
-          this.waitingMode = false;
-        }
-        this.isQuestionDisplayed = true;
-        this.idQuestion = idQuestion;
-        this.displayResult = true;
-        this.parameters = [];
-        this.parameters.push({
-          totalvote: totalvotes,
-          winner: winner.img,
-          percentage: Math.floor(percentage) + "%",
-        });
-      }
-    );
+    socket.on("update-on-co-results", (finalChoice) => {
+      this.setWaitingMode();
+      this.isQuestionDisplayed = true;
+      this.displayResult = true;
+      this.question = finalChoice;
+      this.parameters = finalChoice;
+    });
 
     socket.on("affiche-menu", (displayStatus) => {
       this.isQuestionDisplayed = false;
@@ -145,39 +85,16 @@ export default {
 
     socket.on("broadcast-question", (questiondata) => {
       this.resetAllData();
-      if (this.waitingMode) {
-        this.waitingMode = false;
-      } //comme on a lancé une question on est plus en waitingMode
-      this.choices = [];
-      this.idQuestion = questiondata.id;
-      this.choices = Object.values(questiondata.choices);
+      this.setWaitingMode();
+
+      this.question = questiondata;
       this.isQuestionDisplayed = true;
     });
 
-    socket.on("display-player-choice", (choice) => {
-      // on empêche le player de changer de vote (ça bloque les événements sur le click)
-      this.IsChoice1Disabled = false;
-      // effet grisé une fois une image sélectionnée
-      if (choice.yourchoice == 0) {
-        document.getElementById("1").style.filter =
-          "grayscale(1) brightness(0.6)";
-        document.getElementById("0").style.filter = "brightness(1.25)";
-      } else if (choice.yourchoice == 1) {
-        document.getElementById("0").style.filter =
-          "grayscale(1) brightness(0.6)";
-        document.getElementById("1").style.filter = "brightness(1.25)";
-      }
+    socket.on("display-final-choice", (finalChoice) => {
+      this.displayResult = true;
+      this.parameters = finalChoice;
     });
-
-    // totalVotes, winnerChoice, percentage, isEgalite
-    socket.on(
-      "display-final-choice",
-      (finalChoice) => {
-        this.displayResult = true;
-        this.parameters = finalChoice;
-        console.log(this.parameters)
-      }
-    );
 
     socket.on("stop-partie", (displayStatus) => {
       this.isQuestionDisplayed = false;
@@ -187,94 +104,39 @@ export default {
     socket.on("stop-question", (displayStatus) => {
       if (!this.displayResult) {
         this.resetAllData();
-        this.isQuestionDisplayed = false;
         this.affichage = displayStatus;
-      } else {
-        this.isQuestionDisplayed = true;
       }
+      this.isQuestionDisplayed = this.displayResult;
     });
 
     socket.on("winnerChoice", (winner) => {
       this.winnerID = winner.id;
+      this.isPlayerChoiceWinner = this.isPlayerWinner();
+    });
+  },
+  mounted() {
+    this.$root.$on("preselected-choice", (idSelected) => {
+      this.choiceId = idSelected;
+    });
+    this.$root.$on("submitted", () => {
+      this.choiceIsSubmitted = true;
     });
   },
   methods: {
-    sendChoice: function (idChoice) {
-      if (!this.IsChoice1Disabled) {
-        return;
-      } // trouver une meilleure solution pour désactiver event click sur les images
-      //const idPlayerChoice = Object.values(this.choices).at(idChoice).id
-      const idPlayerChoice = Object.values(this.choices)[idChoice].id;
-
-      this.choiceId = idPlayerChoice;
-
-      this.choices.find((element) => element.id == idPlayerChoice).nbvotes++;
-
-      // transmission des choix possibles et de l'id du choix fait par le player
-      socket.emit("submit-choice", {
-        choices: this.choices,
-        playerChoice: idChoice,
-      });
-
-      //on reinitialise le choix
-      this.selectedChoiceId = -1;
-      this.choiceIsSubmitted = true;
-
-      //on enlève le pointer hover
-      this.$refs["choiceSelection"][0].style.cursor = "auto";
-      this.$refs["choiceSelection"][1].style.cursor = "auto";
+    isPlayerWinner: function () {
+      return this.winnerID && this.choiceId == this.winnerID;
     },
-    selectChoice: function (index) {
-      if (!this.choiceIsSubmitted) {
-        //on vérifie qu'on a pas déjà envoyé une réponse
-        if (this.selectedChoiceId == index) {
-          //le choix est déjà sélectionné, donc on le désélectionne
-          this.selectedChoiceId = -1;
-          this.keepChoiceIdInMemory = -1;
-          this.$refs["choiceSelection"][0]
-            .querySelector("img")
-            .classList.remove("discarded");
-          this.$refs["choiceSelection"][1]
-            .querySelector("img")
-            .classList.remove("discarded");
-        } else {
-          //sinon on sélectionne le choix
-          this.selectedChoiceId = index;
-          if (index == 0) {
-            this.$refs["choiceSelection"][1]
-              .querySelector("img")
-              .classList.add("discarded");
-            this.$refs["choiceSelection"][0]
-              .querySelector("img")
-              .classList.remove("discarded");
-          } else if (index == 1) {
-            this.$refs["choiceSelection"][0]
-              .querySelector("img")
-              .classList.add("discarded");
-            this.$refs["choiceSelection"][1]
-              .querySelector("img")
-              .classList.remove("discarded");
-          }
-        }
-      }
+    setWaitingMode: function () {
+      if (this.waitingMode) this.waitingMode = false;
     },
     resetAllData: function () {
       this.waitingMode = true;
       this.displayResult = false;
 
-      this.choices = [];
-      this.idQuestion = null;
-      this.IsChoice1Disabled = true;
-      this.displayResult = false;
-
-      this.winner = {};
-      this.percentage = 0;
       this.parameters = [];
-      this.selectedChoiceId = -1;
       this.choiceIsSubmitted = false;
-      this.winnerID = -1;
-      this.choiceId = -1;
-      this.keepChoiceIdInMemory = -1;
+      this.winnerID = null;
+      this.choiceId = null;
     },
   },
 };

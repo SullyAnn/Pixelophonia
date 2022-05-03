@@ -32,7 +32,6 @@ export default {
     if (this.selected != 0) this.checked = true
   },
   updated() {
-    console.log(this.switchName+"-state", this.checked)
     this.$root.$emit(this.switchName+"-state", this.idQuestion, this.checked);
   },
 };

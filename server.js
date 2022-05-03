@@ -83,10 +83,20 @@ io.on('connection', (socket) => {
                 io.to(socket.id).emit('update-on-co-partie-playing');
                 break;
             case 2:
-                io.to(socket.id).emit('update-on-co-question', { id: currentQuestion.id, choices: currentQuestion.choices, question: currentQuestion.question });
+                io.to(socket.id).emit('update-on-co-question', {
+                    id: currentQuestion.id,
+                    choices: currentQuestion.choices,
+                    question: currentQuestion.question
+                });
                 break;
             case 3:
-                io.to(socket.id).emit('update-on-co-results', totalvotes, winner, percentage, egalite, currentQuestion.id);
+                io.to(socket.id).emit('update-on-co-results', {
+                    id: currentQuestion.id,
+                    totalVotes: totalvotes,
+                    winnerChoice: winner,
+                    percentage: percentage,
+                    isEgalite: egalite
+                });
                 break;
             default:
                 break;
@@ -98,7 +108,16 @@ io.on('connection', (socket) => {
     socket.on("connection-host", () => {
         switch (partieStatus) {
             case 2:
-                io.to(socket.id).emit('update-host-on-co-question', { id: currentQuestion.id, choices: currentQuestion.choices, question: currentQuestion.question }, { total: totalvotes, votesChoice1: nbChoice1, votesChoice2: nbChoice2, displayDirectResults: updateShowDirectResults },
+                io.to(socket.id).emit('update-host-on-co-question', {
+                        id: currentQuestion.id,
+                        choices: currentQuestion.choices,
+                        question: currentQuestion.question
+                    }, {
+                        total: totalvotes,
+                        votesChoice1: nbChoice1,
+                        votesChoice2: nbChoice2,
+                        displayDirectResults: updateShowDirectResults
+                    },
                     updateTimer);
                 break;
             case 3:
@@ -123,11 +142,27 @@ io.on('connection', (socket) => {
         resetVotes();
 
         // transmission des choix pour le player
-        socket.broadcast.emit('broadcast-question', { id: question.id, choices: question.choices, question: question.question });
+        socket.broadcast.emit('broadcast-question', {
+            id: question.id,
+            choices: question.choices,
+            question: question.question
+        });
+
         // transmission de la question pour le screen
-        updateTimer = { start: questionStartTime, total: question.temps, showTimer: showTimerOnScreen };
+        updateTimer = {
+            start: questionStartTime,
+            total: question.temps,
+            showTimer: showTimerOnScreen
+        };
+
         updateShowDirectResults = showDirectResultsOnScreen;
-        socket.broadcast.emit('display-question-on-screen', { start: questionStartTime, total: question.temps, showTimer: showTimerOnScreen }, showDirectResultsOnScreen);
+
+        socket.broadcast.emit('display-question-on-screen', {
+                start: questionStartTime,
+                total: question.temps,
+                showTimer: showTimerOnScreen
+            },
+            showDirectResultsOnScreen);
     })
 
     //TEST DISPLAY MENU ON LAUNCH PARTY 
@@ -139,13 +174,16 @@ io.on('connection', (socket) => {
 
     socket.on('submit-choice', function(choicesPlayer) {
         //conversion de l'objet en tableau : c'est plus simple pour récupérer les éléments par leur index respectif
-        const arrayChoices = Object.values(choicesPlayer.choices)
-        totalvotes++
+        const arrayChoices = Object.values(choicesPlayer.choices);
+        totalvotes++;
+
+        choicesPlayer.choices.find((elem) => elem.id == choicesPlayer.playerChoice).nbvotes++;
+
         nbChoice1 += arrayChoices.at(0).nbvotes;
         nbChoice2 += arrayChoices.at(1).nbvotes;
 
-        arrayChoices.at(0).nbvotes = nbChoice1
-        arrayChoices.at(1).nbvotes = nbChoice2
+        arrayChoices.at(0).nbvotes = nbChoice1;
+        arrayChoices.at(1).nbvotes = nbChoice2;
 
         choicesPlayer.choices = Object.assign(arrayChoices) // reconversion en objet
 
@@ -153,7 +191,7 @@ io.on('connection', (socket) => {
         choicesResult = Object.assign(arrayChoices)
 
         // transmission au player de son choix (comme une sorte de confirmation après son choix)
-        io.to(socket.id).emit('display-player-choice', { yourchoice: choicesPlayer.playerChoice })
+        // io.to(socket.id).emit('display-player-choice', { yourchoice: choicesPlayer.playerChoice })
 
         //on envoie le nombre de vote au total qui a augmenté
         //peut-être changer plus tard pour envoyer seulement à l'admin et au host, au lieu de broadcast à tout le monde
@@ -187,8 +225,13 @@ io.on('connection', (socket) => {
 
             partieStatus = 3
 
-            io.emit('display-final-choice', { totalVotes: totalvotes, winnerChoice: winner, percentage: percentage, isEgalite: egalite })
-            io.emit('winnerChoice', winner)
+            io.emit('display-final-choice', {
+                totalVotes: totalvotes,
+                winnerChoice: winner,
+                percentage: percentage,
+                isEgalite: egalite
+            });
+            io.emit('winnerChoice', winner);
             resetVotes();
         }
     })
@@ -198,9 +241,10 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('stop-partie', displayStatus)
         partieStatus = 0
         currentQuestion = {}
-    })
+    });
+
     socket.on("stop-question", function(displayStatus) {
-        //on doit arrêter les question et tout remettre a zeros
+        //on doit arrêter les question et tout remettre a zero
         socket.broadcast.emit('stop-question', displayStatus)
         resetVotes();
 
@@ -210,9 +254,9 @@ io.on('connection', (socket) => {
         percentage = 0
         updateTimer = {}
         updateShowDirectResults = false
-    })
+    });
 
     socket.on("menu", function(displayStatus) {
         socket.emit("affiche-menu", displayStatus)
-    })
+    });
 })
