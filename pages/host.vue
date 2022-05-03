@@ -1,276 +1,217 @@
 <template>
   <section id="hostSection">
-
-    <div id="waitingSection" v-if="waitingMode">
-
-      <div id="qrCodeContent">
-        <div id="waitingMessage">
-          Bienvenue au concert de l'orchestre Pixelophonia ! <br> <br>
-          Scannez ce QR CODE et attendez les instructions du chef d'orchestre
-          pour continuer votre périple
-        </div>
-
-        <div id="qrCode">
-          <img src="../assets/images/qrCode.png">
-        </div>
-      </div>
-
-      <div id="logoLong">
-        <img src="../assets/images/logoLong.png">
-      </div>
-
-    </div>
+    <HostWaiting v-if="waitingMode" />
 
     <div v-else class="questionSection">
-
       <div v-if="!displayResult">
         <!-- nombre de votes courants sur la question -->
-        <h2 v-if="votesData.total<=1" class="nbTotalVotes">{{votesData.total}} vote</h2>
-        <h2 v-else class="nbTotalVotes">{{votesData.total}} votes</h2>
+        <ElementVotes :totalVotes="votesData.total" />
         <!---->
 
         <div id="parent" class="displayed">
-          <div v-for="(data, index) in tab" :key="index+1" class="chatArea" ref="halfChoiceContainer" idChoice=data.id>
-            <h1>{{data.title}}</h1>
-            <img :id="index+1" :src="require(`assets/images/Question_${id}/`+data.img)" alt="image test" class="images">
-            <div class="directResultMove" v-show="displayDirectResults"></div>
-          </div>
+          <HostOneChoice
+            v-for="(data, index) in question.choices"
+            :key="index"
+            :idChoice="question.choices[index].id"
+            :idQuestion="question.id"
+            :data="data"
+            :displayResult="displayDirectResults"
+          />
 
           <div class="infoContainer">
-            <h2 class="question">{{questionLabel}}</h2>
-
-            <div v-if="displayTimer">
-              <div class="timerWrapper">
-                <div id="timeProgress" ref="timeProgress"></div>
-              </div>
-            </div>
-            <div v-else>
-              <div class="spinnerWrapper">
-                <div class="spinner"></div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-      <div v-else>
-        <div id="result">
-          <div v-for="(data, index) of Object.values(parameters)" :key="index">
-            <img v-if="data.winner != null" :src="require(`assets/images/Question_${id}/`+data.winner)"
-              alt="image winner" class="images">
-            <div class="infosResult">
-            <h2 v-if="!data.egalite">{{data.percentage}} d’entre vous ont choisi cette voie </h2>
-            <h2 v-else>Égalité ! La machine a décidé pour vous</h2>
-            <h1>{{data.winnerTitle}}</h1>
-            </div>
+            <h2 class="question">{{ question.question }}</h2>
+            <ElementTimer v-if="timeParams.showTimer" />
+            <ElementSpinner v-else />
           </div>
         </div>
       </div>
-
-
-          <img src="../assets/images/qrCode.png" class="qrCodeQuestion">
-
+      <HostResults :data="finalChoice" :idQuestion="question.id" v-else />
+      <img src="../assets/images/qrCode.png" class="qrCodeQuestion" />
     </div>
-
   </section>
 </template>
 
 <script>
-import socket from '~/plugins/socket.io.js'
+import socket from "~/plugins/socket.io.js";
 import "../assets/css/host.css";
 
 export default {
-  asyncData () {
-    return new Promise(resolve =>
-      socket.emit('data-for-screen', displayQuestionData => resolve({ displayQuestionData }))
-    )
-  },
-  data () {
-    return{
-      finalChoice:[],
-      allVotes:0,
-      winner:{},
-      percentage:0,
-      parameters:[],
-      votesData: {total:0, votesChoice1:0, votesChoice2: 0},
+  data() {
+    return {
+      finalChoice: null,
+      votesData: { total: 0, votesChoice1: 0, votesChoice2: 0 },
 
       waitingMode: true,
-      displayResult: false, //si c'est true c'est qu'on montre les réponses et pas la question
-      displayTimer: false,
+      displayResult: false,
+
+      timeParams: [],
       displayDirectResults: false,
 
-      idQuestion:0,
-      questionLabel:'',
-      tab:[],
-    }
+      question: [],
+    };
   },
   head: {
-    title: 'Ecran de la salle'
+    title: "Ecran de la salle",
   },
-  watch: {
-  },
-  beforeMount () {
-    //debut de la connexion du host
+  watch: {},
+  beforeMount() {
+    // connexion du host
     socket.emit("connection-host");
-    socket.on("update-host-on-co-question", (questiondata, votesInfos, updateTimer) =>{
-      console.log('Afficher question')
-      //display question
-      if (this.waitingMode){this.waitingMode = false}
-      console.log(questiondata)
-      this.tab = Object.values(questiondata.choices)
-      this.displayQuestionData.push(questiondata)
-      this.id = questiondata.id
-      this.votesData = votesInfos
-      this.questionLabel = questiondata.question
-      console.log(this.tab)
-      if(updateTimer.showTimer){//si on a bien un temps à afficher, c'est à dire qu'il n'est pas falsy
-          this.displayTimer = true
-          this.afficheTimer(updateTimer.start, updateTimer.total)
-      }
-      this.displayDirectResults = votesInfos.displayDirectResults
-      //----------------
-    })
-    socket.on("update-host-on-co-results", (totalvotes, winner, percentage, egalite, idQuestion) =>{
-      console.log('Afficher résultat')
-      if (this.waitingMode){this.waitingMode = false}
-      this.id = idQuestion
-      this.parameters = []
-      this.displayResult = true
-      this.parameters.push({totalvote:totalvotes,winner:winner.img,winnerTitle:winner.title,percentage:Math.floor(percentage)+"%", egalite: egalite })
-    })
 
-    socket.on("reload-this-page", (isReload) =>{
-      //alert("on reload la page screen")
-      location.reload(true)
-    })
-    // ici on récupère la question
-    socket.on('display-question-on-screen', (questiondata, questionStartTime, totalTime, showTimerOnScreen, showDirectResultsOnScreen)=> {
-        if (this.waitingMode){this.waitingMode = false}
-        //console.log('QUESTION DATA'+questiondata)
-        this.displayQuestionData.push(questiondata)
-        if(showTimerOnScreen){//si on a bien un temps à afficher, c'est à dire qu'il n'est pas falsy
-          this.displayTimer = true
-          this.afficheTimer(questionStartTime, totalTime)
+    // ====================== RELOAD DE PAGE ====================== //
+
+    // actualiser la page alors qu'il y a la question
+    socket.on(
+      "update-host-on-co-question",
+      (questiondata, votesInfos, updateTimer) => {
+        this.setWaitingMode();
+        this.question = questiondata;
+        this.votesData = votesInfos;
+
+        //si on a bien un temps à afficher
+        if (updateTimer.showTimer) {
+          this.timeParams.showTimer = true;
+          this.afficheTimer(updateTimer.start, updateTimer.total);
         }
-        if(showDirectResultsOnScreen){//si on veut bien afficher les résultats en direct à afficher, c'est à dire qu'il n'est pas falsy
-          this.displayDirectResults = true
-        }
-    }),
-    // ici on récupère les images des choix de la question 
-    socket.on('broadcast-question', (questiondata) => {
-      this.resetAllData()//on reset les datas que quand on lance une nouvelle question pour pouvoir garder les résultats précédents à l'écran
-      console.log(questiondata)
-      this.tab = Object.values(questiondata.choices)
-      this.displayQuestionData.push(questiondata)
-      this.id = questiondata.id
-      this.questionLabel = questiondata.question
-      console.log(this.tab)
-    })
-    socket.on('display-final-choice', (totalvotes, winner, percentage, egalite) => {
-       this.parameters = []
-
-      //transition avant de passer au résultat
-      if(window.innerWidth>768){
-        this.$refs['halfChoiceContainer'][winner.id-this.tab[0].id].style.width = "100%"
-        this.$refs['halfChoiceContainer'][Math.abs(winner.id-this.tab[1].id)].style.width = "0%"
+        this.displayDirectResults = votesInfos.displayDirectResults;
       }
-      else{ //si l'écran est trop petit, on passe en vertical
-        this.$refs['halfChoiceContainer'][winner.id-this.tab[0].id].style.height = "100%"
-        this.$refs['halfChoiceContainer'][Math.abs(winner.id-this.tab[1].id)].style.height = "0%"
-      }
+    );
 
-      /*if(this.displayDirectResults){
-        document.querySelector(".directResultMove").style.opacity = "0"
-        console.log('METTRE OPACITY A 0', document.querySelector(".directResultMove"))
-      }*/
+    // actualiser la page alors qu'il y a les résultats
+    socket.on("update-host-on-co-results", (finalChoice) => {
+      this.setWaitingMode();
 
-        setTimeout(function () {
-            this.displayResult = true
-            console.log('HELLO 1sec')
-        }.bind(this), 1500)
+      this.displayResult = true;
+      this.question.id = finalChoice.idQuestion;
+      this.finalChoice = finalChoice;
+    });
 
-        this.parameters.push({totalvote:totalvotes,winner:winner.img,winnerTitle:winner.title,percentage:Math.floor(percentage)+"%", egalite: egalite })
-    }),
-    // quand on arrête la partie
-    socket.on('stop-partie', () => {
-      this.resetAllData()
-    }),
-    socket.on('stop-question', () => {
-       if(this.displayResult==false){
-        this.resetAllData()
-        this.waitingMode = true
-      }else {
-        this.waitingMode = false
-      }
+    // Tout reload quand admin reload
+    socket.on("reload-this-page", () => {
+      location.reload(true);
+    });
 
-    }),
-    socket.on('augmentation-nb-votes', (votesInfos) => {
-      this.votesData = votesInfos
-      console.log(votesInfos)
-      if(!this.displayResult && this.displayDirectResults){
-        this.$refs['halfChoiceContainer'][0].querySelector('.directResultMove').style.height = `${(votesInfos.votesChoice1/votesInfos.total)*100}%`
-        this.$refs['halfChoiceContainer'][1].querySelector('.directResultMove').style.height = `${(votesInfos.votesChoice2/votesInfos.total)*100}%`
-      }
-    })
+    // ========================== ARRET =========================== //
+
+    // arrêt de la partie (quit page)
+    socket.on("stop-partie", () => {
+      this.resetAllData();
+    });
+
+    // arrêt de la question (stop button)
+    socket.on("stop-question", () => {
+      if (!this.displayResult) this.resetAllData();
+      else this.waitingMode = this.setWaitingMode();
+    });
+    // ======================== AFFICHAGE ========================= //
+
+    // paramètres d'affichage & temps de la question
+    socket.on("display-question-on-screen", (timeParams, showResults) => {
+      this.setWaitingMode();
+
+      this.displayDirectResults = showResults;
+      this.timeParams = timeParams;
+      this.afficheTimer(timeParams.start, timeParams.total);
+    });
+
+    // datas de la question
+    socket.on("broadcast-question", (questiondata) => {
+      this.resetAllData();
+      this.question = questiondata;
+    });
   },
-  mounted () {
-    //Mettre à jour l'affichage des votes en direct si le display est true
-    socket.on("update-host-on-co-question", (questiondata, votesInfos, updateTimer) =>{
-      if(this.displayDirectResults){ //si on doit montrer les votes en direct, on met à jour les votes existants
-        this.$nextTick(()=>{
-          this.$refs['halfChoiceContainer'][0].querySelector('.directResultMove').style.height = `${(votesInfos.votesChoice1/votesInfos.total)*100}%`
-          this.$refs['halfChoiceContainer'][1].querySelector('.directResultMove').style.height = `${(votesInfos.votesChoice2/votesInfos.total)*100}%`
-        });
-      }
-    })
+
+  mounted() {
+    // affiche les votes
+    socket.on("augmentation-nb-votes", (votesInfos) => {
+      this.votesData = votesInfos;
+      this.animationVotes();
+    });
+
+    // résultats
+    this.$root.$on("display-result", (finalChoice) => {
+      setTimeout(
+        function () {
+          this.displayResult = true;
+        }.bind(this),
+        1500
+      );
+      this.finalChoice = finalChoice;
+    });
   },
+
   methods: {
-    resetAllData: function(){
-      this.waitingMode = true
-      this.displayResult= false
-      this.displayTimer= false
-      this.displayDirectResults= false
-
-      this.displayQuestionData = []
-      this.finalChoice = 
-      this.allVotes = 0
-      this.winner = {}
-      this.percentage = 0
-      this.parameters=[]
-      this.votesData= {total:0, votesChoice1:0, votesChoice2: 0}
-      //console.log('resetdata')
+    setWaitingMode: function () {
+      if (this.waitingMode) this.waitingMode = false;
     },
-    afficheTimer: async function(questionStartTime, totalTime){
-          //======== TIMER ========//
-          const timeDepart = questionStartTime
-          const totalTimeMs = totalTime*1000 //on passe le temps en secondes en millisecondes
 
-          let myTimer = setInterval(() => {
-            // console.log('TIMER TURNING')
-             if (!this.waitingMode){
-               //console.log('SETINTERVAL')
-                  let currentTime = Date.now()
-                  const element = document.getElementById("timeProgress")
-                  let tempsEcoule = currentTime-timeDepart //en millisecondes
+    resetAllData: function () {
+      // divs to display
+      this.waitingMode = true;
+      this.displayResult = false;
+      this.displayDirectResults = false;
 
-                  if(tempsEcoule<=totalTimeMs){
-                    //element.style.width = (tempsEcoule/totalTimeMs)*100 + "%";
-                    element.style.width = "calc(16px + ("+tempsEcoule/totalTimeMs+" * (100% - 16px)))";
-                    if((tempsEcoule/totalTimeMs)*100 >75){
-                      element.style.backgroundColor = '#CA4B4B'; //on passe en rouge
-                    }
-                  }
-                  else {
-                    clearInterval(myTimer);
-                  }
-             }
-             else { //si on arrête la question avant la fin, ça permet d'arrêter le timer
-                    clearInterval(myTimer);
-             }
-        }, 10)
+      // parameters
+      this.timeParams = null;
+      this.finalChoice = null;
+      this.votesData = { total: 0, votesChoice1: 0, votesChoice2: 0 };
     },
-  }
-}
+
+    // ======================== ANIMATION ========================= //
+
+    // change directVotes style
+    calculateHeightVotes: function (idChoice, nbVotes, totalVotes) {
+      document
+        .getElementById("halfChoiceContainer" + idChoice)
+        .querySelector(".directResultMove").style.height =
+        (nbVotes / totalVotes) * 100 + "%";
+    },
+
+    // direct votes animation
+    animationVotes: function () {
+      if (!this.displayResult && this.displayDirectResults) {
+        this.calculateHeightVotes(
+          this.question.choices[0].id,
+          this.votesData.choice1,
+          this.votesData.total
+        );
+        this.calculateHeightVotes(
+          this.question.choices[1].id,
+          this.votesData.choice2,
+          this.votesData.total
+        );
+      }
+    },
+
+    // change style timer
+    changeStyle: function (element, elapsedTime, duration) {
+      element.style.width =
+        "calc(16px + (" + elapsedTime / duration + " * (100% - 16px)))";
+
+      if ((elapsedTime / duration) * 100 > 75) {
+        element.style.backgroundColor = "#CA4B4B";
+      }
+    },
+
+    // timer animation
+    afficheTimer: async function (startTime, duration) {
+      const durationMs = duration * 1000;
+
+      let myTimer = setInterval(() => {
+        if (!this.waitingMode) {
+          let currentTime = Date.now();
+          let progressBar = document.getElementById("timeProgress");
+
+          let elapsedTime = currentTime - startTime; //en millisecondes
+          if (elapsedTime <= durationMs)
+            this.changeStyle(progressBar, elapsedTime, durationMs);
+          else clearInterval(myTimer);
+        } else {
+          //si on arrête la question avant la fin
+          clearInterval(myTimer);
+        }
+      }, 10);
+    },
+  },
+};
 </script>

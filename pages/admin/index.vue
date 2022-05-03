@@ -1,10 +1,6 @@
 <template>
 <main>
-	<AdminHeader />
-	<div>
-		<!--<button @click="logout" class ="btnLogOut"> Log out </button>-->
-	</div>
-	
+	<AdminHeader />	
 	<div id="menu">
 		<!-- TO DO : changer newAdmin dans les path -->
 		<NuxtLink to="/admin/launch" class="linkBtnMenu"> 

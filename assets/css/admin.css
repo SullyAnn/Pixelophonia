@@ -1,70 +1,70 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-
 body {
-  background-position: inherit;
-  background-size: 140%;
-  font-family: 'Montserrat', sans-serif;
-  color: #3D4D7C;
-  margin: 0;
-  padding: 10px 20px;
+    background-color: rgba(206, 217, 252, 0.92);
+    background-position: inherit;
+    background-size: 140%;
+    font-family: 'Montserrat', sans-serif;
+    color: #3D4D7C;
+    margin: 0;
+    padding: 10px 20px;
 }
 
 button {
-  font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
-a:hover, a:active {
-  color: #112f8a;
+a:hover,
+a:active {
+    color: #112f8a;
 }
 
-h1{
-  border-block: 1px solid;
-  padding: 20px;
-  width: max-content;
-  font-size: 24px;
+h1 {
+    border-block: 1px solid;
+    padding: 20px;
+    width: max-content;
+    font-size: 24px;
 }
 
 
 /* ======== Menu ======== */
 
 #menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-
-  width: 100%;
-  height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 80vh;
 }
 
-
 .linkBtnMenu {
-  width: 40%;
-  text-align: center;
-  font-weight: normal;
+    width: 40%;
+    text-align: center;
+    font-weight: normal;
 }
 
 .btnMenu:hover {
-  background: rgba(255, 255, 255, 1);
-  transform: scale(1.1);
-  cursor: pointer;
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .btnMenu {
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 11px;
-  display: block;
-  border: 1px solid #3D4D7C;
-  width: 100%;
-  padding: 30px;
-  font-weight: bold;
-  color: #3D4D7C;
-  transition: 0.5s;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 11px;
+    display: block;
+    border: 1px solid #3D4D7C;
+    width: 100%;
+    padding: 30px;
+    font-weight: bold;
+    color: #3D4D7C;
+    transition: 0.5s;
 }
+
 
 /* ==== Launch Game ===== */
 
@@ -72,8 +72,9 @@ h1{
     list-style: none;
     padding: 0;
 }
-.creationPage{
-  list-style: none;
+
+.creationPage {
+    list-style: none;
     padding: 0;
     display: flex;
     height: 60vh;
@@ -84,54 +85,60 @@ h1{
 }
 
 ul.questions {
-  margin: 0;
-  padding-left: 115px;
+    margin: 0;
+    padding-left: 115px;
 }
 
 li {
-  display: flex;
-  margin-bottom: 16px;
-  align-items: center;
-}
-#creationContainer{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    margin-bottom: 16px;
+    align-items: center;
 }
 
-.listElements p, .questionsContainer p {
-  display: inline-block;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 13px;
-  width: 300px;
-  margin:0 20px 0 0;
-  text-align: left;
-  transition: 0.5s;
+#creationContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
+
+.listElements p,
+.questionsContainer p {
+    display: inline-block;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 13px;
+    width: 300px;
+    margin: 0 20px 0 0;
+    text-align: left;
+    transition: 0.5s;
+}
+
 .listElements p {
-  margin: 0;
-  border: 1px solid white;
-  padding: 16px;
+    margin: 0;
+    border: 1px solid white;
+    padding: 16px;
 }
 
-.listElements p:hover, .questionsContainer p:hover {
-  background: #fff;
+.listElements p:hover,
+.questionsContainer p:hover {
+    background: #fff;
 }
 
 .questionsList.creationPage p {
-  width: 40%;
-  max-width: 600px;
-  min-width: 200px;
+    width: 40%;
+    max-width: 600px;
+    min-width: 200px;
 }
 
 .launchPage table {
-  border-collapse:collapse;
-  /* width: 25%; */
+    border-collapse: collapse;
+    /* width: 25%; */
 }
-.launchPage table, .launchPage td{
-  border: 1px solid #3D4D7C;
+
+.launchPage table,
+.launchPage td {
+    border: 1px solid #3D4D7C;
 }
 
 .launchPage th {
@@ -139,299 +146,310 @@ li {
     color: #fff;
 }
 
-th,td {
-  padding: 4px 16px;
-  font-size: 1rem;
-}
-table td:nth-child(2), table th:nth-child(2){
-  text-align: center;
-}
-.linkBtnMenu{
-  width: 20%;
+th,
+td {
+    padding: 4px 16px;
+    font-size: 1rem;
 }
 
-.launchContainer{
-  height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+table td:nth-child(2),
+table th:nth-child(2) {
+    text-align: center;
 }
+
+.linkBtnMenu {
+    width: 20%;
+}
+
+.launchContainer {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 
 /* ====== Creation ====== */
 
+
 /* ------ Buttons ------- */
+
 .btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin: 5px;
-  padding: 0;
-
-  border: none;
-
-  line-height: 1;
-  position: relative;
-  padding: 1em;
-  color: #fff;
-  background: transparent;
-  transition: .3s;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+    padding: 0;
+    border: none;
+    line-height: 1;
+    position: relative;
+    padding: 1em;
+    color: #fff;
+    background: transparent;
+    transition: .3s;
 }
 
 .btn:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .btn:active {
-  transform: scale(1.5);
+    transform: scale(1.5);
 }
 
 .svg-icon {
-  transform: scale(1.1);
-  vertical-align: middle;
-  fill: currentColor;
-  overflow: hidden;
+    transform: scale(1.1);
+    vertical-align: middle;
+    fill: currentColor;
+    overflow: hidden;
 }
 
 .btn.update {
-  background: #4495B8;
+    background: #4495B8;
 }
 
 .btn.update:hover,
 .btn.update:focus {
-  background: #186180;
+    background: #186180;
 }
 
 .btn.add {
-  background: #6cad56;
-  margin-bottom: 16px;
+    background: #6cad56;
+    margin-bottom: 16px;
 }
 
 .btn.add:hover,
 .btn.add:focus {
-  background: #4c8a38;
-}
-.add{
-  display: flex;
-  justify-content: flex-start;
+    background: #4c8a38;
 }
 
+.add {
+    display: flex;
+    justify-content: flex-start;
+}
 
 .goBack {
-  cursor: pointer;
-  width: fit-content;
+    cursor: pointer;
+    width: fit-content;
 }
 
 
 /* ---- See question ---- */
 
 .window {
-  width: 50%;
-  text-align: center;
-  margin: auto;
-  padding: 10% auto;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  height: 75vh;
-  justify-content: center;
+    width: 50%;
+    text-align: center;
+    margin: auto;
+    padding: 10% auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 75vh;
+    justify-content: center;
 }
 
 .window h2 {
-  background: #3D4D7C;
-  color: #fff;
-
-  height: 50px;
-  padding: 15px 0 0;
-  border-radius: 13px;
-  width: 100%;
+    background: #3D4D7C;
+    color: #fff;
+    height: 50px;
+    padding: 15px 0 0;
+    border-radius: 13px;
+    width: 100%;
 }
-.admin
 
-.window .choices {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 90%;
-  border: 1px solid #fff;
-  padding: 5%;
-  margin: auto;
+.admin .window .choices {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 90%;
+    border: 1px solid #fff;
+    padding: 5%;
+    margin: auto;
 }
-.choices2{
-  width: -webkit-fill-available;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 20px;
+
+.choices2 {
+    width: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
 }
 
 .labelChoice,
 .labelQuestion {
-  background: rgba(255, 255, 255, 0.5);
-  padding: 5px;
-  border-radius: 11px;
-  border: 0;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    border-radius: 11px;
+    border: 0;
 }
 
 .labelQuestion {
-  width: 200px;
-  padding: 10px;
+    width: 200px;
+    padding: 10px;
 }
+
 
 /* ---- Add question ---- */
 
 form {
-  display: flex;
-  flex-flow: column;
-  justify-content: space-evenly;
-  background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 form>* {
-  display: block;
-  width: 70%;
-  padding: 0;
-  margin: 10px auto 0;
+    display: block;
+    width: 70%;
+    padding: 0;
+    margin: 10px auto 0;
 }
 
 form .choices2 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  padding: 10px 5%;
-  height: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 10px 5%;
+    height: 300px;
 }
 
 form>* {
-  font-size: 16px;
-  font-family: 'Montserrat', sans-serif;
-  width: 70%;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    width: 70%;
 }
 
 fieldset .labelChoice {
-  height: 25px;
-  font-family: montserrat;
-  width: -webkit-fill-available;
+    height: 25px;
+    font-family: montserrat;
+    width: -webkit-fill-available;
 }
 
 .choices2 fieldset {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  width: 45%;
-  margin: auto;
-  align-items: center;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 45%;
+    margin: auto;
+    align-items: center;
 }
 
 fieldset>* {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
-.importImg, .viewImg {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+.importImg,
+.viewImg {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-.importImg img, .viewImg img {
-  width: 100%;
-  height: auto;
+.importImg img,
+.viewImg img {
+    width: 100%;
+    height: auto;
 }
 
 .importImg:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .send {
-  width: 50px;
-  height: 50px;
-  background: #9BD088;
-  position: relative;
-  color: #fff;
-  margin: 20px 15% 20px auto;
-  transition: 0.5s;
+    width: 50px;
+    height: 50px;
+    background: #9BD088;
+    position: relative;
+    color: #fff;
+    margin: 20px 15% 20px auto;
+    transition: 0.5s;
 }
 
 .send:hover {
-  background: #6cad56;
-  cursor: pointer;
+    background: #6cad56;
+    cursor: pointer;
 }
+
 
 /* ==== Launch Game ==== */
 
 .start {
-  background: #6cad56;
+    background: #6cad56;
 }
 
 .stop {
-  background: #aa1b1b;
+    background: #aa1b1b;
 }
 
 .cantSelect {
-  background: #929292;
+    background: #929292;
 }
 
 .launchPage ul .btn {
-  margin-left: 24px;
+    margin-left: 24px;
 }
 
+
 /* ==== Timer ==== */
+
 .timerWrapper {
-  width: 100%;
-  height: 16px;
-  background-color: #d2d2d2;
-  border-radius: 50px;
-  position: relative;
+    width: 100%;
+    height: 16px;
+    background-color: #d2d2d2;
+    border-radius: 50px;
+    position: relative;
 }
 
 .timeProgress {
-  width: 0;
-  height: 100%;
-  background-color: #0CB4CE;
-  border-radius: 50px;
-  /*transition: 0.2s ease;*/
+    width: 0;
+    height: 100%;
+    background-color: #0CB4CE;
+    border-radius: 50px;
+    /*transition: 0.2s ease;*/
 }
 
 
 /*=========== bouton form temps ========== */
+
 .tooltipWrapper {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .tooltipTime {
-  visibility: hidden;
-  background-color: rgba(61, 77, 124, 0.92);
-  color: #fff;
-  font-size: 0.75rem;
-  text-align: center;
-  padding: 4px;
-  border-radius: 6px;
-
-  position: absolute;
-  margin-bottom: 4px;
-  bottom: 100%;
-  left: 0;
-  width: 120px;
-  z-index: 1;
-  transform: translateX(-5px);
+    visibility: hidden;
+    background-color: rgba(61, 77, 124, 0.92);
+    color: #fff;
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 4px;
+    border-radius: 6px;
+    position: absolute;
+    margin-bottom: 4px;
+    bottom: 100%;
+    left: 0;
+    width: 120px;
+    z-index: 1;
+    transform: translateX(-5px);
 }
 
 .inputTime {
-  width: 100%;
-  transform: translate(-5px);
-  font-size: 16px;
-  font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    transform: translate(-5px);
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .inputTime:hover+.tooltipTime {
-  visibility: visible;
+    visibility: visible;
 }
 
 
 /*======= Page CREATION =======*/
+
 @media (max-width: 576px) {
     .questionsList.creationPage {
         padding: 0;
@@ -442,52 +460,50 @@ fieldset>* {
 /* ============= ============== */
 
 .allQuestionsToCheck {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 input[type="checkbox"].checkQuestion {
-  display: none;
+    display: none;
 }
 
-input[type="checkbox"].checkQuestion + label {
-  transition: 0.3s;
-  padding: 10px;
-  margin: 10px;
-  background-color:#fff;
-  border-radius: 11px;
-  border: 1px solid #fff;
-}
-.containsCheckQuestion, .containsCheckQuestion > * {
-  display: block;
+input[type="checkbox"].checkQuestion+label {
+    transition: 0.3s;
+    padding: 10px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 11px;
+    border: 1px solid #fff;
 }
 
-
-
-input[type="checkbox"].checkQuestion:hover + label {
-  cursor: pointer;
-  border-color: #9BD088;
-}
-input[type="checkbox"].checkQuestion:checked + label {
-  background-color:#9BD088;
-  color: #fff;
-  border-color: #9BD088;
+.containsCheckQuestion,
+.containsCheckQuestion>* {
+    display: block;
 }
 
+input[type="checkbox"].checkQuestion:hover+label {
+    cursor: pointer;
+    border-color: #9BD088;
+}
+
+input[type="checkbox"].checkQuestion:checked+label {
+    background-color: #9BD088;
+    color: #fff;
+    border-color: #9BD088;
+}
 
 .oneQuestion {
-height: auto;
+    height: auto;
 }
-
-
 
 .displayInfos {
-  opacity:1;
-  transition: 0.5s;
-  display: none;
+    opacity: 1;
+    transition: 0.5s;
+    display: none;
 }
 
-#concertContainer{
+#concertContainer {
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -5,11 +5,11 @@
     </tr>
     <tr>
       <td>{{ title1 }}</td>
-      <td>{{ votesData.votesChoice1 }}</td>
+      <td>{{ votesData.choice1 }}</td>
     </tr>
     <tr>
       <td>{{ title2 }}</td>
-      <td>{{ votesData.votesChoice2 }}</td>
+      <td>{{ votesData.choice2 }}</td>
     </tr>
     <tr>
       <th>Total</th>
@@ -37,15 +37,15 @@ export default {
     return {
       votesData: {
         total: 0,
-        votesChoice1: 0,
-        votesChoice2: 0,
+        choice1: 0,
+        choice2: 0,
       },
     };
   },
 
   methods: {
     resetVotes: function () {
-      this.votesData = { total: 0, votesChoice1: 0, votesChoice2: 0 };
+      this.votesData = { total: 0, choice1: 0, choice2: 0 };
     },
   },
 };

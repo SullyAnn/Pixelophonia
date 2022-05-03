@@ -42,7 +42,6 @@
         :title2="question.choices[1].title"
       />
     </div>
-
   </li>
 </template>
 
@@ -104,7 +103,7 @@ export default {
       // launch admin timer
       if (this.timerBar) {
         this.$nextTick(() => {
-          this.launchTimer(questionStartTime, this.question.temps); 
+          this.launchTimer(questionStartTime, this.question.temps);
         });
       }
     },
@@ -114,13 +113,12 @@ export default {
     },
 
     launchTimer: function (questionStartTime, totalTime) {
-      //======== TIMER ========//
       const timeDepart = questionStartTime;
-      const totalTimeMs = totalTime * 1000; //on passe le temps en secondes en millisecondes
+      const totalTimeMs = totalTime * 1000; 
 
-        let progressBar = document.getElementById(
-          "timeProgress" + this.question.id
-        );
+      let progressBar = document.getElementById(
+        "timeProgress" + this.question.id
+      );
 
       let myTimer = setInterval(() => {
         let currentTime = Date.now();
@@ -128,7 +126,6 @@ export default {
         let tempsEcoule = currentTime - timeDepart; //en millisecondes
 
         if (tempsEcoule <= totalTimeMs) {
-          console.log(progressBar.style.width)
           progressBar.style.width =
             "calc(16px + (" + tempsEcoule / totalTimeMs + " * (100% - 16px)))";
           if ((tempsEcoule / totalTimeMs) * 100 > 75) {
@@ -149,7 +146,7 @@ export default {
     },
 
     launchResultsNoTimer: function () {
-        socket.emit("calcul-resultat");
+      socket.emit("calcul-resultat");
       this.questionIsPlaying = false;
     },
   },
