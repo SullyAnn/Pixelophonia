@@ -15,11 +15,8 @@
       </ul>
     </div>
 
-    <ButtonReturn
-      @click.native="stopPartie()"
-      linkBack="../launch"
-      text="Mettre fin au jeu"
-    />
+    <AdminFooter :isInGame="true" textBack="Mettre fin au jeu" />
+
   </div>
 </template>
 
@@ -97,11 +94,6 @@ export default {
         this.newChoice = [];
       });
     },
-
-    stopPartie: function () {
-      socket.emit("stop-partie", 2);
-    },
-
   },
 };
 </script>

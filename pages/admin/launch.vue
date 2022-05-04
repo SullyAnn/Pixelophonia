@@ -13,7 +13,7 @@
       </ul>
     </div>
 
-    <ButtonReturn linkBack="./" />
+    <AdminFooter :isReturn="true" linkBack="./" />
   </div>
 </template>
 
@@ -37,5 +37,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
