@@ -22,7 +22,7 @@ import { getConcerts } from "@/assets/classes/Admin.js";
 
 export default {
   head: {
-    title: "Lancer le concert",
+    title: "Admin | Lancer le concert",
   },
 
   async asyncData({ $axios }) {
@@ -35,3 +35,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+</style>
