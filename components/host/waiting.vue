@@ -13,9 +13,8 @@
       </div>
     </div>
 
-    <div id="logoLong">
-      <img src="@/assets/images/logoLong.png" />
-    </div>
+    <LongLogo />
+
   </div>
 </template>
 

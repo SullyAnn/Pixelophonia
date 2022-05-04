@@ -1,7 +1,7 @@
 <template>
   <div class="adminHeader">
     <div class="administrateur">
-      <img src="../assets/images/Logo-carre-BD.png">
+      <img src="/Logo-carre-BD.png">
       <p>Administrateur</p>
     </div>
     <button @click="logout" class="btnLogOut btnMenu"> Log out </button>

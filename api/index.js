@@ -53,7 +53,6 @@ app.get('/user', async(req, res) => {
 /* ====== CHOICE ====== */
 
 //add a choice
-// title et img requis dans le body (?)
 app.post(`/choice`, async(req, res) => {
     const result = await prisma.choice.create({
         data: {
@@ -88,7 +87,6 @@ app.delete('/choice/:id', async(req, res) => {
 })
 
 // update a choice
-// title et img requis dans le body (?)
 app.put('/choice/:id', async(req, res) => {
     const { id } = req.params
     const choice = await prisma.choice.update({

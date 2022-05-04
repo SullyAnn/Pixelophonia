@@ -1,150 +1,114 @@
 <template>
-  <section class="section">
-    <div class="login">
-      <div class="columns">
-        <div class="adminImage">
-          <img src="../../assets/images/Logo-carre-BD.png">
-          <h2>Administrateur</h2>
-        </div>
-        <div class="column is-4 is-offset-4">
-        <Notification :message="error" v-if="error"/>
-            <form method="post" @submit.prevent="login">
-                <div>
-                  <img src="../../assets/images/mail.png" class="icon">
-                  <input v-model="email" type="text" name="email" class="labelChoicelogin" required>
-                </div>
-                <div id="passwordInput">
-                  <img src="../../assets/images/password.png" class="icon">
-                  <input v-model="password" type="password" name="password" class="labelChoicelogin" required>
-                </div>
-                <button type="submit" class="btnMenu btnLogIn">Log In</button>
-            </form>
-        </div>
-      </div>
+  <section id="loginPage">
+    <div class="card">
+      <AdminLoginHeader />
+
+      <section id="infos">
+        <AdminNotification :message="error" v-if="error" />
+        <form method="post" @submit.prevent="login">
+          <FormLogin
+            type="text"
+            name="email"
+            icon="/mail.png"
+            placeholder="adresse mail"
+            v-model="email"
+          />
+
+          <FormLogin
+            type="password"
+            name="password"
+            icon="/password.png"
+            placeholder="mot de passe"
+            v-model="password"
+          />
+          <button type="submit" class="btnText btnLogIn">Se connecter</button>
+        </form>
+      </section>
     </div>
   </section>
 </template>
 
 <script>
-import "@/assets/css/admin.css";
-import Notification from '~/components/Notification'
 export default {
-  components: {
-    Notification,
-  },
-  data(){
+  data() {
     return {
-      email: 'testemail',
-      password: 'testpassword',
-      error: null
-    }
+      email: "testemail",
+      password: "testpassword",
+      error: null,
+    };
   },
   mounted() {
-        if (this.$auth.loggedIn) {
-          this.$router.push('/admin/')
-        }
+    if (this.$auth.loggedIn) {
+      this.$router.push("/admin/");
+    }
   },
   methods: {
     async login() {
       try {
-        let response = await this.$auth.loginWith('local', {
+        let response = await this.$auth.loginWith("local", {
           data: {
-          email: this.email,
-          password: this.password
-          }
-        })
-        console.log("ok admin authentifié")
-        this.$router.push('/admin/')
-        console.log(response)
+            email: this.email,
+            password: this.password,
+          },
+        });
+        this.$router.push("/admin/");
+        console.log(response);
       } catch (err) {
-        console.log(err)
-        this.error = err.response.data.message
+        console.log(err);
+        this.error = err.response.data.message;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
-<style>
-.btnLogIn{
-  width: 5vw;
-  padding: 10px !important;
-}
-.login form .btnMenu{
-  border: none;
-  margin: 0;
-  align-self: center;
-  margin-top: 25px;
-  background-color: #3D4D7C;
-  color: white;
-}
-.login form .btnMenu:hover{
-  color: #3D4D7C;
-  background-color : white;
-}
-
-.login{
-  height: 100%;
+<style scoped>
+#loginPage {
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.section{
-  height:100vh;
-}
-.login .columns{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 50vh;
-    padding: 40px;
-    border-radius: 40px;
-    background: rgba(255,255,255,0.5);
-  
-}
-.labelChoicelogin{
-  background: unset;
-  padding: 16px;
-  font-size: 16px;
-  border: unset;
-  margin: 0;
-  width: -webkit-fill-available;
-}
-.login form{
-  background-color: unset;
-}
-.login form div{
-    margin: 0;
-    border-bottom: solid;
-    border-width: thin;
-    display: flex;
-    align-items: center;
-    width: auto;
-}
-.icon{
-  width: 16px;
-  height: fit-content;
-}
-
-.adminImage{
-  border-radius: 50px;
-  width: 150px;
+.card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  height: 50vh;
+  padding: 40px;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 5px 5px 5px rgba(180, 180, 1880, 0.5);
 }
-.adminImage img{
-  width: 100%;
-  border-radius: 150px;
-}
-.adminImage h2{
-  font-weight: 300;
-  font-size: 16px;
-}
-.column{
+
+#infos {
   width: 40vh;
 }
 
+form {
+  background-color: unset;
+  position: relative;
+}
+
+
+.btnLogIn {
+  width: 5vw;
+  min-width: 100px;
+
+  padding: 10px;
+
+  align-self: center;
+
+  margin: 25px;
+
+  background-color: #3d4d7c;
+  color: white;
+  border: 1px solid #3d4d7c;
+}
+
+.btnLogIn:hover {
+  color: #3d4d7c;
+  background-color: white;
+
+}
 </style>

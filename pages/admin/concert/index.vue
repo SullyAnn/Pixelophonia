@@ -18,7 +18,7 @@
       </ul>
     </div>
 
-    <ButtonAdd /> 
+    <ButtonAdd link= "./add" /> 
     <ButtonReturn linkBack="../" />
 
   </div>

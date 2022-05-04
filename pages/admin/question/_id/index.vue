@@ -4,7 +4,6 @@
     <h3>{{ question.question }}</h3>
 
     <div class="choices2">
-		
       <fieldset>
         <legend>Choix n°1</legend>
         <p class="labelChoice">{{ question.choices[0].title }}</p>
@@ -31,6 +30,11 @@
         </div>
       </fieldset>
     </div>
+
+    <ButtonEdit
+      :linkToEdit="`${question.id.id}/update`"
+      text="Modifier la question"
+    />
 
     <NuxtLink to="./">Revenir à la liste</NuxtLink>
   </div>

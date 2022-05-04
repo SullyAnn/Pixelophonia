@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       title: "",
-      imageURL: "/_nuxt/assets/images/addPic.jpg",
+      imageURL: "/addImage.png",
     };
   },
 

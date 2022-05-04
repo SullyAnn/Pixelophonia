@@ -5,47 +5,6 @@
       <h2>Ajouter une question</h2>
 
       <FormQuestion type="add"/>
-
-      <!-- <form @submit.prevent="handleSubmit">
-        <input
-          v-model="label"
-          type="text"
-          name="label"
-          placeholder="Libellé de la question"
-          class="labelChoice"
-          required
-        />
-
-        <textarea
-          v-model="question"
-          placeholder="Question"
-          name="question"
-          class="labelChoice"
-          required
-        ></textarea>
-
-        <div class="tooltipWrapper">
-          <input
-            v-model="temps"
-            type="number"
-            name="temps"
-            placeholder="Durée (en secondes)"
-            class="labelChoice inputTime"
-            min="0"
-            step="1"
-          />
-          <span class="tooltipTime"
-            >Laisser vide ou mettre zéro pour une question sans durée</span
-          >
-        </div>
-
-        <div class="choices2">
-          <FormImageField :idField="1" />
-          <FormImageField :idField="2" />
-        </div>
-        <input type="submit" value="ok" class="btn send" />
-      </form> -->
-
       <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
     </div>
   </div>

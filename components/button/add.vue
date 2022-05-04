@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink to="./add">
+    <NuxtLink :to="link">
       <button class="btn add">
         <svg
           class="svg-icon"
@@ -19,6 +19,12 @@
 import "@/assets/css/admin.css";
 
 export default {
+  props: {
+    link: {
+      type: String,
+      default: ""
+    }
+  }
 };
 </script>
 

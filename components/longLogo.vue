@@ -1,6 +1,6 @@
 <template>
         <div id="logoLong">
-            <img id="imageLogoLong" src="@/assets/images/logoLong.png">
+            <img id="imageLogoLong" src="/logoLong.png">
         </div>
 </template>
 
@@ -21,5 +21,5 @@ export default {
             width: 100px;
         }
     }
-
+ 
 </style>

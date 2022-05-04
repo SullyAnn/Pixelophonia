@@ -1,14 +1,15 @@
-body{
+body {
     margin: 0;
-    background-image: url("@/assets/images/PxP-Texture-vertical.png");
+    background-image: url("/PxP-Texture-vertical.png");
     background-size: 400%;
     background-position: center;
 }
 
-#__layout{
+#__layout {
     height: 100%;
 }
-p{
+
+p {
     font-family: "Montserrat";
     font-weight: 300;
     font-size: 20px;
@@ -18,28 +19,28 @@ p{
     border-radius: 25px;
     margin: 0;
     text-align: center;
-
 }
-#layoutContainer{
+
+#layoutContainer {
     height: 100vh;
 }
 
 @media screen and (max-width: 768px) {
-    #homePageContent{
+    #homePageContent {
         height: 90%;
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-inline: 20px;
-        justify-content: center;  
-        height: 100vh;      
+        justify-content: center;
+        height: 100vh;
     }
-    #logoLong{
-            height: auto;
-            display: flex;
-            justify-content: center;
-        }
-        #imageLogoLong{
-            width: 100px;
-        }
+    #logoLong {
+        height: auto;
+        display: flex;
+        justify-content: center;
+    }
+    #imageLogoLong {
+        width: 100px;
+    }
 }
