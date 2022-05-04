@@ -21,7 +21,7 @@
             placeholder="mot de passe"
             v-model="password"
           />
-          <button type="submit" class="btnText btnLogIn">Se connecter</button>
+          <button type="submit" class="btnText btnLittle btnLogIn">Se connecter</button>
         </form>
       </section>
     </div>
@@ -90,25 +90,9 @@ form {
   position: relative;
 }
 
-
 .btnLogIn {
-  width: 5vw;
-  min-width: 100px;
-
-  padding: 10px;
-
   align-self: center;
-
   margin: 25px;
-
-  background-color: #3d4d7c;
-  color: white;
-  border: 1px solid #3d4d7c;
 }
 
-.btnLogIn:hover {
-  color: #3d4d7c;
-  background-color: white;
-
-}
 </style>

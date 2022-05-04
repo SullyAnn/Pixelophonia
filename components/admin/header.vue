@@ -1,65 +1,48 @@
 <template>
-  <div class="adminHeader">
+  <section class="adminHeader">
     <div class="administrateur">
-      <img src="/Logo-carre-BD.png">
-      <p>Administrateur</p>
+      <img src="/Logo-carre-BD.png" />
+      <p>Session administrateur</p>
     </div>
-    <button @click="logout" class="btnLogOut btnMenu"> Log out </button>
-  </div>
+
+    <button @click="logout" class="btnText btnLittle">Log out</button>
+  </section>
 </template>
+
 <script>
 export default {
-	methods: {
-		async logout() {
-			await this.$auth.logout();  // this method will logout the user and make token to false on the local storage of the user browser
-		}
-	}
-}
+  methods: {
+    async logout() {
+      await this.$auth.logout(); // this method will logout the user and make token to false on the local storage of the user browser
+    },
+  },
+};
 </script>
-<style>
-.adminHeader{
-  display: flex;
-  flex-direction: column;
+<style scoped>
+
+.adminHeader {
   height: 10vh;
-  align-items: flex-start;
+  padding: 0 30px;
+  display: flex;
   justify-content: space-between;
+  align-items: center;
+  
 }
-.adminHeader img {
-height: 32px;
-border-radius: 100%;
-}
-.adminHeader p {
-color: #3D4D7C;
-font-size: 1rem;
-background: none;
-padding: 0;
-width: auto;
-text-align:left;
-padding-left: 12px;
-}
-.administrateur{
-  display: flex; 
+.administrateur {
+  display: flex;
   align-items: center;
 }
-.adminHeader .btnLogOut{
-  /*margin-left:80vw;*/
-   width: 5vw;
-  padding: 10px ;
+
+img {
+  height: 32px;
+  border-radius: 100%;
 }
-.adminHeader .btnMenu{
-  border: none;
-  margin: 0;
-  align-self: center;
-  background-color: #3D4D7C;
-  color: white;
-  align-self: flex-start;
-}
-.adminHeader .btnMenu:hover{
-  color: #3D4D7C;
-}
-.linkBtnMenu .btnMenu{
-  font-size: 24px;
-  border-color: white;
+
+p {
+  width: auto;
+  padding: 12px;
+  font-size: 1.2rem;
+  text-align: left;
 }
 
 </style>

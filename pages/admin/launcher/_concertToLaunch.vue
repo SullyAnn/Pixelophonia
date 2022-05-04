@@ -2,7 +2,7 @@
 <template>
   <div>
     <AdminHeader />
-    <div id="listQuestions" class="questionsList launchPage launchContainer">
+    <div id="listQuestions" class="launchPage launchContainer">
       <h1>Liste des questions</h1>
       <ul ref="questions" class="questions">
         <LauncherQuestion
