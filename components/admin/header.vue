@@ -5,7 +5,7 @@
       <p>Session administrateur</p>
     </div>
 
-    <button @click="logout" class="btnText btnLittle">Log out</button>
+    <button @click="logout" class="btnText btnLittle">Se déconnecter</button>
   </section>
 </template>
 

@@ -18,16 +18,19 @@
       </ul>
     </div>
 
-    <ButtonAdd link= "./add" /> 
-    <ButtonReturn linkBack="../" />
-
+    <AdminFooter
+      :isReturn="true"
+      linkBack="../"
+      :isAdd="true"
+      linkAdd="./add"
+      :isEdit="true"
+      linkEdit="."
+    />
   </div>
 </template>
 
 <script>
-import {
-  getConcerts,
-} from "@/assets/classes/Admin.js";
+import { getConcerts } from "@/assets/classes/Admin.js";
 import "@/assets/css/admin.css";
 
 export default {
@@ -37,7 +40,7 @@ export default {
     try {
       const concerts = await getConcerts($axios);
 
-      return {concerts};
+      return { concerts };
     } catch (error) {
       console.log(error);
     }
