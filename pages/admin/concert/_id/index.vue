@@ -48,9 +48,7 @@ export default {
 #seeConcert {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
-  height: 75vh;
 }
 #seeConcert a {
   display: flex;
