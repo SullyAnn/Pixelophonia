@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <AdminHeader />
+  <main>
     <div id="concertContainer">
       <h1>Gestion des concerts</h1>
 
@@ -18,7 +17,7 @@
       </ul>
     </div>
 
-    <AdminFooter
+    <ButtonContainer
       :isReturn="true"
       linkBack="../"
       :isAdd="true"
@@ -26,7 +25,7 @@
       :isEdit="true"
       linkEdit="."
     />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -35,6 +34,7 @@ import "@/assets/css/admin.css";
 
 export default {
   name: "Concerts",
+  layout: "admin",
 
   async asyncData({ $axios }) {
     try {
@@ -47,3 +47,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+main {
+  
+}
+</style>

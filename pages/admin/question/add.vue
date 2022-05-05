@@ -1,13 +1,12 @@
 <template>
-  <div>
-    <AdminHeader />
+  <main>
     <div id="addQuestion" class="window">
       <h2>Ajouter une question</h2>
 
       <FormQuestion type="add"/>
       <NuxtLink to="./">Revenir à la liste (sans sauvegarder)</NuxtLink>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -19,6 +18,8 @@ import {
 import "@/assets/css/admin.css";
 
 export default {
+  layout: "admin",
+  
   name: "QuestionForm",
   data() {
     return {

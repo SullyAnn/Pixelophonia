@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <AdminHeader />
+  <main>
     <div id="creationContainer">
       <h1>Création des questions</h1>
 
@@ -13,14 +12,19 @@
         />
       </ul>
     </div>
-    <ButtonAdd link= "./add" />
-    <ButtonReturn linkBack="../" />
-  </div>
+    <ButtonContainer
+      :isReturn="true"
+      linkBack="../"
+      :isAdd="true"
+      linkAdd="./add"
+    />
+  </main>
 </template>
 
 <script>
 import { getQuestions } from "@/assets/classes/Admin.js";
 export default {
+  layout: "admin", 
   name: "QuestionList",
 
   async asyncData({ $axios }) {

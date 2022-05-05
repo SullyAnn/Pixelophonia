@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <AdminHeader />
-
+  <main>
     <div class="launchContainer">
       <h1>Choisissez le concert à lancer !</h1>
       <ul class="listElements">
@@ -13,14 +11,16 @@
       </ul>
     </div>
 
-    <AdminFooter :isReturn="true" linkBack="./" />
-  </div>
+    <ButtonContainer :isReturn="true" linkBack="./" />
+  </main>
 </template>
 
 <script>
 import { getConcerts } from "@/assets/classes/Admin.js";
 
 export default {
+  layout: "admin",
+
   head: {
     title: "Admin | Lancer le concert",
   },
@@ -37,4 +37,10 @@ export default {
 </script>
 
 <style scoped>
+main {
+  display: flex;
+  flex-flow: column; 
+  justify-content: space-between;
+}
+
 </style>

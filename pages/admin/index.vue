@@ -1,6 +1,5 @@
 <template>
   <main>
-    <AdminHeader />
     <section id="menu">
       <NuxtLink to="/admin/launch" class="linkBtnMenu">
         <button class="btnMenu">Lancer un concert</button>
@@ -22,6 +21,8 @@ import "@/assets/css/admin.css";
 import socket from "~/plugins/socket.io.js";
 
 export default {
+  layout: "admin",
+  
   head: {
     title: "Admin | Accueil",
   },
@@ -44,7 +45,7 @@ export default {
   justify-content: space-evenly;
   align-items: center;
   width: 100%;
-  height: 80vh;
+  height: 100%;
 }
 
 .linkBtnMenu {

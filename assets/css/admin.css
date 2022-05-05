@@ -11,6 +11,12 @@ body {
     color: #3D4D7C;
 }
 
+main {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
 button {
     font-family: 'Montserrat', sans-serif;
 }
@@ -155,7 +161,7 @@ table th:nth-child(2) {
 }
 
 .launchContainer {
-    height: 80vh;
+    /* height: 80vh; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -172,14 +178,12 @@ table th:nth-child(2) {
     height: 40px;
     border-radius: 50%;
     margin: 5px;
-    padding: 0;
-    border: none;
-    line-height: 1;
-    position: relative;
     padding: 1em;
+    border: none;
     color: #fff;
-    background: transparent;
     transition: .3s;
+    display: flex;
+    align-items: center;
 }
 
 .btn:hover {
@@ -204,21 +208,6 @@ table th:nth-child(2) {
 .btn.update:hover,
 .btn.update:focus {
     background: #186180;
-}
-
-.btn.add {
-    background: #6cad56;
-    margin-bottom: 16px;
-}
-
-.btn.add:hover,
-.btn.add:focus {
-    background: #4c8a38;
-}
-
-.add {
-    display: flex;
-    justify-content: flex-start;
 }
 
 .goBack {

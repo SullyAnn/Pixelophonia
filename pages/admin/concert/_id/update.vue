@@ -1,8 +1,5 @@
-<!-- Update le concert selon l'ID -->
-
 <template>
-  <div>
-    <AdminHeader />
+  <main>
     <div class="window">
       <h2>Modifier le concert : {{ concert.concert.title }}</h2>
       <FormConcert
@@ -12,13 +9,14 @@
       />
       <NuxtLink to=".">Annuler (sans sauvegarder)</NuxtLink>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
 import { getConcert, getQuestions } from "@/assets/classes/Admin.js";
 
 export default {
+  layout:"admin",
   async asyncData({ params, $axios }) {
     const id = params.id;
 

@@ -1,7 +1,6 @@
 <!-- questions contenues dans le concert -->
 <template>
-  <div>
-    <AdminHeader />
+  <main>
     <div id="listQuestions" class="launchPage launchContainer">
       <h1>Liste des questions</h1>
       <ul ref="questions" class="questions">
@@ -15,9 +14,9 @@
       </ul>
     </div>
 
-    <AdminFooter :isInGame="true" textBack="Mettre fin au jeu" />
+    <ButtonContainer :isInGame="true" textBack="Mettre fin au jeu" />
 
-  </div>
+  </main>
 </template>
 
 
@@ -30,8 +29,9 @@ import Question from "@/assets/classes/Question.js";
 import { getQuestion, getConcert } from "@/assets/classes/Admin.js";
 
 export default {
+  layout: "admin",
   head: {
-    title: "Lancer le jeu",
+    title: "Admin | Lancer le jeu",
   },
 
   async asyncData({ $axios, params }) {
@@ -97,3 +97,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+main {
+  display: flex;
+  flex-flow: column; 
+  justify-content: space-between;
+}
+
+
+</style>

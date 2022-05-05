@@ -1,7 +1,6 @@
 <!-- Voir le concert selon l'ID -->
 <template>
-  <div>
-    <AdminHeader />
+  <main>
     <div id="seeConcert">
       <h1>Voir le concert</h1>
       <h2>{{ concert.concert.title }}</h2>
@@ -15,19 +14,19 @@
       </ul>
     </div>
 
-    <ButtonEdit
-      :linkToEdit="`${concert.concert.id}/update`"
-      text="Modifier le concert"
+    <ButtonContainer 
+    :isReturn="true" linkBack="./"
+    :isEdit="true" :linkEdit="concert.concert.id + '/update'"
     />
 
-    <ButtonReturn linkBack="./" />
-  </div>
+  </main>
 </template>
 
 <script>
 import { getConcert, getQuestion } from "@/assets/classes/Admin.js";
 
 export default {
+  layout:"admin",
   async asyncData({ params, $axios }) {
     const id = params.id;
     try {

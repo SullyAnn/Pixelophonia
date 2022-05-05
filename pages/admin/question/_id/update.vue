@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <AdminHeader />
+  <main>
     <div class="window">
       <h2>Modifier : {{ question.label }}</h2>
 
@@ -8,7 +7,7 @@
 
       <NuxtLink to="../">Revenir à la liste (sans sauvegarder)</NuxtLink>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -18,6 +17,7 @@ import {
 import "@/assets/css/admin.css";
 
 export default {
+  layout: "admin",
   async asyncData({ params, $axios }) {
     const question = await getQuestion($axios, params.id);
     return { question };

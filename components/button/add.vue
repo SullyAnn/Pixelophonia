@@ -31,7 +31,6 @@ export default {
 <style scoped>
 .add {
   background: #6cad56;
-  margin-bottom: 16px;
 }
 
 .add:hover,
@@ -39,8 +38,8 @@ export default {
   background: #4c8a38;
 }
 
-.add{
+/* .add{
   display: flex;
   justify-content: flex-start;
-}
+} */
 </style>
