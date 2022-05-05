@@ -21,7 +21,7 @@
           />
         </svg>
       </button>
-        <p>{{ text }}</p>
+      <p>{{ text }}</p>
     </div>
   </NuxtLink>
 </template>
@@ -44,10 +44,8 @@ export default {
 };
 </script>
 <style scoped>
-
 .goBack {
   cursor: pointer;
-  width: fit-content;
   text-align: center;
   transition: all 0.3s;
   overflow: hidden;
@@ -69,26 +67,27 @@ export default {
   transition: 1.2s;
   background: #3d4d7c;
   z-index: 0;
-
 }
+
 .goBack:hover .bgButton {
   transform: scale(300);
 }
-
 
 .goBack:hover p {
   z-index: 1;
   color: #fff;
 }
+
 p {
   position: relative;
   transition: 0.3s;
   margin-left: 15px;
 }
+
 .btn.back {
   background: #3d4d7c;
-    position: relative;
-    margin:0;
+  position: relative;
+  margin: 0;
 }
 
 .btn.back:hover,

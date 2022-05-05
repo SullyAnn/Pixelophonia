@@ -2,13 +2,13 @@
   <main>
     <div class="launchContainer">
       <h1>Choisissez le concert à lancer !</h1>
-      <ul class="listElements">
-        <li v-for="(concert, index) in concerts" :key="index">
-          <NuxtLink :to="`launcher/${concert.id}`">
-            <p>{{ concert.title }}</p>
-          </NuxtLink>
-        </li>
-      </ul>
+      
+      <ListContainer
+      type="concert"
+      :displayButtons="false"
+      :datas="concerts"
+      preLink="launcher/"
+      />
     </div>
 
     <ButtonContainer :isReturn="true" linkBack="./" />

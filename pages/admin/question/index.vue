@@ -1,16 +1,8 @@
 <template>
   <main>
-    <div id="creationContainer">
+    <div id="concertContainer">
       <h1>Création des questions</h1>
-
-      <ul class="listElements creationPage">
-        <QuestionInList
-          v-for="(question, index) in questions"
-          :key="index"
-          :question="question"
-          :link="'./' + question.id"
-        />
-      </ul>
+      <ListContainer type="question" :datas="questions" preLink="./" />
     </div>
     <ButtonContainer
       :isReturn="true"
@@ -24,7 +16,7 @@
 <script>
 import { getQuestions } from "@/assets/classes/Admin.js";
 export default {
-  layout: "admin", 
+  layout: "admin",
   name: "QuestionList",
 
   async asyncData({ $axios }) {

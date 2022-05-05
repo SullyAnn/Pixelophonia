@@ -1,6 +1,7 @@
 <template>
   <main>
     <div class="window">
+      <h1>Voir la question</h1>
       <h2>{{ question.label }}</h2>
       <h3>{{ question.question }}</h3>
 
@@ -31,14 +32,8 @@
           </div>
         </fieldset>
       </div>
-
-      <ButtonEdit
-        :linkToEdit="`${question.id.id}/update`"
-        text="Modifier la question"
-      />
-
-      <NuxtLink to="./">Revenir à la liste</NuxtLink>
     </div>
+    <ButtonContainer :isReturn="true" linkBack="./" :isEdit="true" :linkEdit="question.id + '/update'" />
   </main>
 </template>
 

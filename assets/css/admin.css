@@ -71,11 +71,6 @@ h1 {
 
 /* ==== Launch Game ===== */
 
-.listElements {
-    list-style: none;
-    padding: 0;
-}
-
 .creationPage {
     list-style: none;
     padding: 0;
@@ -105,31 +100,8 @@ li {
     align-items: center;
 }
 
-.listElements p,
-.questionsContainer p {
-    display: inline-block;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 13px;
-    width: 300px;
-    margin: 0 20px 0 0;
-    text-align: left;
-    transition: 0.5s;
-}
-
-.listElements p {
-    margin: 0;
-    border: 1px solid white;
-    padding: 16px;
-}
-
-.listElements p:hover,
-.questionsContainer p:hover {
-    background: #fff;
-}
-
 .creationPage p {
-    width: 40%;
+    /* width: 40%; */
     max-width: 600px;
     min-width: 200px;
 }

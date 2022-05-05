@@ -5,20 +5,20 @@
       <h1>Voir le concert</h1>
       <h2>{{ concert.concert.title }}</h2>
       <h3>Questions du concert</h3>
-      <ul class="questionsContainer">
-        <QuestionInList
-          v-for="(question, index) in questions"
-          :key="index"
-          :question="question"
-        />
-      </ul>
+      <ListContainer
+        :datas="questions"
+        type="question"
+        preLink="../question/"
+        :displayButtons="false"
+      />
     </div>
 
-    <ButtonContainer 
-    :isReturn="true" linkBack="./"
-    :isEdit="true" :linkEdit="concert.concert.id + '/update'"
+    <ButtonContainer
+      :isReturn="true"
+      linkBack="./"
+      :isEdit="true"
+      :linkEdit="concert.concert.id + '/update'"
     />
-
   </main>
 </template>
 
@@ -26,7 +26,7 @@
 import { getConcert, getQuestion } from "@/assets/classes/Admin.js";
 
 export default {
-  layout:"admin",
+  layout: "admin",
   async asyncData({ params, $axios }) {
     const id = params.id;
     try {

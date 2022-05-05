@@ -71,6 +71,7 @@ export default {
   background-color: rgb(206, 217, 252);
   padding: 0 30px;
 }
+
 #allButtons {
   display: flex;
   justify-content: space-between;

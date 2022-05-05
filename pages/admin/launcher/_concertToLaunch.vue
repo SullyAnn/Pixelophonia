@@ -1,4 +1,3 @@
-<!-- questions contenues dans le concert -->
 <template>
   <main>
     <div id="listQuestions" class="launchPage launchContainer">
