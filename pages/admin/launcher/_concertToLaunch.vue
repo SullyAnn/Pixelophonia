@@ -99,11 +99,5 @@ export default {
 </script>
 
 <style scoped>
-main {
-  display: flex;
-  flex-flow: column; 
-  justify-content: space-between;
-}
-
 
 </style>

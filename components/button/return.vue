@@ -1,6 +1,11 @@
 <template>
-  <NuxtLink :to="linkBack" class="creationGoBackContainer" v-bind:disabled="{ disabled: isInGame }" >
+  <NuxtLink
+    :to="linkBack"
+    class="creationGoBackContainer"
+    v-bind:disabled="{ disabled: isInGame }"
+  >
     <div class="goBack">
+      <div class="bgButton"></div>
       <button class="btn back">
         <svg
           class="svg-icon"
@@ -16,7 +21,7 @@
           />
         </svg>
       </button>
-      {{ text }}
+        <p>{{ text }}</p>
     </div>
   </NuxtLink>
 </template>
@@ -24,32 +29,70 @@
 export default {
   props: {
     isInGame: {
-      type: Boolean, 
-      default: false
+      type: Boolean,
+      default: false,
     },
     text: {
       type: String,
       default: "Retour",
     },
     linkBack: {
-      type: String, 
-      default: ""
-    }
+      type: String,
+      default: "",
+    },
   },
 };
 </script>
 <style scoped>
+
 .goBack {
-  float: left;
+  cursor: pointer;
+  width: fit-content;
+  text-align: center;
+  transition: all 0.3s;
+  overflow: hidden;
+  position: relative;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  width: 170px;
+}
+
+.bgButton {
+  position: absolute;
+  left: 15%;
+  top: 50%;
+  height: 1px;
+  width: 1px;
+  transform: translate(-15%, -50%);
+  border-radius: 50%;
+  transition: 1.2s;
+  background: #3d4d7c;
+  z-index: 0;
+
+}
+.goBack:hover .bgButton {
+  transform: scale(300);
+}
+
+
+.goBack:hover p {
+  z-index: 1;
+  color: #fff;
+}
+p {
+  position: relative;
+  transition: 0.3s;
+  margin-left: 15px;
 }
 .btn.back {
-  background: #fff;
-  color: #3d4d7c;
+  background: #3d4d7c;
+    position: relative;
+    margin:0;
 }
 
 .btn.back:hover,
 .btn.back:focus {
-  background: #9ca3b9;
   color: #fff;
 }
 </style>

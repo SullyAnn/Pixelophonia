@@ -22,8 +22,6 @@
       linkBack="../"
       :isAdd="true"
       linkAdd="./add"
-      :isEdit="true"
-      linkEdit="."
     />
   </main>
 </template>
@@ -49,7 +47,4 @@ export default {
 </script>
 
 <style scoped>
-main {
-  
-}
 </style>
