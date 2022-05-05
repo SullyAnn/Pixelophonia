@@ -1,53 +1,58 @@
 <template>
   <li>
-    <div class="labelAndStartBtnWrapper">
-      <div>
-        <p>{{ question.label }}</p>
-        <div class="settingsContainer">
-          <span>Paramètres sur l'écran</span>
+    <p class="label">
+      <b>{{ question.label }} </b> | <i> {{ question.question }}</i>
+    </p>
 
-          <!-- voir les résultats en direct -->
-          <ButtonSwitch
-            text="Résultats en direct"
-            switchName="checkDirectResult"
-            :idQuestion="question.id"
-          />
+    <div class="settingsContainer">
+      <div class="settings" v-if="!questionIsPlaying">
+        <span>Paramètres</span>
 
-          <!-- voir la barre de temps -->
-          <ButtonSwitch
-            v-if="question.temps"
-            text="Barre de temps"
-            switchName="checkTime"
-            :idQuestion="question.id"
-            :selected="question.temps"
-          />
+        <!-- voir les résultats en direct -->
+        <ButtonSwitch
+          text="Résultats en direct"
+          switchName="checkDirectResult"
+          :idQuestion="question.id"
+        />
+
+        <!-- voir la barre de temps -->
+        <ButtonSwitch
+          v-if="question.temps"
+          text="Barre de temps"
+          switchName="checkTime"
+          :idQuestion="question.id"
+          :selected="question.temps"
+        />
+      </div>
+
+      <div v-else class="settings">
+        <div v-if="timerBar" class="timeContainer">
+          <img src="@/assets/icons/clock.svg" class="icon" />
+          <div class="questionTime">
+            <p>{{ question.temps }} secondes</p>
+            <ElementTimer :totalTime="question.temps * 1000" />
+          </div>
         </div>
+        <div v-else class="timeContainer">
+          <div class="icon">
+            <ElementSpinner />
+          </div>
+          <LauncherButtonResult />
+        </div>
+
+        <LauncherTableVotes
+          :title1="question.choices[0].title"
+          :title2="question.choices[1].title"
+        />
       </div>
 
       <ButtonStart :index="question.id" @click.native="toggleQuestion" />
-    </div>
-
-    <div v-if="questionIsPlaying">
-      <div v-if="timerBar">
-        <div class="timerWrapper">
-          <div class="timeProgress" :id="'timeProgress' + question.id"></div>
-        </div>
-      </div>
-      <div v-else class="btnLaunchResults">
-        <button @click="launchResultsNoTimer()">Lancer les résultats</button>
-      </div>
-
-      <LauncherTableVotes
-        :title1="question.choices[0].title"
-        :title2="question.choices[1].title"
-      />
     </div>
   </li>
 </template>
 
 <script>
 import socket from "~/plugins/socket.io.js";
-import "@/assets/css/launch.css";
 import "@/assets/css/admin.css";
 
 export default {
@@ -112,40 +117,23 @@ export default {
       this.questionIsPlaying = !this.questionIsPlaying;
     },
 
-    launchTimer: function (questionStartTime, totalTime) {
-      const timeDepart = questionStartTime;
-      const totalTimeMs = totalTime * 1000; 
-
-      let progressBar = document.getElementById(
-        "timeProgress" + this.question.id
-      );
-
+    launchTimer: function (startTime, totalTime) {
       let myTimer = setInterval(() => {
-        let currentTime = Date.now();
-
-        let tempsEcoule = currentTime - timeDepart; //en millisecondes
-
-        if (tempsEcoule <= totalTimeMs) {
-          progressBar.style.width =
-            "calc(16px + (" + tempsEcoule / totalTimeMs + " * (100% - 16px)))";
-          if ((tempsEcoule / totalTimeMs) * 100 > 75) {
-            progressBar.style.backgroundColor = "#CA4B4B"; //on passe en rouge
-          }
-        } else {
-          socket.emit("calcul-resultat");
-          clearInterval(myTimer);
-        }
-
         if (!this.questionIsPlaying) {
-          //si on arrete la question avant la fin
-          progressBar.style.width = 0 + "%";
-          progressBar.style.backgroundColor = "#0CB4CE";
-          clearInterval(myTimer);
+          this.stopTimer(myTimer);
+        } else if (Date.now() - startTime > totalTime * 1000) {
+          socket.emit("calcul-resultat");
+          this.stopTimer(myTimer);
         }
       }, 10);
     },
 
-    launchResultsNoTimer: function () {
+    stopTimer: function (timer) {
+      clearInterval(timer);
+      this.$root.$emit("stop-timer");
+    },
+
+    launchResult: function () {
       socket.emit("calcul-resultat");
       this.questionIsPlaying = false;
     },
@@ -154,4 +142,64 @@ export default {
 </script>
 
 <style scoped>
+.settingsContainer {
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 0 0 16px 16px;
+}
+
+li {
+  margin-top:30px;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 5px 5px 5px rgba(180, 180, 1880, 0.5);
+}
+.settingsContainer span {
+  display: block;
+  font-weight: bold;
+}
+
+.settings * {
+  margin: 5px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.icon * {
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 100%;
+}
+
+.timeContainer {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  width: 100%;
+}
+
+.questionTime {
+  width: 100%;
+}
+
+.label {
+  background-color: #3d4d7c;
+  color: #fff;
+  margin-bottom: 0;
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  padding: 8px 24px;
+  box-sizing: border-box;
+  
+}
 </style>

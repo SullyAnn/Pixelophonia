@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div id="concertContainer">
+    <div class="launchContainer">
       <h1>Gestion des concerts</h1>
       <ListContainer :datas="concerts" type="concert" preLink="./" />
     </div>

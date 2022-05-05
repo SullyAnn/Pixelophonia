@@ -52,4 +52,33 @@ export default {
 </script>
 
 <style scoped>
+table {
+  border-collapse: collapse;
+  /* width: 25%; */
+}
+
+table, td {
+  border: 1px solid #3d4d7c;
+}
+
+th {
+  background-color: #3d4d7c;
+  color: #fff;
+}
+
+th, td {
+  padding: 4px 16px;
+  font-size: 1rem;
+}
+
+table td:nth-child(2),
+table th:nth-child(2) {
+  text-align: center;
+}
+
+.nbTotalVotes {
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.125rem;
+}
 </style>

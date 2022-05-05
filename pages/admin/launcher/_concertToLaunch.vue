@@ -1,8 +1,8 @@
 <template>
   <main>
-    <div id="listQuestions" class="launchPage launchContainer">
+    <div  id="listQuestions" class="launchContainer">
       <h1>Liste des questions</h1>
-      <ul ref="questions" class="questions">
+      <ul ref="questions">
         <LauncherQuestion
           v-for="(question, index) in tabQuestions"
           :key="index"
@@ -20,8 +20,7 @@
 
 
 <script>
-import "@/assets/css/admin.css";
-import "@/assets/css/launch.css";
+// import "@/assets/css/admin.css";
 import socket from "~/plugins/socket.io.js";
 import Choice from "@/assets/classes/Choice.js";
 import Question from "@/assets/classes/Question.js";
@@ -98,5 +97,11 @@ export default {
 </script>
 
 <style scoped>
+
+.launchContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 </style>
