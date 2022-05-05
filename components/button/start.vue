@@ -44,7 +44,6 @@ export default {
       let btnToChange = document.getElementById(idToChange);
 
       if (btnToChange.classList.contains("start")) {
-
         // set all buttons to disabled
         Array.from(buttonsList).forEach(function (element) {
           element.classList.remove("start");
@@ -56,7 +55,6 @@ export default {
         btnToChange.classList.remove("cantSelect");
         btnToChange.classList.add("stop");
         btnToChange.disabled = false;
-
       } else {
         Array.from(buttonsList).forEach(function (element) {
           element.classList.remove("cantSelect", "stop");
@@ -76,4 +74,14 @@ export default {
 </script>
 
 <style scoped>
+.start {
+  background: #6cad56;
+}
+.stop {
+    background: #aa1b1b;
+}
+.cantSelect {
+    background: #929292;
+}
+
 </style>

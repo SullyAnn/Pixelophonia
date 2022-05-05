@@ -92,4 +92,39 @@ export default {
 </script>
 
 <style scoped>
+
+.allQuestionsToCheck {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+input[type="checkbox"].checkQuestion {
+    display: none;
+}
+
+input[type="checkbox"].checkQuestion+label {
+    transition: 0.3s;
+    padding: 10px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 11px;
+    border: 1px solid #fff;
+}
+
+.containsCheckQuestion,
+.containsCheckQuestion>* {
+    display: block;
+}
+
+input[type="checkbox"].checkQuestion:hover+label {
+    cursor: pointer;
+    border-color: #9BD088;
+}
+
+input[type="checkbox"].checkQuestion:checked+label {
+    background-color: #9BD088;
+    color: #fff;
+    border-color: #9BD088;
+}
+
 </style>
