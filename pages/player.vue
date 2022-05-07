@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <main>
     <div v-if="question" v-show="isQuestionDisplayed" id="choicePageContent">
       <div v-if="!displayResult" class="container">
         <PlayerOrBlock
@@ -9,6 +9,7 @@
         />
 
         <PlayerOneChoice
+          class="choice"
           v-for="(data, index) in question.choices"
           :key="index"
           :choiceData="data"
@@ -24,18 +25,16 @@
         :isPlayerChoiceWinner="isPlayerChoiceWinner"
         :idQuestion="question.id"
         :img="parameters.winnerChoice.img"
+        :destination="parameters.winnerChoice.title"
       />
     </div>
 
     <PlayerHomePage v-show="!isQuestionDisplayed" :affichage="affichage" />
-  </section>
+  </main>
 </template>
 
 <script>
 import socket from "~/plugins/socket.io.js";
-import "../assets/css/playerChoice.css";
-import "../assets/css/playerHomePages.css";
-import "../pages/admin/launch.vue";
 
 export default {
   data() {
@@ -141,3 +140,52 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+main {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+#choicePageContent {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+}
+
+.choice {
+  display: flex;
+  width: 50vw;
+}
+
+.choice:nth-child(2) {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.choice:nth-child(3) {
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  #choicePageContent {
+    flex-direction: row;
+  }
+  .container {
+    flex-direction: row;
+  }
+}
+</style>

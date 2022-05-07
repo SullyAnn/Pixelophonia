@@ -48,11 +48,13 @@ ul {
     color: white;
     background-color: #3d4d7c;
     border: 1px solid #3d4d7c;
+    transition: 0.3s ease-in-out;
 }
 
 .btnLittle:hover {
     color: #3d4d7c;
     background-color: white;
+    transform: scale(1.1);
 }
 
 .btnText {
@@ -60,7 +62,7 @@ ul {
     border-radius: 11px;
     border: none;
     font-weight: bold;
-    transition: 0.5s;
+    transition: 0.3s ease-in-out;
 }
 
 .btnText:hover {
@@ -79,26 +81,18 @@ ul {
     padding: 1em;
     border: none;
     color: #fff;
-    transition: .3s;
     display: flex;
     align-items: center;
+    transition: 0.3s ease-in-out;
 }
 
 .btn:hover {
     cursor: pointer;
+    transform: scale(1.1);
 }
 
 .btn:active {
     transform: scale(1.5);
-}
-
-.btn.update {
-    background: #4495B8;
-}
-
-.btn.update:hover,
-.btn.update:focus {
-    background: #186180;
 }
 
 .svg-icon {
@@ -239,7 +233,7 @@ fieldset>* {
     position: relative;
     color: #fff;
     margin: 20px 15% 20px auto;
-    transition: 0.5s;
+    transition: 0.3s ease-in-out;
 }
 
 .send:hover {

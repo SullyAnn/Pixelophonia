@@ -53,7 +53,7 @@ export default {
   border-radius: 11px;
   display: flex;
   align-items: center;
-  width: 170px;
+  width: 190px;
 }
 
 .bgButton {
@@ -64,13 +64,13 @@ export default {
   width: 1px;
   transform: translate(-15%, -50%);
   border-radius: 50%;
-  transition: 1.2s;
+  transition: 0.7s ease-in-out;
   background: #3d4d7c;
   z-index: 0;
 }
 
 .goBack:hover .bgButton {
-  transform: scale(300);
+  transform: scale(330);
 }
 
 .goBack:hover p {
@@ -81,7 +81,8 @@ export default {
 p {
   position: relative;
   transition: 0.3s;
-  margin-left: 15px;
+  margin: 0 15px;
+  text-align: left;
 }
 
 .btn.back {

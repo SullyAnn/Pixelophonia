@@ -55,13 +55,14 @@ p {
   background: rgba(255, 255, 255, 0.5);
   border-radius: 13px;
   text-align: left;
-  transition: 0.5s;
-  box-shadow: 2px 2px 2px grey;
+  transition: 0.3s ease-in-out;
+  box-shadow: 5px 5px 5px rgba(180, 180, 1880, 0.5);
   margin: 10px;
 }
 
 p:hover {
   background: #fff;
+  transform: scale(1.05);
 }
 
 p:active {

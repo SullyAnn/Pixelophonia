@@ -70,6 +70,7 @@ export default {
 .container {
   background-color: rgb(206, 217, 252);
   padding: 0 30px;
+  margin-top: 30px;
 }
 
 #allButtons {

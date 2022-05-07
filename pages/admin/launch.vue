@@ -2,13 +2,12 @@
   <main>
     <div class="launchContainer">
       <h1>Choisissez le concert à lancer !</h1>
-      
-      <ListContainer
-      type="concert"
-      :displayButtons="false"
-      :datas="concerts"
-      preLink="launcher/"
-      />
+        <ListContainer
+          type="concert"
+          :displayButtons="false"
+          :datas="concerts"
+          preLink="launcher/"
+        />
     </div>
 
     <ButtonContainer :isReturn="true" linkBack="./" />
@@ -33,9 +32,9 @@ export default {
       console.log(error);
     }
   },
+
 };
 </script>
 
 <style scoped>
-
 </style>

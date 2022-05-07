@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div  id="listQuestions" class="launchContainer">
+    <div id="listQuestions" class="launchContainer">
       <h1>Liste des questions</h1>
       <ul ref="questions">
         <LauncherQuestion
@@ -14,7 +14,6 @@
     </div>
 
     <ButtonContainer :isInGame="true" textBack="Mettre fin au jeu" />
-
   </main>
 </template>
 
@@ -97,11 +96,9 @@ export default {
 </script>
 
 <style scoped>
-
 .launchContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 </style>

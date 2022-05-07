@@ -42,7 +42,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: 0.2s ease-in-out;
+  transition: 0.3s ease-in-out;
   min-width: 230px;
   height: 30px;
 }

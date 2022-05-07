@@ -68,7 +68,6 @@ export default {
     },
 
     uploadImages: async function (questions, tempsInDB) {
-      console.log("AH")
       // récupère la dernière question
       let lastQuestion =
         questions[Object.keys(questions)[Object.keys(questions).length - 1]];

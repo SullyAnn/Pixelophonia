@@ -9,6 +9,7 @@
         <!---->
 
         <div id="parent" class="displayed">
+          
           <HostOneChoice
             v-for="(data, index) in question.choices"
             :key="index"
@@ -16,11 +17,13 @@
             :idQuestion="question.id"
             :data="data"
             :displayResult="displayDirectResults"
+            :votesTotal="votesData.total"
+            :votesChoice="votesData['choice'+ parseFloat(index + 1)]"
           />
 
           <div class="infoContainer">
             <h2 class="question">{{ question.question }}</h2>
-            <ElementTimer v-if="timeParams.showTimer" />
+            <ElementTimer v-if="timeParams.showTimer" :totalTime="timeParams.total * 1000" />
             <ElementSpinner v-else />
           </div>
         </div>
@@ -39,7 +42,7 @@ export default {
   data() {
     return {
       finalChoice: null,
-      votesData: { total: 0, votesChoice1: 0, votesChoice2: 0 },
+      votesData: { total: 0, choice1: 0, choice2: 0 },
 
       waitingMode: true,
       displayResult: false,
@@ -71,7 +74,6 @@ export default {
         //si on a bien un temps à afficher
         if (updateTimer.showTimer) {
           this.timeParams.showTimer = true;
-          this.afficheTimer(updateTimer.start, updateTimer.total);
         }
         this.displayDirectResults = votesInfos.displayDirectResults;
       }
@@ -111,7 +113,6 @@ export default {
 
       this.displayDirectResults = showResults;
       this.timeParams = timeParams;
-      this.afficheTimer(timeParams.start, timeParams.total);
     });
 
     // datas de la question
@@ -125,7 +126,6 @@ export default {
     // affiche les votes
     socket.on("augmentation-nb-votes", (votesInfos) => {
       this.votesData = votesInfos;
-      this.animationVotes();
     });
 
     // résultats
@@ -154,63 +154,7 @@ export default {
       // parameters
       this.timeParams = null;
       this.finalChoice = null;
-      this.votesData = { total: 0, votesChoice1: 0, votesChoice2: 0 };
-    },
-
-    // ======================== ANIMATION ========================= //
-
-    // change directVotes style
-    calculateHeightVotes: function (idChoice, nbVotes, totalVotes) {
-      document
-        .getElementById("halfChoiceContainer" + idChoice)
-        .querySelector(".directResultMove").style.height =
-        (nbVotes / totalVotes) * 100 + "%";
-    },
-
-    // direct votes animation
-    animationVotes: function () {
-      if (!this.displayResult && this.displayDirectResults) {
-        this.calculateHeightVotes(
-          this.question.choices[0].id,
-          this.votesData.choice1,
-          this.votesData.total
-        );
-        this.calculateHeightVotes(
-          this.question.choices[1].id,
-          this.votesData.choice2,
-          this.votesData.total
-        );
-      }
-    },
-
-    // change style timer
-    changeStyle: function (element, elapsedTime, duration) {
-      element.style.width =
-        "calc(16px + (" + elapsedTime / duration + " * (100% - 16px)))";
-
-      if ((elapsedTime / duration) * 100 > 75) {
-        element.style.backgroundColor = "#CA4B4B";
-      }
-    },
-
-    // timer animation
-    afficheTimer: async function (startTime, duration) {
-      const durationMs = duration * 1000;
-
-      let myTimer = setInterval(() => {
-        if (!this.waitingMode) {
-          let currentTime = Date.now();
-          let progressBar = document.getElementById("timeProgress");
-
-          let elapsedTime = currentTime - startTime; //en millisecondes
-          if (elapsedTime <= durationMs)
-            this.changeStyle(progressBar, elapsedTime, durationMs);
-          else clearInterval(myTimer);
-        } else {
-          //si on arrête la question avant la fin
-          clearInterval(myTimer);
-        }
-      }, 10);
+      this.votesData = { total: 0, choice1: 0, choice2: 0 };
     },
   },
 };

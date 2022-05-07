@@ -22,7 +22,7 @@ import socket from "~/plugins/socket.io.js";
 
 export default {
   layout: "admin",
-  
+
   head: {
     title: "Admin | Accueil",
   },
@@ -59,10 +59,10 @@ export default {
   padding: 30px;
   font-weight: bold;
   border-radius: 11px;
-  color: #3d4d7c;
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid #3d4d7c;
+  border: none; /* border: 1px solid #3d4d7c; */
   transition: 0.5s;
+  box-shadow: 5px 5px 5px rgba(180, 180, 1880, 0.5);
 }
 
 .btnMenu:hover {

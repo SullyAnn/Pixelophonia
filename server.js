@@ -101,7 +101,6 @@ io.on('connection', (socket) => {
             default:
                 break;
         }
-
     });
 
     // Connexion du host
@@ -114,8 +113,8 @@ io.on('connection', (socket) => {
                         question: currentQuestion.question
                     }, {
                         total: totalvotes,
-                        votesChoice1: nbChoice1,
-                        votesChoice2: nbChoice2,
+                        choice1: nbChoice1,
+                        choice2: nbChoice2,
                         displayDirectResults: updateShowDirectResults
                     },
                     updateTimer);
@@ -219,6 +218,8 @@ io.on('connection', (socket) => {
                 else if (random == 2) winner = choicesResult[1]
                 egalite = true
             }
+
+            console.log("WINNER", winner)
 
             //calcul pourcentage
             percentage = (winner.nbvotes / (choicesResult[0].nbvotes + choicesResult[1].nbvotes)) * 100;

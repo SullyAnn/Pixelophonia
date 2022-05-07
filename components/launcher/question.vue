@@ -37,7 +37,7 @@
           <div class="icon">
             <ElementSpinner />
           </div>
-          <LauncherButtonResult />
+          <LauncherButtonResult @click.native="launchResult()" :launchedResults="launchedResults" />
         </div>
 
         <LauncherTableVotes
@@ -60,23 +60,26 @@ export default {
     question: Object,
   },
 
+    data() {
+      return {
+        questionIsPlaying: false,
+        directResult: false,
+        timerBar: false,
+        launchedResults: false
+      };
+    },
+
   watch: {
     questionIsPlaying() {
       if (this.questionIsPlaying) {
         this.launchQuestion();
       } else {
         socket.emit("stop-question", 1);
+      this.launchedResults = false;
       }
     },
   },
 
-  data() {
-    return {
-      questionIsPlaying: false,
-      directResult: false,
-      timerBar: false,
-    };
-  },
 
   beforeMount() {
     this.$root.$on("checkTime-state", (id, state) => {
@@ -135,7 +138,7 @@ export default {
 
     launchResult: function () {
       socket.emit("calcul-resultat");
-      this.questionIsPlaying = false;
+      this.launchedResults = true;
     },
   },
 };

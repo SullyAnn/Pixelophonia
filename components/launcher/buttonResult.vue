@@ -2,7 +2,6 @@
   <button
     v-if="!launchedResults"
     tabindex="1"
-    @click="launchResult()"
     class="btnLaunchResults"
   >
     <p>Lancer les résultats</p>
@@ -13,16 +12,9 @@
 import socket from "~/plugins/socket.io.js";
 
 export default {
-  data() {
-    return {
-      launchedResults: false,
-    };
-  },
-  methods: {
-    launchResult: function () {
-      this.launchedResults = true;
-      socket.emit("calcul-resultat");
-    },
+  props: {
+    launchedResults: Boolean
+
   },
 };
 </script>
