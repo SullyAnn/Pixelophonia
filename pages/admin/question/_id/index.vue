@@ -33,7 +33,12 @@
         </fieldset>
       </div>
     </div>
-    <ButtonContainer :isReturn="true" linkBack="./" :isEdit="true" :linkEdit="question.id + '/update'" />
+    <ButtonContainer
+      :isReturn="true"
+      linkBack="./"
+      :isEdit="true"
+      :linkEdit="question.id + '/update'"
+    />
   </main>
 </template>
 
@@ -43,8 +48,12 @@ import { getQuestion } from "@/assets/classes/Admin.js";
 export default {
   layout: "admin",
   async asyncData({ params, $axios }) {
-    const question = await getQuestion($axios, params.id);
-    return { question };
+    try {
+      const question = await getQuestion($axios, params.id);
+      return { question };
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 </script>

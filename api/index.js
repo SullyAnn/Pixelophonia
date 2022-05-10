@@ -4,11 +4,18 @@ import * as fs from 'fs'
 import { signUserToken } from '../controllers/authController.js'
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const prisma = new PrismaClient()
 const app = express()
+const bodyParser = require('body-parser')
+const multer = require('multer');
+
 app.use(passport.initialize())
 app.use(express.json())
+app.use(bodyParser.json())
+
+
 
 /** 
  * logic for our api will go here
@@ -17,6 +24,37 @@ export default {
     path: '/api',
     handler: app
 }
+
+// ======= upload d'images ======= //
+
+// define destination folder & name of the file 
+let storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        const dir = "./assets/images/Question_" + req.body.idQuestion;
+        if (!fs.existsSync(dir)) {
+            fs.mkdir(dir, error => cb(error, dir))
+        }
+        cb(null, dir)
+    },
+    filename: function(req, file, cb) {
+        console.log("filename", file)
+        cb(null, file.originalname)
+    }
+});
+
+const upload = multer({ storage: storage })
+
+// upload images
+app.post(
+    '/upload',
+    upload.fields([
+        { name: "img1", maxCount: 1 }, { name: "img2", maxCount: 1 }
+    ]),
+    async(req, res) => {
+        console.log("FILES : ", req.files)
+        res.json({ "uploaded files": req.files })
+    }
+);
 
 app.post(`/login`, async(req, res) => {
     passport.authenticate('local', { session: false }, (err, user, message) => {
@@ -121,10 +159,6 @@ app.post('/question', async(req, res) => {
     res.status(200).json(question)
 })
 
-app.post('/upload.php/', async(req, res) => {
-    const images = await fetch('upload.php', req.form, { method: 'POST' })
-})
-
 //get all the questions
 app.get('/questions', async(req, res) => {
     const questions = await prisma.question.findMany({
@@ -170,7 +204,7 @@ app.put('/question/:id', async(req, res) => {
         },
         data: {
             title: req.body.title1,
-            img: req.body.img1,
+            img: req.body.img1 != null ? req.body.img1 : undefined, // if null, do nothing
         },
     })
 
@@ -180,7 +214,7 @@ app.put('/question/:id', async(req, res) => {
         },
         data: {
             title: req.body.title2,
-            img: req.body.img2,
+            img: req.body.img2 != null ? req.body.img2 : undefined, // if null, do nothing
         },
     })
 
@@ -207,11 +241,12 @@ app.delete(`/question/:id`, async(req, res) => {
 
     // delete from question
     const deleteQuestion = prisma.question.delete({
-            where: {
-                id: parseInt(id),
-            },
-        })
-        //delete folder of images 
+        where: {
+            id: parseInt(id),
+        },
+    })
+
+    //delete folder of images 
     console.log(__dirname)
     const path = `./assets/images/Question_${id}`;
     if (fs.existsSync(path)) {

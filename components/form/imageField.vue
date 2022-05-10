@@ -11,6 +11,8 @@
       v-on:change="$emit('update', $event.target.value)"
     />
 
+    {{idField}}
+
     <input
       v-on:change="previewFile(`display${idField}`, `image${idField}`)"
       type="file"
@@ -45,7 +47,7 @@ export default {
   },
 
   beforeMount() {
-      if (this.choice) {
+      if (this.choice && this.choice.img) {
         this.title = this.choice.title;
         this.imageURL =
           "/_nuxt/assets/images/Question_" +
