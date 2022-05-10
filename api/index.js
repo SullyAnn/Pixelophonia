@@ -30,14 +30,15 @@ export default {
 // define destination folder & name of the file 
 let storage = multer.diskStorage({
     destination: function(req, file, cb) {
+        console.log("file in destination : ", file)
         const dir = "./assets/images/Question_" + req.body.idQuestion;
         if (!fs.existsSync(dir)) {
-            fs.mkdir(dir, error => cb(error, dir))
+            fs.mkdirSync(dir)
         }
         cb(null, dir)
     },
     filename: function(req, file, cb) {
-        console.log("filename", file)
+        console.log("req.files in filename : ", req.files)
         cb(null, file.originalname)
     }
 });
@@ -48,11 +49,17 @@ const upload = multer({ storage: storage })
 app.post(
     '/upload',
     upload.fields([
-        { name: "img1", maxCount: 1 }, { name: "img2", maxCount: 1 }
+        { name: "img1", maxCount: 1 },
+        { name: "img2", maxCount: 1 }
     ]),
     async(req, res) => {
-        console.log("FILES : ", req.files)
-        res.json({ "uploaded files": req.files })
+        try {
+            res.send(req.files);
+        } catch (error) {
+            console.log("FILES : ", req.params, req.files)
+            res.send(400)
+        }
+        // res.json({ "uploaded files": req.files })
     }
 );
 

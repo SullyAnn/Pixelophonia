@@ -106,31 +106,29 @@ export default {
     handleSubmit: async function (e) {
       e.preventDefault();
 
-      if (this.type == "add") {
-        this.img1 = document.getElementById("image1").files[0];
-        this.img2 = document.getElementById("image2").files[0];
+      let body = {
+        label: this.label,
+        question: this.textQuestion,
+        temps: this.temps,
+        title1: this.title1,
+        title2: this.title2,
+      };
 
+      this.img1 = document.getElementById("image1").files[0];
+      this.img2 = document.getElementById("image2").files[0];
+
+      if (this.type == "add") {
         if (!this.img1 || !this.img2) {
-          alert("Veuillez ajouter une image.");
+          alert("Il manque une image ! Veuillez l'ajouter.");
         } else {
           // éviter les doublons de nom
-          let name1 = this.img1.name;
-          let name2 = this.renameFileIfDouble(name1, this.img2.name);
-
-          const body = {
-            label: this.label,
-            question: this.textQuestion,
-            temps: this.temps,
-            title1: this.title1,
-            title2: this.title2,
-            img1: name1,
-            img2: name2,
-          };
+          body.img1 = this.img1.name;
+          body.img2 = this.renameFileIfDouble(body.img1, this.img2.name);
 
           this.uploadQuestion(body);
         }
       } else if (this.type == "update") {
-        this.uploadUpdateQuestion();
+        this.uploadUpdateQuestion(body);
       }
     },
 
@@ -142,57 +140,39 @@ export default {
       this.uploadImages(questions);
 
       // back to list
-      // this.$router.push("./");
+      this.$router.push("./");
     },
 
-    uploadUpdateQuestion: async function () {
-      const body = {
-        label: this.label,
-        question: this.textQuestion,
-        temps: this.temps,
-        title1: this.title1,
-        title2: this.title2,
-      };
-
-      this.img1 = document.getElementById("image1").files[0];
-      this.img2 = document.getElementById("image2").files[0];
-
-      if (this.img1) {
-        body.img1 = this.renameFile(
+    setUpdateFile: function (image, indexChoice) {
+      let name = null;
+      if (image) {
+        name = this.renameFile(
           this.question.id,
-          this.choices[0].id,
-          this.img1.name
+          this.choices[indexChoice].id,
+          image.name
         );
-      } else {
-        body.img1 = null;
       }
+      return name;
+    },
 
-      if (this.img2) {
-        body.img2 = this.renameFile(
-          this.question.id,
-          this.choices[1].id,
-          this.img2.name
-        );
-      } else {
-        body.img2 = null;
-      }
-
+    uploadUpdateQuestion: async function (body) {
+      body.img1 = this.setUpdateFile(this.img1, 0);
+      body.img2 = this.setUpdateFile(this.img2, 1);
       body.id1 = this.choices[0].id;
       body.id2 = this.choices[1].id;
-
-      console.log(body);
 
       // update images data in db
       await updateQuestion(this.$axios, this.question.id, body);
 
       // upload new images on server
       // it will erase the old ones
-
       const form = this.createForm(this.question.id, body.img1, body.img2);
       await uploadImage(this.$axios, form);
 
       // // back to question
-      // this.$router.push(".");
+      this.$nextTick(() => {
+        this.$router.push(".");
+      });
     },
 
     uploadImages: async function (questions) {
@@ -222,20 +202,16 @@ export default {
 
       const form = this.createForm(lastQuestion.id, nameImg1, nameImg2);
 
-      
+      await updateQuestion(this.$axios, lastQuestion.id, newBody);
 
       // update question in db with good images datas
       // we need the id of the last question sent to upload it correctly
       // & minimize conflicts
-
       await uploadImage(this.$axios, form);
-      await updateQuestion(this.$axios, lastQuestion.id, newBody);
     },
 
     // create formData for upload image
     createForm: function (idQuestion, nameImg1, nameImg2) {
-      console.log(this.img1, this.img2);
-
       const form = new FormData();
 
       form.append("idQuestion", idQuestion);
@@ -264,18 +240,6 @@ export default {
   },
 };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style scoped>
 /*=========== bouton form temps ========== */
