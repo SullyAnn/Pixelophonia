@@ -106,40 +106,26 @@ ul {
 /* ---- See question ---- */
 
 .window {
-    width: 50%;
+    width: 60vw;
     text-align: center;
     margin: auto;
-    padding: 10% auto;
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: stretch;
     justify-content: center;
 }
 
 .window h2 {
     background: #3D4D7C;
     color: #fff;
-    height: 50px;
-    padding: 15px 0 0;
+    padding: 15px;
     border-radius: 13px;
-    width: 100%;
-}
-
-.admin .window .choices {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 90%;
-    border: 1px solid #fff;
-    padding: 5%;
-    margin: auto;
 }
 
 .choices2 {
-    width: -webkit-fill-available;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: stretch;
     margin: 20px;
 }
 
@@ -162,29 +148,20 @@ ul {
 form {
     display: flex;
     flex-flow: column;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
     background-color: rgba(255, 255, 255, 0.2);
 }
 
 form>* {
     display: block;
     width: 70%;
-    padding: 0;
     margin: 10px auto 0;
-}
-
-form .choices2 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding: 10px 5%;
-    height: 300px;
 }
 
 form>* {
     font-size: 16px;
     font-family: 'Montserrat', sans-serif;
-    width: 70%;
 }
 
 fieldset .labelChoice {
@@ -194,12 +171,13 @@ fieldset .labelChoice {
 }
 
 .choices2 fieldset {
+    height: 100%;
+    flex: 1;
     display: flex;
     flex-flow: column;
-    height: 100%;
-    width: 45%;
     margin: auto;
     align-items: center;
+    justify-content: center;
 }
 
 fieldset>* {
@@ -211,15 +189,15 @@ fieldset>* {
     display: flex;
     flex-flow: column;
     justify-content: center;
-    width: 100%;
-    height: 100%;
     overflow: hidden;
+    object-fit: contain;
+    text-align: center;
+    max-height: 120px;
 }
 
 .importImg img,
 .viewImg img {
     width: 100%;
-    height: auto;
 }
 
 .importImg:hover {
@@ -239,6 +217,23 @@ fieldset>* {
 .send:hover {
     background: #6cad56;
     cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+    .window {
+        width: 80vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .choices2 {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+    }
+    .choices2 fieldset {
+        margin: 0;
+    }
 }
 
 

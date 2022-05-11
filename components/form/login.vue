@@ -37,11 +37,17 @@ img {
 }
 
 input {
-  background: unset;
   padding: 16px;
   font-size: 16px;
   border: unset;
-  margin: 0;
   width: -webkit-fill-available;
 }
+
+@media screen and (max-height: 768px) {
+  div {
+    margin: 0;
+  }
+}
+
+
 </style>

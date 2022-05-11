@@ -86,15 +86,12 @@ div .discarded {
 }
 
 img {
-  height: 100%;
   z-index: 7;
   transition-duration: 0.4s;
   -webkit-transition-duration: 0.4s;
   object-fit: cover;
-      width: 100%;
-    height: 100vh;
-    object-fit: cover;
-
+  width: 100%;
+  height: 100%;
 }
 h1 {
   font-size: 1rem;
@@ -109,10 +106,4 @@ h1 {
   z-index: 8;
 }
 
-@media screen and (min-width: 768px) {
-  .choice {
-    height: 100%;
-    width: 50%;
-  }
-}
 </style>

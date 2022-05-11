@@ -1,8 +1,10 @@
 <template>
-  <section id="loginPage">
-    <div class="card">
-      <AdminLoginHeader />
+  <main>
+    <section id="loginPage">
 
+    <div class="card">
+
+      <AdminLoginHeader />
       <section id="infos">
         <AdminNotification :message="error" v-if="error" />
         <form method="post" @submit.prevent="login">
@@ -25,7 +27,10 @@
         </form>
       </section>
     </div>
-  </section>
+
+    </section>
+    <ButtonContainer :isReturn="true" linkBack="../.." class="buttonReturn" />
+  </main>
 </template>
 
 <script>
@@ -62,11 +67,17 @@ export default {
 };
 </script>
 <style scoped>
-#loginPage {
+
+main {
+  width: 100vw;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
+#loginPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
 }
 
 .card {
@@ -75,6 +86,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   height: 50vh;
+  max-height: 500px;
   padding: 40px;
   border-radius: 40px;
   background: rgba(255, 255, 255, 0.5);
@@ -82,7 +94,8 @@ export default {
 }
 
 #infos {
-  width: 40vh;
+  width: 40vw;
+  max-width: 500px;
 }
 
 form {
@@ -93,6 +106,18 @@ form {
 .btnLogIn {
   align-self: center;
   margin: 25px;
+}
+
+.buttonReturn {
+  height: 10vh;
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    width: 80vw;
+    height: 70vh;
+    padding: 20px;
+  }
 }
 
 </style>

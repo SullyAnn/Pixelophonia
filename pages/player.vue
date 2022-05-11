@@ -160,8 +160,7 @@ main {
 }
 
 .choice {
-  display: flex;
-  width: 50vw;
+  object-fit: cover;
 }
 
 .choice:nth-child(2) {
@@ -180,12 +179,20 @@ main {
   height: 100%;
 }
 
+h1 {
+  border: 0;
+}
+
 @media screen and (min-width: 768px) {
   #choicePageContent {
     flex-direction: row;
   }
   .container {
     flex-direction: row;
+  }
+  .choice {
+    width: 50vw;
+    height: 100vh;
   }
 }
 </style>

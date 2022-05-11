@@ -11,8 +11,6 @@
       v-on:change="$emit('update', $event.target.value)"
     />
 
-    {{idField}}
-
     <input
       v-on:change="previewFile(`display${idField}`, `image${idField}`)"
       type="file"

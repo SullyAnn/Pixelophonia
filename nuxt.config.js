@@ -41,19 +41,6 @@ module.exports = {
     env: {
         WS_URL: process.env.WS_URL || 'http://localhost:3000' //'http://192.168.1.156:3000'
     },
-    //   auth: {
-    //     strategies: {
-    //       local: {
-    //         endpoints: {
-    //           login: { url: "/api/login", method: "post", propertyName: 'data.token' },
-    // //        refresh: { url: "/api/auth/refresh-token", method: "post" },
-    //           logout: false, //  we don't have an endpoint for our logout in our API and we just remove the token from localstorage
-    //           admin: { url: "/admin/", method: "get", propertyName:'data' }
-    //         },
-    //         tokenType:''
-    //       }
-    //     }
-    //   },
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
@@ -91,4 +78,6 @@ module.exports = {
             login: '/admin/login'
         },
     },
+
+    telemetry: false // ignore question on server launch
 }

@@ -88,4 +88,11 @@ export default {
 p {
   text-align: center;
 }
+
+@media screen and (max-height: 768px) {
+  .container {
+    margin-top: 5px;
+  }
+}
+
 </style>

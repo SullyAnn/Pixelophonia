@@ -7,8 +7,8 @@
 
 <style scoped>
 #header {
-  border-radius: 50px;
-  width: 150px;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,7 +16,8 @@
 }
 
 img {
-  width: 100%;
+  height: 100%;
+  max-height: 150px;
   border-radius: 150px;
 }
 
@@ -24,4 +25,16 @@ h2 {
   font-weight: 400;
   font-size: 18px;
 }
+
+
+@media screen and (max-height: 768px) {
+  #header {
+    
+  }
+  img {
+    height: 50%;
+    width: auto;
+  }
+}
+
 </style>
