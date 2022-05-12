@@ -1,21 +1,31 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <input
-      v-model="label"
-      type="text"
-      name="label"
-      placeholder="Libellé de la question"
-      class="labelChoice"
-      required
-    />
+    <div class="tooltipWrapper">
+      <input
+        v-model="label"
+        type="text"
+        name="label"
+        placeholder="Libellé de la question"
+        class="labelChoice"
+        required
+      />
+      <FormToolTip
+        msg="Label de la question (uniquement visible par l'admin)"
+      />
+    </div>
 
-    <textarea
-      v-model="textQuestion"
-      placeholder="Question"
-      name="question"
-      class="labelChoice"
-      required
-    ></textarea>
+    <div class="tooltipWrapper">
+      <textarea
+        v-model="textQuestion"
+        placeholder="Question"
+        name="question"
+        class="labelChoice"
+        required
+      ></textarea>
+      <FormToolTip
+        msg="Ecrire ici la question à poser aux joueurs (ex : Où allons-nous ?)"
+      />
+    </div>
 
     <div class="tooltipWrapper">
       <input
@@ -23,13 +33,13 @@
         type="number"
         name="temps"
         placeholder="Durée (en secondes)"
-        class="labelChoice inputTime"
+        class="labelChoice"
         min="0"
         step="1"
       />
-      <span class="tooltipTime"
-        >Laisser vide ou mettre zéro pour une question sans durée
-      </span>
+      <FormToolTip
+        msg="Laisser vide ou mettre zéro pour une question sans durée"
+      />
     </div>
 
     <div class="choices2">
@@ -140,7 +150,9 @@ export default {
       this.uploadImages(questions);
 
       // back to list
-      this.$router.push("./");
+      setTimeout(() => {
+        this.$router.push("./");
+      }, 1000);
     },
 
     setUpdateFile: function (image, indexChoice) {
@@ -170,9 +182,9 @@ export default {
       await uploadImage(this.$axios, form);
 
       // // back to question
-      this.$nextTick(() => {
-        this.$router.push(".");
-      });
+        this.$nextTick(() => {
+          this.$router.push("../");
+        });
     },
 
     uploadImages: async function (questions) {
@@ -246,34 +258,19 @@ export default {
 
 .tooltipWrapper {
   position: relative;
-  display: inline-block;
-}
-
-.tooltipTime {
-  visibility: hidden;
-  background-color: rgba(61, 77, 124, 0.92);
-  color: #fff;
-  font-size: 0.75rem;
-  text-align: center;
-  padding: 4px;
-  border-radius: 6px;
-  position: absolute;
-  margin-bottom: 4px;
-  bottom: 100%;
-  left: 0;
-  width: 120px;
-  z-index: 1;
-  transform: translateX(-5px);
-}
-
-.inputTime {
   width: 100%;
-  transform: translate(-5px);
-  font-size: 16px;
-  font-family: "Montserrat", sans-serif;
 }
 
-.inputTime:hover + .tooltipTime {
+.tooltipWrapper .labelChoice {
+  width: 70%;
+}
+
+.tooltipWrapper div {
+  visibility: hidden;
+  opacity: 0;
+}
+.tooltipWrapper:hover div {
   visibility: visible;
+  opacity: 1;
 }
 </style>

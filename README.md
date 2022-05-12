@@ -17,7 +17,8 @@ $ npx prisma generate
 #Pour avoir la bdd et les éléments dedans
 $ npx prisma studio #pour voir la bdd, optionnel
 
-$ npm run versionOK 
+# Lancer le serveur 
+$ npm run testIO  
 ```
 
 

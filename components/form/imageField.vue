@@ -1,27 +1,35 @@
 <template>
   <fieldset>
     <legend>Choix n°{{ idField }}</legend>
-    <input
-      v-model="title"
-      type="text"
-      :name="'image' + idField"
-      placeholder="Titre"
-      class="labelChoice"
-      required
-      v-on:change="$emit('update', $event.target.value)"
-    />
 
+    <div class="tooltipWrapper">
+      <input
+        v-model="title"
+        type="text"
+        :name="'image' + idField"
+        placeholder="Titre"
+        class="labelChoice"
+        required
+        v-on:change="$emit('update', $event.target.value)"
+      />
+      <FormToolTip msg="Titre du choix (ex : A la montagne)" />
+    </div>
+
+    <div class="tooltipWrapper">
     <input
       v-on:change="previewFile(`display${idField}`, `image${idField}`)"
       type="file"
       accept="image/*"
       :name="'img' + idField"
       :id="'image' + idField"
-      style="opacity: 0; width: 0; height: 0;"
+      style="opacity: 0; width: 0; height: 0"
+      
     />
     <label :for="'image' + idField" class="importImg">
       <img :src="imageURL" :id="'display' + idField" />
     </label>
+      <FormToolTip msg="Illustration du choix (.png, .jpg ou .gif)" />
+    </div>
   </fieldset>
 </template>
 
@@ -33,9 +41,8 @@ export default {
     idQuestion: Number,
   },
   model: {
-    prop: "title", 
-    event: "update"
-
+    prop: "title",
+    event: "update",
   },
   data() {
     return {
@@ -45,14 +52,14 @@ export default {
   },
 
   beforeMount() {
-      if (this.choice && this.choice.img) {
-        this.title = this.choice.title;
-        this.imageURL =
-          "/_nuxt/assets/images/Question_" +
-          this.idQuestion +
-          "/" +
-          this.choice.img;
-      }
+    if (this.choice && this.choice.img) {
+      this.title = this.choice.title;
+      this.imageURL =
+        "/_nuxt/assets/images/Question_" +
+        this.idQuestion +
+        "/" +
+        this.choice.img;
+    }
   },
 
   methods: {
@@ -76,4 +83,17 @@ export default {
 </script>
 
 <style scoped>
+.tooltipWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.tooltipWrapper div {
+  visibility: hidden;
+  opacity: 0;
+}
+.tooltipWrapper:hover div {
+  visibility: visible;
+  opacity: 1;
+}
 </style>
