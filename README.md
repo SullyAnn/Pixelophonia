@@ -1,5 +1,4 @@
 # Pixelophonia
-## Branche modifiée test par Clément BOIN
 
 ## Instructions 
 
