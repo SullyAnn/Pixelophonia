@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div id="headerHome"><NuxtLink to="/admin">Administrateur</NuxtLink></div>
+    <!-- <div id="headerHome"><NuxtLink to="/admin">Administrateur</NuxtLink></div> -->
 
     <div id="containerHome">
       <div>
